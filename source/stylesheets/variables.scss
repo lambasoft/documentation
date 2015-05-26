@@ -20,20 +20,24 @@ under the License.
 ////////////////////////////////////////////////////////////////////////////////
 // Use these settings to help adjust the appearance of Slate
 
+$primary-color: #5b4388;
+$secondary-color: #9059BD;
+$tertiary-color: #464F89;
+
 
 // BACKGROUND COLORS
 ////////////////////
-$nav-bg: #393939;
-$examples-bg: #393939;
-$code-bg: #292929;
-$code-annotation-bg: #1c1c1c;
-$nav-subitem-bg: #262626;
-$nav-active-bg: #2467af;
+$nav-bg: transparent;
+$examples-bg: $primary-color;
+$code-bg: rgba(0, 0, 0, 0.3);
+$code-annotation-bg: rgba(0, 0, 0, 0.3);
+$nav-subitem-bg: rgba(255, 255, 255, 0.06);
+$nav-active-bg: rgba(255, 255, 255, 0.06);
 $lang-select-border: #000;
 $lang-select-bg: #222;
 $lang-select-active-bg: $examples-bg; // feel free to change this to blue or something
 $lang-select-pressed-bg: #111; // color of language tab bg when mouse is pressed
-$main-bg: #eaf2f6;
+$main-bg: lighten(#5b4388, 55);
 $aside-notice-bg: #8fbcd4;
 $aside-warning-bg: #c97a7e;
 $aside-success-bg: #6ac174;
@@ -54,7 +58,7 @@ $lang-select-pressed-text: #fff; // color of language tab text when mouse is pre
 ////////////////////
 $nav-width: 230px; // width of the navbar
 $examples-width: 50%; // portion of the screen taken up by code examples
-$logo-margin: 20px; // margin between nav items and logo, ignored if search is active
+$logo-margin: 40px; // margin between nav items and logo, ignored if search is active
 $main-padding: 28px; // padding to left and right of content & examples
 $nav-padding: 15px; // padding to left and right of navbar
 $nav-v-padding: 10px; // padding used vertically around search boxes and results
@@ -86,12 +90,12 @@ $phone-width: $tablet-width - $nav-width; // min width before reverting to mobil
 
 // OTHER
 ////////////////////
-$nav-active-shadow: #000;
+$nav-active-shadow: transparent;
 $nav-footer-border-color: #666;
-$nav-embossed-border-top: #000;
-$nav-embossed-border-bottom: #939393;
-$main-embossed-text-shadow: 0px 1px 0px #fff;
-$search-box-border-color: #666;
+$nav-embossed-border-top: transparent;
+$nav-embossed-border-bottom: transparent;
+$main-embossed-text-shadow: none;
+$search-box-border-color: rgba(255, 255, 255, 0.5);
 
 
 ////////////////////////////////////////////////////////////////////////////////

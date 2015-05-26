@@ -32,9 +32,20 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   @extend %default-font;
-  background-color: $main-bg;
   height: 100%;
   -webkit-text-size-adjust: none; /* Never autoresize text */
+
+  background-color: darken($primary-color, 15);
+    // @include background-image(
+    //     //radial-gradient(50% -20%, ellipse cover, $tertiary-color, transparent 80%),
+    //     radial-gradient(-50% -50%, ellipse cover, $secondary-color, transparent 80%),
+    //     radial-gradient(150% 150%, ellipse cover, $secondary-color, transparent 80%)
+    // );
+    background-image: -moz-radial-gradient(-50% -50%, ellipse cover, #9059bd, rgba(0, 0, 0, 0) 80%), -moz-radial-gradient(150% 150%, ellipse cover, #9059bd, rgba(0, 0, 0, 0) 80%);
+    background-image: -webkit-radial-gradient(-50% -50%, ellipse cover, #9059bd, rgba(0, 0, 0, 0) 80%), -webkit-radial-gradient(150% 150%, ellipse cover, #9059bd, rgba(0, 0, 0, 0) 80%);
+    background-image: radial-gradient(ellipse cover at -50% -50%, #9059bd, rgba(0, 0, 0, 0) 80%), radial-gradient(ellipse cover at 150% 150%, #9059bd, rgba(0, 0, 0, 0) 80%);
+    background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9Ii01MCUiIGN5PSItNTAlIiByPSI4MCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5MDU5YmQiLz48c3RvcCBvZmZzZXQ9IjgwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIwLjAiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyYWQpIiAvPjwvc3ZnPiA='), url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9IjE1MCUiIGN5PSIxNTAlIiByPSI4MCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5MDU5YmQiLz48c3RvcCBvZmZzZXQ9IjgwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIwLjAiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyYWQpIiAvPjwvc3ZnPiA=');
+    background-size: 100%;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -137,8 +148,6 @@ html, body {
       margin-bottom: 1em;
     }
 
-    @include embossed-bg;
-
     li {
       margin: 1em $nav-padding;
       line-height: 1;
@@ -199,7 +208,7 @@ html, body {
     }
 
     // for embossed look:
-    @include embossed-bg;
+    //
     &>li:last-child {
       box-shadow: none; // otherwise it'll overflow out of the subheader
     }
@@ -282,7 +291,17 @@ html, body {
   // half of the content always this background color.
   .dark-box {
     width: $examples-width;
-    background-color: $examples-bg;
+  background-color: darken($primary-color, 15);
+    // @include background-image(
+    //     //radial-gradient(50% -20%, ellipse cover, $tertiary-color, transparent 80%),
+    //     radial-gradient(-50% -50%, ellipse cover, $secondary-color, transparent 80%),
+    //     radial-gradient(150% 150%, ellipse cover, $secondary-color, transparent 80%)
+    // );
+    background-image: -moz-radial-gradient(-50% -50%, ellipse cover, #9059bd, rgba(0, 0, 0, 0) 80%), -moz-radial-gradient(150% 150%, ellipse cover, #9059bd, rgba(0, 0, 0, 0) 80%);
+    background-image: -webkit-radial-gradient(-50% -50%, ellipse cover, #9059bd, rgba(0, 0, 0, 0) 80%), -webkit-radial-gradient(150% 150%, ellipse cover, #9059bd, rgba(0, 0, 0, 0) 80%);
+    background-image: radial-gradient(ellipse cover at -50% -50%, #9059bd, rgba(0, 0, 0, 0) 80%), radial-gradient(ellipse cover at 150% 150%, #9059bd, rgba(0, 0, 0, 0) 80%);
+    background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9Ii01MCUiIGN5PSItNTAlIiByPSI4MCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5MDU5YmQiLz48c3RvcCBvZmZzZXQ9IjgwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIwLjAiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyYWQpIiAvPjwvc3ZnPiA='), url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9IjE1MCUiIGN5PSIxNTAlIiByPSI4MCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5MDU5YmQiLz48c3RvcCBvZmZzZXQ9IjgwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIwLjAiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyYWQpIiAvPjwvc3ZnPiA=');
+    background-size: 100%;
     position: absolute;
     right: 0;
     top: 0;
@@ -371,9 +390,7 @@ html, body {
     margin-bottom: $h1-margin-bottom;
     margin-top: 2em;
     border-top: 1px solid #ddd;
-    @include background-image(
-      linear-gradient(top, #fff, #f9f9f9)
-    );
+    background: #fff;
   }
 
   h1:first-child, div:first-child + h1 {
@@ -389,9 +406,7 @@ html, body {
     border-top: 1px solid #ccc;
     padding-top: 1.2em;
     padding-bottom: 1.2em;
-    @include background-image(
-      linear-gradient(top, rgba(#fff,0.4), rgba(#fff, 0))
-    );
+    background: rgba(#fff,0.4);
   }
 
   // h2s right after h1s should bump right up
@@ -484,7 +499,6 @@ html, body {
   aside {
     padding-top: 1em;
     padding-bottom: 1em;
-    @include text-shadow(0 1px 0 lighten($aside-notice-bg, 15%));
     margin-top: 1.5em;
     margin-bottom: 1.5em;
     background: $aside-notice-bg;
@@ -492,12 +506,10 @@ html, body {
 
     &.warning {
       background-color: $aside-warning-bg;
-      @include text-shadow(0 1px 0 lighten($aside-warning-bg, 15%));
     }
 
     &.success {
       background-color: $aside-success-bg;
-      @include text-shadow(0 1px 0 lighten($aside-success-bg, 15%));
     }
   }
 
@@ -524,8 +536,6 @@ html, body {
     margin: -2px;
     border-radius: 4px;
     border: 1px solid #F7E633;
-    @include text-shadow(1px 1px 0 #666);
-    @include background(linear-gradient(bottom right, #F7E633 0%, #F1D32F 100%));
   }
 }
 
@@ -567,11 +577,8 @@ html, body {
   blockquote {
     &>p {
       background-color: $code-annotation-bg;
-      border-radius: 5px;
       padding: $code-annotation-padding;
       color: #ccc;
-      border-top: 1px solid #000;
-      border-bottom: 1px solid #404040;
     }
   }
 }
