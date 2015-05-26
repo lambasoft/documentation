@@ -25,11 +25,72 @@ search: true
 |   ,'.   |\   --.|  |\ `--.' '-' '|  |  |  |\   --.
 '--'   '--' `----'`--' `---' `---' `--`--`--' `----'
 ```
+
 Welcome to the ProcessOut documentation. The code provided here will mostly be based
 on libraries using our API endpoints, which can be found [here](http://docs.processout.apiary.io).
 
 Language bindings and libraries examples can be found on the right side of this page.
 You may switch between them thanks to the menu at the top of this right pane.
+
+## Helper libraries
+
+> Code samples of these libraries will be shown on this pane. Feel free to choose
+> which language you wish to see by selecting it in the top bar of this pane.
+
+ProcessOut provides a set of API bindings and libraries created to help
+developers easily integrate our service into their applications. These libraries
+can be found on the ProcessOut's GitHub page:
+
+- PHP:
+    - [processout-php](https://github.com/ProcessOut/ProcessOut-php)
+- Python:
+    - [processout-python](https://github.com/ProcessOut/ProcessOut-python)
+- Javascript:
+    - [processout-javascript-modal](https://github.com/ProcessOut/ProcessOut-javascript-modal)
+
+## Making requests
+
+ProcessOut's current API (v1) is entirely *RESTful*. This means that you may perform
+`GET`, `POST`, `PUT` and `DELETE` requests and expect the adequate response when available.
+
+Furthermore, `POST`, `PUT` and `DELETE` can contain a json body if they have the
+`Content-Type: application/json` header.
+
+## Responses
+
+> Response of a successful request *(200)*
+
+```json
+{
+  "success": true,
+  "message": null
+}
+```
+
+> Response of a failed request *(4xx)*
+
+```json
+{
+  "success": false,
+  "message": "<Error message>"
+}
+```
+
+Responses are always **JSON encoded**.
+
+Responses should always contain at least the following keys:
+
+- `success`: A boolean indicating if the request was successful
+- `message`: A string giving more information about the error. Null if successful.
+
+**HTTP codes** will also be used, so you should check the response code to get
+a quick idea of the request's problem.
+
+- `200`: *OK*. All good.
+- `400`: *Bad request*. Your request body is most likely invalid or does not contain
+the required values. Check the response message for more information.
+- `401`: *Unauthorized*. Your API keys are most likely invalid, or not sent correctly.
+- `404`: *Not found*. The item you are trying to fetch does not exist.
 
 # Authentication
 
