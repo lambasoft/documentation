@@ -114,7 +114,7 @@ html, body {
       border-color: $search-box-border-color;
       padding: 6px 0 6px 20px;
       @include box-sizing(border-box);
-      margin: $nav-v-padding $nav-padding;
+      margin: $search-bottom-margin $nav-padding;
       width: $nav-width - 30;
       outline: none;
       color: $nav-text;
@@ -165,7 +165,7 @@ html, body {
 
 
   .tocify-item>a, .toc-footer li {
-    padding: 0 $nav-padding 0 $nav-padding;
+    padding: $nav-v-padding $nav-padding $nav-v-padding $nav-padding;
     display: block;
     overflow-x: hidden;
     white-space: nowrap;
