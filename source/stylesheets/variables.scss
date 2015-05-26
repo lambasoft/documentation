@@ -27,15 +27,15 @@ $tertiary-color: #464F89;
 
 // BACKGROUND COLORS
 ////////////////////
-$nav-bg: transparent;
+$nav-bg: darken(#fff, 10);
 $code-bg: darken($tertiary-color, 20);
 $examples-bg: lighten($code-bg, 10);
 $code-annotation-bg: rgba(0, 0, 0, 0.25);
-$nav-subitem-bg: rgba(255, 255, 255, 0.06);
-$nav-active-bg: rgba(255, 255, 255, 0.06);
+$nav-subitem-bg: lighten($primary-color, 40);
+$nav-active-bg: $primary-color;
 $lang-select-border: #000;
 $lang-select-bg: #222;
-$lang-select-active-bg: $examples-bg; // feel free to change this to blue or something
+$lang-select-active-bg: $primary-color; // feel free to change this to blue or something
 $lang-select-pressed-bg: #111; // color of language tab bg when mouse is pressed
 $main-bg: lighten($tertiary-color, 55);
 $aside-notice-bg: #8fbcd4;
@@ -47,7 +47,7 @@ $search-notice-bg: #c97a7e;
 // TEXT COLORS
 ////////////////////
 $main-text: #333; // main content text color
-$nav-text: #fff;
+$nav-text: rgb(62, 73, 86);
 $nav-active-text: #fff;
 $lang-select-text: #fff; // color of unselected language tab text
 $lang-select-active-text: #fff; // color of selected language tab text
@@ -73,13 +73,13 @@ $phone-width: $tablet-width - $nav-width; // min width before reverting to mobil
 // FONTS
 ////////////////////
 %default-font {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 13px;
 }
 
 %header-font {
   @extend %default-font;
-  font-weight: bold;
+  font-weight: 500;
 }
 
 %code-font {
@@ -96,7 +96,7 @@ $nav-footer-border-color: #666;
 $nav-embossed-border-top: transparent;
 $nav-embossed-border-bottom: transparent;
 $main-embossed-text-shadow: none;
-$search-box-border-color: rgba(255, 255, 255, 0.5);
+$search-box-border-color: rgba(0, 0, 0, 0.5);
 
 
 ////////////////////////////////////////////////////////////////////////////////
