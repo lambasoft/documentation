@@ -291,17 +291,7 @@ html, body {
   // half of the content always this background color.
   .dark-box {
     width: $examples-width;
-  background-color: darken($primary-color, 15);
-    // @include background-image(
-    //     //radial-gradient(50% -20%, ellipse cover, $tertiary-color, transparent 80%),
-    //     radial-gradient(-50% -50%, ellipse cover, $secondary-color, transparent 80%),
-    //     radial-gradient(150% 150%, ellipse cover, $secondary-color, transparent 80%)
-    // );
-    background-image: -moz-radial-gradient(-50% -50%, ellipse cover, #9059bd, rgba(0, 0, 0, 0) 80%), -moz-radial-gradient(150% 150%, ellipse cover, #9059bd, rgba(0, 0, 0, 0) 80%);
-    background-image: -webkit-radial-gradient(-50% -50%, ellipse cover, #9059bd, rgba(0, 0, 0, 0) 80%), -webkit-radial-gradient(150% 150%, ellipse cover, #9059bd, rgba(0, 0, 0, 0) 80%);
-    background-image: radial-gradient(ellipse cover at -50% -50%, #9059bd, rgba(0, 0, 0, 0) 80%), radial-gradient(ellipse cover at 150% 150%, #9059bd, rgba(0, 0, 0, 0) 80%);
-    background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9Ii01MCUiIGN5PSItNTAlIiByPSI4MCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5MDU5YmQiLz48c3RvcCBvZmZzZXQ9IjgwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIwLjAiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyYWQpIiAvPjwvc3ZnPiA='), url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9IjE1MCUiIGN5PSIxNTAlIiByPSI4MCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5MDU5YmQiLz48c3RvcCBvZmZzZXQ9IjgwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIwLjAiLz48L3JhZGlhbEdyYWRpZW50PjwvZGVmcz48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyYWQpIiAvPjwvc3ZnPiA=');
-    background-size: 100%;
+    background: $examples-bg;
     position: absolute;
     right: 0;
     top: 0;
