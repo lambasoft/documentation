@@ -239,5 +239,23 @@ invoice.sandbox(true)
 
 ## Redirect customer to checkout
 
+```shell
+# Use the url field returned in the response
+```
+
+```php
+<?php
+// Let's say $invoice has previously been created
+
+echo 'Link: ' . $invoice->getLink();
+?>
+```
+
+```python
+# Let's say invoice has previously been created
+
+print ('Link: ' + invoice.getLink())
+```
+
 Once an invoice is created, it is possible to redirect the customer to the
 checkout page.
