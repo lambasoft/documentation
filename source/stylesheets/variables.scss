@@ -28,8 +28,8 @@ $tertiary-color: #464F89;
 // BACKGROUND COLORS
 ////////////////////
 $nav-bg: darken(#fff, 10);
-$code-bg: darken($tertiary-color, 20);
-$examples-bg: lighten($code-bg, 10);
+$examples-bg: rgb(62, 73, 86);
+$code-bg: rgb(39, 49, 62);
 $code-annotation-bg: rgba(0, 0, 0, 0.25);
 $nav-subitem-bg: lighten($primary-color, 40);
 $nav-active-bg: $primary-color;

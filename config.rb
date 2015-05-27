@@ -10,6 +10,24 @@ set :markdown_engine, :redcarpet
 
 set :markdown, :fenced_code_blocks => true, :smartypants => true, :disable_indented_code_blocks => true, :prettify => true, :tables => true, :with_toc_data => true, :no_intra_emphasis => true
 
+helpers do
+  def website_protocole()
+    return 'https'
+  end
+
+  def website_host()
+    return 'processout.com'
+  end
+
+  def website_link(subdomain, path)
+    return website_protocole + '://' + subdomain + '.' + website_host + path
+  end
+
+  def api_link(path)
+    return website_link('api', path)
+  end
+end
+
 # Activate the syntax highlighter
 activate :syntax
 
