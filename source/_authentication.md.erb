@@ -1,0 +1,47 @@
+# Authentication
+
+```shell
+# cURL makes it easy to authenticate
+curl <%= api_link('/') %> \
+  --user "<project-id>:<project-secret>"
+```
+
+```php
+<?php
+// Load dependencies
+require 'vendor/autoload.php';
+
+// Instanciate ProcessOut
+$processout = new \ProcessOut\ProcessOut(
+    '<project-id>',
+    '<project-secret>');
+?>
+```
+
+```python
+# Load dependencies
+from processout.processout import ProcessOut
+
+# Instanciate ProcessOut
+processout = ProcessOut(
+    '<project-id>',
+    '<project-secret>')
+```
+
+> Make sure to replace `<project-id>` and `<project-secret>` with your details.
+
+To use ProcessOut's API, you will need to authenticate using your API keys.
+Your API keys are composed of your `project-id` and `project-secret`. To get
+these keys, you will need to have created a new project on your dashboard,
+and browse its project's settings.
+
+This authentication should be done during every request you make, and using the
+Authorization HTTP header:
+
+`Authorization: <authorization-code>`
+
+<aside class="notice">
+&lt;authorization-code> must be a base64 encoded string containing:
+
+"&lt;project-id>:&lt;project-secret>"
+</aside>
