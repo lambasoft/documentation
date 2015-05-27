@@ -20,3 +20,6 @@ build/
 _yardoc
 doc/
 .idea/
+
+# S3 credentials
+.s3_sync
