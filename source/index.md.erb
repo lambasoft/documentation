@@ -93,7 +93,7 @@ the required values. Check the response message for more information.
 
 ```shell
 # cURL makes it easy to authenticate
-curl <%= api_link('/') %>
+curl <%= api_link('/') %> \
   --user "<project-id>:<project-secret>"
 ```
 
@@ -137,111 +137,246 @@ Authorization HTTP header:
 "&lt;project-id>:&lt;project-secret>"
 </aside>
 
-# Kittens
+# Invoices
 
-## Get All Kittens
+Invoices are a quick way of generating a way for your customers to checkout.
 
-```ruby
-require 'kittn'
+Once an invoice is created, you will receive its checkout URL `url` as well as its unique `id`. Simply redirect your customer to the `url` to perform the transaction, or create a new modal -- thanks to our javascript library -- with the `id`.
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
+## Create a new invoice
+
+```shell
+curl --user "<project-id>:<project-secret>" \
+     --request POST \
+     --header "Content-Type: application/json" \
+     --data-binary "{
+        \"item_name\": \"Awesome item\",
+        \"item_price\": 4.99,
+        \"item_quantity\": 1,
+        \"currency\": \"USD\",
+        \"taxes\": 0.49,
+        \"shipping\": 2.00,
+        \"discount\": 50,
+        \"enable_coupon\": 1,
+        \"return_url\": \"https://company.tld/success\",
+        \"cancel_url\": \"https://company.tld/cancel\",
+        \"notify_url\": \"https://company.tld/ipn\",
+        \"custom\": \"42\",
+        \"recurring_days\": 7,
+        \"sandbox\": 1
+    }" \
+    <%= api_link '/invoices' %>
+```
+
+```php
+<?php
+// Load dependencies
+require 'vendor/autoload.php';
+
+// Instanciate ProcessOut
+$processout = new \ProcessOut\ProcessOut(
+    '<project-id>',
+    '<project-secret>');
+
+// Create a new invoice
+$invoice = new \ProcessOut\Invoice\Invoice(
+    $processout,                                  // ProcessOut instance
+    '1 copy of a wonderful product at $4.99 USD', // Title
+    4.99,                                         // Price
+    1,                                            // Quantity
+    'USD');                                       // Currency
+?>
 ```
 
 ```python
-import kittn
+# Load dependencies
+from processout.processout      import ProcessOut
+from processout.invoice.invoice import Invoice
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
+# Instanciate ProcessOut
+processout = ProcessOut(
+    '<project-id>',
+    '<project-secret>')
+
+# Create a new invoice
+invoice = Invoice(
+    processout,                                   # ProcessOut instance
+    '1 copy of a wonderful product at $4.99 USD', # Title
+    4.99,                                         # Price
+    1,                                            # Quantity
+    'USD')                                        # Currency
 ```
+
+Create an invoice.
+
+Adding the `recurring_days` field makes you able to automatically charge a user `x` days. Every payment iteration will automatically be managed by ProcessOut.
+
+### HTTP request
+
+`POST <%= api_link('/invoices') %>`
+
+## Create from a tailored invoice
 
 ```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
+curl --user "<project-id>:<project-secret>" \
+     --request POST \
+     --header "Content-Type: application/json" \
+     --data-binary "{
+        \"enable_coupon\": 1,
+        \"return_url\": \"https://company.tld/success\",
+        \"cancel_url\": \"https://company.tld/cancel\",
+        \"notify_url\": \"https://company.tld/ipn\",
+        \"custom\": \"my_customer_id=1\",
+        \"sandbox\": 1
+    }" \
+    <%= api_link '/invoices/from-tailored/<tailored-invoice-id>' %>
 ```
 
-> The above command returns JSON structured like this:
+```php
+<?php
+// Load dependencies
+require 'vendor/autoload.php';
 
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Isis",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
+// Instanciate ProcessOut
+$processout = new \ProcessOut\ProcessOut(
+    '<project-id>',
+    '<project-secret>');
 
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
+// Create a new invoice from a tailored invoice
+$invoice = new \ProcessOut\Invoice\TailoredInvoice(
+    $processout,
+    '<tailored-invoice-id>');
+?>
 ```
 
 ```python
-import kittn
+# Load dependencies
+from processout.processout              import ProcessOut
+from processout.invoice.tailoredinvoice import TailoredInvoice
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
+# Instanciate ProcessOut
+processout = ProcessOut(
+    '<project-id>',
+    '<project-secret>')
+
+# Create a new invoice from a tailored invoice
+invoice = TailoredInvoice(
+    processout,
+    '<tailored-invoice-id>')
 ```
 
-```shell
-curl "http://example.com/api/kittens/3"
-  -H "Authorization: meowmeowmeow"
-```
+> Make sure to replace `<tailored-invoice-id>` with your tailored invoice id
 
-> The above command returns JSON structured like this:
+`Tailored invoices` are invoices which can be stored in ProcessOut and used
+as a template for new invoices, with some fields already set.
 
-```json
-{
-  "id": 2,
-  "name": "Isis",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
-```
+It is possible to create invoices from these tailored invoices using our API.
 
-This endpoint retrieves a specific kitten.
+### HTTP request
 
-<aside class="warning">If you're not using an administrator API key, note that some kittens will return 403 Forbidden if they are hidden for admins only.</aside>
-
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
+`POST <%= api_link('/invoices/form-tailored/<tailored-invoice-id>') %>`
 
 ### URL Parameters
 
 Parameter | Description
 --------- | -----------
-ID | The ID of the cat to retrieve
+tailored-invoice-id | The ID of the tailored invoice
 
+## Get invoice attributes
+
+```shell
+# There is no shell library
+```
+
+```php
+<?php
+// Let's say $invoice has previously been created
+
+echo $invoice->getItemName();
+echo $invoice->getItemPrice();
+echo $invoice->getItemQuantity();
+echo $invoice->getCurrency();
+echo $invoice->getTaxes();
+echo $invoice->getShipping();
+echo $invoice->getDiscount(); # percentage
+echo $invoice->getEnableCoupon();
+echo $invoice->getReturnUrl();
+echo $invoice->getCancelUrl();
+echo $invoice->getNotifyUrl();
+echo $invoice->getCustom();
+echo $invoice->getSandbox();
+?>
+```
+
+```python
+# Let's say invoice has previously been created
+
+print (invoice.itemName)
+print (invoice.itemPrice)
+print (invoice.itemQuantity)
+print (invoice.currency)
+print (invoice.taxes)
+print (invoice.shipping)
+print (invoice.discount) # percentage
+print (invoice.enableCoupon)
+print (invoice.returnUrl)
+print (invoice.cancelUrl)
+print (invoice.notifyUrl)
+print (invoice.custom)
+print (invoice.sandbox)
+```
+
+Once an invoice instance has been created, you might need to access its
+attributes.
+
+## Set invoice attributes
+
+Once an invoice instance has been created, you might need to set or update its
+attributes.
+
+```shell
+# There is no shell library
+```
+
+```php
+<?php
+// Let's say $invoice has previously been created
+
+$invoice->setItemName('new name');
+$invoice->setItemPrice(4.20);
+$invoice->setItemQuantity(4);
+$invoice->setCurrency('EUR');
+$invoice->setTaxes(4.20);
+$invoice->setShipping(4.20);
+$invoice->setDiscount(42); // percentage
+$invoice->setEnableCoupon(false);
+$invoice->setReturnUrl('http(s)://your.site/return');
+$invoice->setCancelUrl('http(s)://your.site/cancel');
+$invoice->setNotifyUrl('http(s)://your.site/notify');
+$invoice->setCustom('my_customer_id=1');
+$invoice->setSandbox(true);
+?>
+```
+
+```python
+# Let's say invoice has previously been created
+
+invoice.itemName('new name')
+invoice.itemPrice(4.20)
+invoice.itemQuantity(4)
+invoice.currency('EUR')
+invoice.taxes(4.20)
+invoice.shipping(4.20)
+invoice.discount(42) # percentage
+invoice.enableCoupon(false)
+invoice.returnUrl('http(s)://your.site/return')
+invoice.cancelUrl('http(s)://your.site/cancel')
+invoice.notifyUrl('http(s)://your.site/notify')
+invoice.custom('my_customer_id=1')
+invoice.sandbox(true)
+```
+
+## Redirect customer to checkout
+
+Once an invoice is created, it is possible to redirect the customer to the
+checkout page.
