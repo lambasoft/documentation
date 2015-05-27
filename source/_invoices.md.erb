@@ -259,3 +259,47 @@ print ('Link: ' + invoice.getLink())
 
 Once an invoice is created, it is possible to redirect the customer to the
 checkout page.
+
+## Modals / Self hosted checkout
+
+
+ProcessOut allows its users to directly host their checkout pages onto their
+websites / applications. Most of the time, this is done using a modal.
+
+```python
+# Let's say invoice has previously been created
+
+invoice.itemName('new name')
+invoice.itemPrice(4.20)
+invoice.itemQuantity(4)
+invoice.currency('EUR')
+invoice.taxes(4.20)
+invoice.shipping(4.20)
+invoice.discount(42) # percentage
+invoice.enableCoupon(false)
+invoice.returnUrl('http(s)://your.site/return')
+invoice.cancelUrl('http(s)://your.site/cancel')
+invoice.notifyUrl('http(s)://your.site/notify')
+invoice.custom('my_customer_id=1')
+invoice.sandbox(true)
+```
+
+## Redirect customer to checkout
+
+```shell
+# Use the url field returned in the response
+```
+
+```php
+<?php
+// Let's say $invoice has previously been created
+
+echo 'Link: ' . $invoice->getLink();
+?>
+```
+
+```python
+# Let's say invoice has previously been created
+
+print ('Link: ' + invoice.getLink())
+```
