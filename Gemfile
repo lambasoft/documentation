@@ -30,3 +30,7 @@ gem "rake", "~> 10.4.0"
 gem 'therubyracer', :platforms => :ruby
 
 gem 'middleman-s3_sync'
+
+gem 'middleman-cloudfront'
+
+gem 'middleman-dotenv', '~> 1.0'

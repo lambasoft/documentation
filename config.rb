@@ -1,3 +1,5 @@
+activate :dotenv
+
 set :css_dir, 'stylesheets'
 
 set :js_dir, 'javascripts'
@@ -66,4 +68,13 @@ activate :s3_sync do |s3_sync|
   s3_sync.encryption                 = false
   s3_sync.prefix                     = ''
   s3_sync.version_bucket             = false
+end
+
+# CloudFront plugin
+activate :cloudfront do |cf|
+  cf.access_key_id     = ENV['AWS_ACCESS_KEY_ID']
+  cf.secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
+  cf.distribution_id   = 'cats'
+  # cf.filter          = /\.html$/i  # default is /.*/
+  # cf.after_build     = false  # default is false
 end

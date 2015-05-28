@@ -21,5 +21,6 @@ _yardoc
 doc/
 .idea/
 
-# S3 credentials
+# Env variables
 .s3_sync
+.env
