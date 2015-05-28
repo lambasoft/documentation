@@ -4,7 +4,7 @@ source 'http://rubygems.org'
 
 gem "rouge", "1.7.2"
 
-gem "middleman", "~>3.3.0"
+gem "middleman"
 
 # For syntax highlighting
 gem "middleman-syntax"

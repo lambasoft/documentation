@@ -12,13 +12,25 @@ set :markdown_engine, :redcarpet
 
 set :markdown, :fenced_code_blocks => true, :smartypants => true, :disable_indented_code_blocks => true, :prettify => true, :tables => true, :with_toc_data => true, :no_intra_emphasis => true
 
+# Env manager
+@bucket         = 'docs.processout.ninja'
+@distributionId = 'EKM6NBPVRPO7P'
+@host           = 'processout.ninja'
+
+case ENV['TARGET'].to_s.downcase
+when 'production'
+    @bucket         = 'docs.processout.com'
+    @distributionId = 'E3F02539SX8S53'
+    @host           = 'processout.com'
+end
+
 helpers do
   def website_protocole()
     return 'https'
   end
 
   def website_host()
-    return 'processout.com'
+    return @host
   end
 
   def website_link(subdomain, path)
@@ -57,7 +69,7 @@ end
 
 # S3 sync plugin
 activate :s3_sync do |s3_sync|
-  s3_sync.bucket                     = 'docs.processout.com'
+  s3_sync.bucket                     = @bucket
   s3_sync.region                     = 'us-west-1'
   s3_sync.delete                     = true
   s3_sync.after_build                = false
@@ -74,7 +86,11 @@ end
 activate :cloudfront do |cf|
   cf.access_key_id     = ENV['AWS_ACCESS_KEY_ID']
   cf.secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
-  cf.distribution_id   = 'cats'
+  cf.distribution_id   = @distributionId
   # cf.filter          = /\.html$/i  # default is /.*/
   # cf.after_build     = false  # default is false
+end
+after_s3_sync do |files_by_status|
+  puts 'Invalidating files...'
+  invalidate files_by_status[:updated]
 end
