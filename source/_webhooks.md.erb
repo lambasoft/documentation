@@ -1,0 +1,320 @@
+# Webhooks (callbacks / IPN)
+
+Webhooks (which can also be called callbacks or Instant Payment Notification
+(IPN)), are used by web applications to automate the payment process. One
+example could be an application activating an account when the customer has
+placed a payment.
+
+However, as a lot of payment processors are used at the same time, ProcessOut
+provides webhooks containing unified and normalized, easy to use data, as well
+as transaction states.
+
+## Setup
+
+```shell
+curl --user "<project-id>:<project-secret>" \
+     --request POST \
+     --header "Content-Type: application/json" \
+     --data-binary "{
+        \"return_url\": \"https://company.tld/success\",
+        \"cancel_url\": \"https://company.tld/cancel\",
+        \"notify_url\": \"https://company.tld/webhost\", # This is the important part
+        \"custom\": \"my_customer_id=1\",
+        \"sandbox\": 1
+    }" \
+```
+
+```php
+<?php
+// Let's assume $invoice has previously been instanciated
+
+$invoice->setNotifyUrl('http(s)://your.site/webhook');
+?>
+```
+
+```python
+# Let's assume invoice has previously been instanciated
+
+invoice.notifyUrl = 'http(s)://your.site/webhook'
+```
+
+The URL to which ProcessOut will post webhooks has to be specified in the
+`notify_url` field that you post to ProcessOut when creating an invoice.
+
+This field can be posted when creating an invoice from scratch (/v1/invoices)
+or when creating an invoice from a tailored invoice (/v1/invoices/from-tailored).
+
+## Application-wise
+
+```shell
+# Check that the webhook comes from ProcessOut
+echo -n "<transaction-id>" | openssl dgst -sha1 -hmac "<transaction-id>"
+
+# The result should be the same as hmac_signature
+```
+
+```php
+<?php
+// Let's assume $processout has previously been instanciated
+
+$input = json_decode(file_get_contents('php://input'), true);
+
+// We first need to check that the callback is coming from ProcessOut
+$callback = new \ProcessOut\Callback\Callback($processout);
+if(!$callback->validate($input))
+{
+    header($_SERVER['SERVER_PROTOCOL'] . ' Unauthorized', true, 401);
+    echo 'Bad webhook'; exit();
+}
+
+/**
+ * Webhook is legit! Perform actions on it
+ * /!\ Be sure to still check the price, currencies... /!\
+ */
+switch($input['action'])
+{
+    case 'invoice.completed':
+        // Transaction successfull/completed
+        break;
+    case 'invoice.pending':
+        // Transaction still needs some time to be processed
+        break;
+    case 'invoice.failed':
+        // Damn, something went wrong
+        break;
+    case 'invoice.disputed':
+        // Your customer opened a dispute on the transaction
+        break;
+    case 'invoice.solved':
+        // You won/solved a dispute
+        break;
+    case 'invoice.reversed':
+        // You most likely lost a dispute and the transaction got reversed
+        break;
+    case 'invoice.refunded':
+        // You refunded the transaction
+        break;
+    case 'recurring-invoice.started':
+        // A new recurring payment has been created
+        break;
+    case 'recurring-invoice.ended':
+        // A recurring payment has ended. It could be because the customer
+        // simply didn't paid for the new period, or because he disputed the
+        // transaction. In the later case, another webhook invoice.disputed
+        // is also sent.
+        break;
+    default:
+        header($_SERVER['SERVER_PROTOCOL'] . ' Bad Request', true, 400);
+        echo 'Unknown webhook action'; exit();
+}
+?>
+```
+
+```python
+# Let's assume processout has previously been instanciated
+# and that data is filled with the decoded json data from the request
+
+# We first need to check that the webhook is coming from ProcessOut
+callback = Callback(processout)
+if not callback.validate(data['transaction_id'], data['hmac_signature']):
+    print ('Bad webhook')
+    return
+
+# Webhook is legit! Perform actions on it
+# /!\ Be sure to still check the amount, currencies... /!\
+if data['action'] == 'invoice.completed':
+    # Transaction completed / successful
+    pass
+
+elif data['action'] == 'invoice.pending':
+    # Transaction still needs some time to be processed
+    pass
+
+elif data['action'] == 'invoice.failed':
+    # Damn, something went wrong
+    pass
+
+elif data['action'] == 'invoice.disputed':
+    # Your customer opened a dispute on the transaction
+    pass
+
+elif data['action'] == 'invoice.solved':
+    # You won/solved a dispute
+    pass
+
+elif data['action'] == 'invoice.reversed':
+    # You most likely lost a dispute and the transaction got reversed
+    pass
+
+elif data['action'] == 'invoice.refunded':
+    # You refunded the transaction
+    pass
+
+elif data['action'] == 'recurring-invoice.started':
+    # A new recurring payment has been created
+    pass
+
+elif data['action'] == 'recurring-invoice.ended':
+    # A recurring payment has ended. It could be because the customer
+    # simply didn't paid for the new period, or because he disputed the
+    # transaction. In the later case, another webhook invoice.disputed
+    # is also sent.
+    pass
+
+else:
+    # Shouldn't be here..
+    print('Unknown webhook action')
+```
+
+Now that your webhook is correctly setup, we need to make sure it is correctly
+processed by your application.
+
+You should first note that **we will always `POST` a json encoded body request**
+to your application. Therefore, you should accept POST requests with a json body.
+
+Furthermore, you should **remove all CSRF protection** on this route/url. Most
+frameworks activate it by default, which could prevent ProcessOut from
+correctly posting to your application.
+
+## Security
+
+```shell
+# Check that the webhook comes from ProcessOut
+echo -n "<transaction-id>" | openssl dgst -sha1 -hmac "<transaction-id>"
+
+# The result should be the same as hmac_signature
+```
+
+```php
+<?php
+// Let's assume $processout has previously been instanciated
+
+$input = json_decode(file_get_contents('php://input'), true);
+
+// We first need to check that the callback is coming from ProcessOut
+$callback = new \ProcessOut\Callback\Callback($processout);
+if(!$callback->validate($input))
+{
+    header($_SERVER['SERVER_PROTOCOL'] . ' Unauthorized', true, 401);
+    echo 'Bad webhook'; exit();
+}
+?>
+```
+
+```python
+# Let's assume processout has previously been instanciated
+# and that data is filled with the decoded json data from the request
+
+# We first need to check that the webhook is coming from ProcessOut
+callback = Callback(processout)
+if not callback.validate(data['transaction_id'], data['hmac_signature']):
+    print ('Bad webhook')
+    return
+```
+
+On each webhook, you'll need to first verify that the field `hmac_signature` is
+equal to the base64 encoded hmac (sha256 hash) of the transaction id, using
+your project secret as the key.
+
+`base64_encode(hash_hmac('sha256', '<transaction-id>', '<project-secret>'))`
+
+During the development phase, you'll also be able to use the sandbox.
+However, once in production, you need to make sure that callbacks and
+transactions aren't coming from a sandboxed invoice. To do so, make sure
+that sandbox is unset, or false.
+
+## Invoice states
+
+ProcessOut provides various states which can be used to track the state
+of a transaction. At each change of state, a request will be posted to your
+webhook to notify your application.
+
+### Completed
+
+```
+invoice.completed
+```
+
+The transaction has been completed, and can be trusted. Once the transaction
+reach this state, you should be safe to give your customer what he paid for.
+
+### Pending
+
+```
+invoice.pending
+```
+
+The payment has been placed, but the transaction hasn't been completed yet.
+You should wait for the completed state.
+
+### Failed
+
+```
+invoice.failed
+```
+
+The payment had been placed, but if failed. If you had previously given
+your customer access, you should revoke it.
+
+### Disputed
+
+```
+invoice.disputed
+```
+
+The payment had been placed and the transaction completed, but your customer
+disputed the transaction on the payment processor website (such as PayPal).
+In most cases, this means that you already gave your customer access to what
+he paid for, so you may wish to revoke this access.
+
+### Solved
+
+```
+invoice.solved
+```
+
+The dispute that your customer opened has been solved, and the funds have been
+restored to your account. At this point, you may wish to give back to your
+customer the access to what he paid for.
+
+### Refunded
+
+```
+invoice.refunded
+```
+
+The dispute opened by your customer has been solved in his favor, and you
+permanently lost the funds. You should permanently revoke your customer access.
+
+### Reversed
+
+```
+invoice.reversed
+```
+
+The payment had been placed and the transaction completed, but your customer
+reversed the payment, most likely through its bank. In most cases, it's hard to
+recover the funds so you should permanently revoke your customer access.
+
+## Recurring invoice states
+
+Additionnally to the previous invoice states, ProcessOut also provides
+states related to your recurring invoices.
+
+### Started
+
+```
+recurring-invoice.started
+```
+
+The recurring invoice cycle started, and you may activate your customer
+subscription.
+
+### Ended
+
+```
+recurring-invoice.ended
+```
+
+Your customer recurring invoice cycle stopped/ended. You may revoke your
+customer access.
