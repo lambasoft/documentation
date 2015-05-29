@@ -267,7 +267,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  middleman
+  middleman (~> 3.3.0)
   middleman-cloudfront
   middleman-dotenv (~> 1.0)
   middleman-gh-pages

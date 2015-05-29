@@ -27,6 +27,13 @@ curl --user "<project-id>:<project-secret>" \
         \"sandbox\": 1
     }" \
     <%= api_link '/invoices' %>
+
+# Happy response (200):
+{
+  "success": true,
+  "id": "<invoice-id>",
+  "url": "https://checkout.processout.com/index/<invoice-id>"
+}
 ```
 
 ```php
@@ -91,6 +98,13 @@ curl --user "<project-id>:<project-secret>" \
         \"sandbox\": 1
     }" \
     <%= api_link '/invoices/from-tailored/<tailored-invoice-id>' %>
+
+# Happy response (200):
+{
+  "success": true,
+  "id": "<invoice-id>",
+  "url": "https://checkout.processout.com/index/<invoice-id>"
+}
 ```
 
 ```php
@@ -248,6 +262,8 @@ invoice.sandbox(true)
 // Let's say $invoice has previously been created
 
 echo 'Link: ' . $invoice->getLink();
+// You may also only get the invoice id
+echo 'Id: ' . $invoice->getId();
 ?>
 ```
 
@@ -255,6 +271,8 @@ echo 'Link: ' . $invoice->getLink();
 # Let's say invoice has previously been created
 
 print ('Link: ' + invoice.getLink())
+# You may also only get the invoice id
+print ('Id: ' + invoice.getId())
 ```
 
 Once an invoice is created, it is possible to redirect the customer to the
@@ -262,44 +280,23 @@ checkout page.
 
 ## Modals / Self hosted checkout
 
+```html
+<a class="processout-modal-button"
+    data-invoiceid="<invoice-id>"
+    href="https://checkout.processout.com/<invoice-id>">
+        Test modal
+</a>
+<script src="https://cdn.processout.com/modal-min.js"></script>
+```
+
+> Make sure to replace `<invoice-id>` with your invoice id
 
 ProcessOut allows its users to directly host their checkout pages onto their
 websites / applications. Most of the time, this is done using a modal.
 
-```python
-# Let's say invoice has previously been created
-
-invoice.itemName('new name')
-invoice.itemPrice(4.20)
-invoice.itemQuantity(4)
-invoice.currency('EUR')
-invoice.taxes(4.20)
-invoice.shipping(4.20)
-invoice.discount(42) # percentage
-invoice.enableCoupon(false)
-invoice.returnUrl('http(s)://your.site/return')
-invoice.cancelUrl('http(s)://your.site/cancel')
-invoice.notifyUrl('http(s)://your.site/notify')
-invoice.custom('my_customer_id=1')
-invoice.sandbox(true)
-```
-
-## Redirect customer to checkout
-
-```shell
-# Use the url field returned in the response
-```
-
-```php
-<?php
-// Let's say $invoice has previously been created
-
-echo 'Link: ' . $invoice->getLink();
-?>
-```
-
-```python
-# Let's say invoice has previously been created
-
-print ('Link: ' + invoice.getLink())
-```
+<a class="processout-modal-button"
+    data-invoiceid="c0d39419-5f38-45bf-85e4-7aa89a980d59"
+    href="https://checkout.processout.com/c0d39419-5f38-45bf-85e4-7aa89a980d59">
+        Test modal
+</a>
+<script src="https://cdn.processout.com/modal-min.js"></script>
