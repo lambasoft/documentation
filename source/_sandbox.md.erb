@@ -5,7 +5,7 @@
 $projectId     = '<project-id>';
 $projectSecret = '<project-secret>';
 
-// If we want to enable sandbox
+// To enable the sandbox
 if($sandbox)
     $projectId = 'sandbox-' . $projectId;
 
@@ -18,7 +18,7 @@ $processout = new \ProcessOut\ProcessOut(
 projectId     = '<project-id>'
 projectSecret = '<project-secret>'
 
-# If we want to enable sandbox
+# To enable the sandbox
 if sandbox:
     projectId = 'sandbox-' + projectId
 
@@ -26,14 +26,14 @@ processout = ProcessOut(
     projectId, projectSecret)
 ```
 
-> When deploying to production, you should check if your webhooks are coming from
-> the sandbox
+> When deploying your production, you should verify that your webhooks are 
+> not coming from the sandbox
 
 ```php
 <?php
 // Let's assume $data is filled with the webhook json decoded data
 
-// Check if the webhook is from the sandbox but we don't want it
+// Verify that the webhook is NOT from the sandbox
 if($data['sandbox'] && !$sandbox)
 {
     echo 'Sandbox mode is not allowed.';
@@ -45,13 +45,13 @@ if($data['sandbox'] && !$sandbox)
 ```python
 # Let's assume data is filled with the webhook json decoded data
 
-# Check if the webhook is from the sandbox but we don't want it
+# Verify that the webhook is NOT from the sandbox
 if data['sandbox'] and not sandbox:
     print ('Sandbox mode is not allowed.')
     return
 ```
 
-When developing your application, you might need to troubleshot
+When developing your application, you might need to troubleshoot
 problems which may occur when implementing ProcessOut.
 
 We created a simple-to-use sandbox which lets you send all kinds of
@@ -61,6 +61,6 @@ Every invoice created under the sandbox will show on the checkout page
 the list of states you can trigger, sending a webhook to your application.
 
 <aside class="notice">
-When going into production, make sure to remove <code>sandbox-</code> and to check that
-the webhooks you receive are <strong>not</strong> coming from the sandbox.
+When deploying your production, make sure to remove <code>sandbox-</code> and to check that
+the webhooks you receive are <strong>NOT</strong> coming from the sandbox.
 </aside>
