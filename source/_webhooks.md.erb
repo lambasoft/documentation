@@ -1,12 +1,12 @@
 # Webhooks (callbacks / IPN)
 
 Webhooks (which can also be called callbacks or Instant Payment Notification
-(IPN)), are used by web applications to automate the payment process. One
+(IPN)) are used by web applications to automate the payment process. An
 example could be an application activating an account when the customer has
 placed a payment.
 
 However, as a lot of payment processors are used at the same time, ProcessOut
-provides webhooks containing unified and normalized, easy to use data, as well
+provides webhooks containing unified, normalized and easy to use data, as well
 as transaction states.
 
 ## Setup
@@ -26,14 +26,14 @@ curl --user "<project-id>:<project-secret>" \
 
 ```php
 <?php
-// Let's assume $invoice has previously been instanciated
+// Let's assume $invoice has previously been instantiated
 
 $invoice->setNotifyUrl('http(s)://your.site/webhook');
 ?>
 ```
 
 ```python
-# Let's assume invoice has previously been instanciated
+# Let's assume invoice has previously been instantiated
 
 invoice.notifyUrl = 'http(s)://your.site/webhook'
 ```
@@ -55,7 +55,7 @@ echo -n "<transaction-id>" | openssl dgst -sha1 -hmac "<transaction-id>"
 
 ```php
 <?php
-// Let's assume $processout has previously been instanciated
+// Let's assume $processout has previously been instantiated
 
 $input = json_decode(file_get_contents('php://input'), true);
 
@@ -74,7 +74,7 @@ if(!$callback->validate($input))
 switch($input['action'])
 {
     case 'invoice.completed':
-        // Transaction successfull/completed
+        // Transaction successful
         break;
     case 'invoice.pending':
         // Transaction still needs some time to be processed
@@ -86,7 +86,7 @@ switch($input['action'])
         // Your customer opened a dispute on the transaction
         break;
     case 'invoice.solved':
-        // You won/solved a dispute
+        // You solved a dispute
         break;
     case 'invoice.reversed':
         // You most likely lost a dispute and the transaction got reversed
@@ -98,9 +98,9 @@ switch($input['action'])
         // A new recurring payment has been created
         break;
     case 'recurring-invoice.ended':
-        // A recurring payment has ended. It could be because the customer
-        // simply didn't paid for the new period, or because he disputed the
-        // transaction. In the later case, another webhook invoice.disputed
+        // A recurring payment has ended. It could be that the customer
+        // simply didn't pay for the new period, or because he disputed the
+        // transaction. In the latter case, another webhook invoice.disputed
         // is also sent.
         break;
     default:
@@ -111,7 +111,7 @@ switch($input['action'])
 ```
 
 ```python
-# Let's assume processout has previously been instanciated
+# Let's assume processout has previously been instantiated
 # and that data is filled with the decoded json data from the request
 
 # We first need to check that the webhook is coming from ProcessOut
@@ -123,7 +123,7 @@ if not callback.validate(data['transaction_id'], data['hmac_signature']):
 # Webhook is legit! Perform actions on it
 # /!\ Be sure to still check the amount, currencies... /!\
 if data['action'] == 'invoice.completed':
-    # Transaction completed / successful
+    # Transaction successful
     pass
 
 elif data['action'] == 'invoice.pending':
@@ -139,7 +139,7 @@ elif data['action'] == 'invoice.disputed':
     pass
 
 elif data['action'] == 'invoice.solved':
-    # You won/solved a dispute
+    # You solved a dispute
     pass
 
 elif data['action'] == 'invoice.reversed':
@@ -155,9 +155,9 @@ elif data['action'] == 'recurring-invoice.started':
     pass
 
 elif data['action'] == 'recurring-invoice.ended':
-    # A recurring payment has ended. It could be because the customer
-    # simply didn't paid for the new period, or because he disputed the
-    # transaction. In the later case, another webhook invoice.disputed
+    # A recurring payment has ended. It could be that the customer
+    # simply didn't pay for the new period, or because he disputed the
+    # transaction. In the latter case, another webhook invoice.disputed
     # is also sent.
     pass
 
@@ -166,7 +166,7 @@ else:
     print('Unknown webhook action')
 ```
 
-Now that your webhook is correctly setup, we need to make sure it is correctly
+Now that your webhook is correctly set up, we need to make sure it is correctly
 processed by your application.
 
 You should first note that **we will always `POST` a json encoded body request**
@@ -187,7 +187,7 @@ echo -n "<transaction-id>" | openssl dgst -sha1 -hmac "<transaction-id>"
 
 ```php
 <?php
-// Let's assume $processout has previously been instanciated
+// Let's assume $processout has previously been instantiated
 
 $input = json_decode(file_get_contents('php://input'), true);
 
@@ -202,7 +202,7 @@ if(!$callback->validate($input))
 ```
 
 ```python
-# Let's assume processout has previously been instanciated
+# Let's assume processout has previously been instantiated
 # and that data is filled with the decoded json data from the request
 
 # We first need to check that the webhook is coming from ProcessOut
@@ -236,7 +236,7 @@ invoice.completed
 ```
 
 The transaction has been completed, and can be trusted. Once the transaction
-reach this state, you should be safe to give your customer what he paid for.
+reaches this state, you should be safe to deliver your customer what he paid for.
 
 ### Pending
 
@@ -253,7 +253,7 @@ You should wait for the completed state.
 invoice.failed
 ```
 
-The payment had been placed, but if failed. If you had previously given
+The payment had been placed, but it failed. If you had previously given
 your customer access, you should revoke it.
 
 ### Disputed
@@ -265,7 +265,7 @@ invoice.disputed
 The payment had been placed and the transaction completed, but your customer
 disputed the transaction on the payment processor website (such as PayPal).
 In most cases, this means that you already gave your customer access to what
-he paid for, so you may wish to revoke this access.
+he paid for, so you may wish to revoke their access.
 
 ### Solved
 
@@ -284,7 +284,7 @@ invoice.refunded
 ```
 
 The dispute opened by your customer has been solved in his favor, and you
-permanently lost the funds. You should permanently revoke your customer access.
+permanently lost the funds. You should permanently revoke your customer's access.
 
 ### Reversed
 
@@ -293,12 +293,12 @@ invoice.reversed
 ```
 
 The payment had been placed and the transaction completed, but your customer
-reversed the payment, most likely through its bank. In most cases, it's hard to
-recover the funds so you should permanently revoke your customer access.
+reversed the payment, most likely through their bank. In most cases, it's hard to
+recover the funds so you should permanently revoke your customer's access.
 
 ## Recurring invoice states
 
-Additionnally to the previous invoice states, ProcessOut also provides
+In addition to the previous invoice states, ProcessOut also provides
 states related to your recurring invoices.
 
 ### Started
@@ -307,7 +307,7 @@ states related to your recurring invoices.
 recurring-invoice.started
 ```
 
-The recurring invoice cycle started, and you may activate your customer
+The recurring invoice cycle started, and you may activate your customer's
 subscription.
 
 ### Ended
@@ -317,4 +317,4 @@ recurring-invoice.ended
 ```
 
 Your customer recurring invoice cycle stopped/ended. You may revoke your
-customer access.
+customer's access.

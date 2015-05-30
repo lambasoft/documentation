@@ -1,8 +1,8 @@
 # Invoices
 
-Invoices are a quick way of generating a way for your customers to checkout.
+Invoices are a quick way of generating a checkout for your customers.
 
-Once an invoice is created, you will receive its checkout URL `url` as well as its unique `id`. Simply redirect your customer to the `url` to perform the transaction, or create a new modal -- thanks to our javascript library -- with the `id`.
+Once an invoice is created, you will receive its checkout URL `url` as well as its unique identifier `id`. Simply redirect your customer to the `url` to perform the transaction, or create a new modal -- using our javascript library -- with the `id`.
 
 ## Create a new invoice
 
@@ -40,7 +40,7 @@ curl --user "<project-id>:<project-secret>" \
 // Load dependencies
 require 'vendor/autoload.php';
 
-// Instanciate ProcessOut
+// Instantiate ProcessOut
 $processout = new \ProcessOut\ProcessOut(
     '<project-id>',
     '<project-secret>');
@@ -60,7 +60,7 @@ $invoice = new \ProcessOut\Invoice\Invoice(
 from processout.processout      import ProcessOut
 from processout.invoice.invoice import Invoice
 
-# Instanciate ProcessOut
+# Instantiate ProcessOut
 processout = ProcessOut(
     '<project-id>',
     '<project-secret>')
@@ -76,7 +76,7 @@ invoice = Invoice(
 
 Create an invoice.
 
-Adding the `recurring_days` field makes you able to automatically charge a user `x` days. Every payment iteration will automatically be managed by ProcessOut.
+Adding the `recurring_days` field enables you to automatically charge a user every `x` days. Every payment iteration will automatically be managed by ProcessOut.
 
 ### HTTP request
 
@@ -110,7 +110,7 @@ curl --user "<project-id>:<project-secret>" \
 // Load dependencies
 require 'vendor/autoload.php';
 
-// Instanciate ProcessOut
+// Instantiate ProcessOut
 $processout = new \ProcessOut\ProcessOut(
     '<project-id>',
     '<project-secret>');
@@ -127,7 +127,7 @@ $invoice = new \ProcessOut\Invoice\TailoredInvoice(
 from processout.processout              import ProcessOut
 from processout.invoice.tailoredinvoice import TailoredInvoice
 
-# Instanciate ProcessOut
+# Instantiate ProcessOut
 processout = ProcessOut(
     '<project-id>',
     '<project-secret>')
@@ -138,10 +138,11 @@ invoice = TailoredInvoice(
     '<tailored-invoice-id>')
 ```
 
-> Make sure to replace `<tailored-invoice-id>` with your tailored invoice id
+> Make sure to replace `<tailored-invoice-id>` with your tailored invoice id.
 
-`Tailored invoices` are invoices which can be stored in ProcessOut and used
-as a template for new invoices, with some fields already set.
+`Tailored invoices` are invoices which can be stored in your ProcessOut account
+and used as a template for new invoices, in which you can set default values for
+fields of your choosing.
 
 It is possible to create invoices from these tailored invoices using our API.
 
@@ -163,7 +164,7 @@ tailored-invoice-id | The ID of the tailored invoice
 
 ```php
 <?php
-// Let's assume $invoice has previously been instanciated
+// Let's assume $invoice has previously been instantiated
 
 echo $invoice->getItemName();
 echo $invoice->getItemPrice();
@@ -181,7 +182,7 @@ echo $invoice->getSandbox();
 ```
 
 ```python
-# Let's assume invoice has previously been instanciated
+# Let's assume invoice has previously been instantiated
 
 print (invoice.itemName)
 print (invoice.itemPrice)
@@ -211,7 +212,7 @@ attributes.
 
 ```php
 <?php
-// Let's assume $invoice has previously been instanciated
+// Let's assume $invoice has previously been instantiated
 
 $invoice->setItemName('new name');
 $invoice->setItemPrice(4.20);
@@ -229,7 +230,7 @@ $invoice->setSandbox(true);
 ```
 
 ```python
-# Let's assume invoice has previously been instanciated
+# Let's assume invoice has previously been instantiated
 
 invoice.itemName     = 'new name'
 invoice.itemPrice    = 4.20
@@ -253,7 +254,7 @@ invoice.sandbox      = true
 
 ```php
 <?php
-// Let's assume $invoice has previously been instanciated
+// Let's assume $invoice has previously been instantiated
 
 echo 'Link: ' . $invoice->getLink();
 // You may also only get the invoice id
@@ -262,7 +263,7 @@ echo 'Id: ' . $invoice->getId();
 ```
 
 ```python
-# Let's assume invoice has previously been instanciated
+# Let's assume invoice has previously been instantiated
 
 print ('Link: ' + invoice.getLink())
 # You may also only get the invoice id
@@ -283,10 +284,10 @@ checkout page.
 <script src="https://cdn.processout.com/scripts/modal-min.js"></script>
 ```
 
-> Make sure to replace `<invoice-id>` with your invoice id
+> Make sure to replace `<invoice-id>` with your invoice id.
 
-ProcessOut allows its users to directly host their checkout pages onto their
-websites / applications. Most of the time, this is done using a modal.
+ProcessOut allows its users to directly host their checkout pages on their
+websites or applications. Most of the time, this is done using a modal.
 
 <a class="processout-modal-button"
     data-invoiceid="c0d39419-5f38-45bf-85e4-7aa89a980d59"
