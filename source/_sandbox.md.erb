@@ -26,7 +26,7 @@ processout = ProcessOut(
     projectId, projectSecret)
 ```
 
-> When deploying your production, you should verify that your webhooks are 
+> When deploying to production, you should verify that your webhooks are 
 > not coming from the sandbox
 
 ```php
@@ -61,6 +61,6 @@ Every invoice created under the sandbox will show on the checkout page
 the list of states you can trigger, sending a webhook to your application.
 
 <aside class="notice">
-When deploying your production, make sure to remove <code>sandbox-</code> and to check that
+When deploying to production, make sure to remove <code>sandbox-</code> and to check that
 the webhooks you receive are <strong>NOT</strong> coming from the sandbox.
 </aside>
