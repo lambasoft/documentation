@@ -73,13 +73,13 @@ $phone-width: $tablet-width - $nav-width; // min width before reverting to mobil
 // FONTS
 ////////////////////
 %default-font {
-  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Lato" ,"Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 13px;
 }
 
 %header-font {
   @extend %default-font;
-  font-weight: 500;
+  font-weight: 300;
 }
 
 %code-font {

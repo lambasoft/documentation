@@ -66,7 +66,7 @@ html, body {
   width: $nav-width;
   background-color: $nav-bg;
   font-size: 13px;
-  font-weight: bold;
+  font-weight: 500;
 
   // language selector for mobile devices
   .lang-selector {
@@ -84,6 +84,8 @@ html, body {
 
   &>.search {
     position: relative;
+
+    margin-top: 15px; margin-bottom: 15px;
 
     input {
       background: $nav-bg;
@@ -144,7 +146,7 @@ html, body {
 
 
   .tocify-item>a, .toc-footer li {
-    padding: 0 $nav-padding 0 $nav-padding;
+    padding: 5px $nav-padding 5px $nav-padding;
     display: block;
     overflow-x: hidden;
     white-space: nowrap;
@@ -235,7 +237,7 @@ html, body {
   z-index: 100;
   color: #000;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 500;
   opacity: 0.7;
   line-height: 16px;
   img {
@@ -287,7 +289,7 @@ html, body {
 .lang-selector {
   background-color: $lang-select-bg;
   width: 100%;
-  font-weight: bold;
+  font-weight: 500;
   a {
     display: block;
     float:left;
@@ -440,7 +442,7 @@ html, body {
   }
 
   dt {
-    font-weight: bold;
+    font-weight: 500;
   }
 
   dd {
