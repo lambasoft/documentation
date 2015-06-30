@@ -1,5 +1,7 @@
 # Authentication
 
+## Load your ProcessOut keys
+
 ```shell
 # cURL makes it easy to authenticate
 curl <%= api_link('/') %> \
@@ -45,3 +47,30 @@ Authorization HTTP header:
 
 "&lt;project-id>:&lt;project-secret>"
 </aside>
+
+## Globally set your default ProcessOut keys
+
+```shell
+# cURL makes it easy to authenticate
+curl <%= api_link('/') %> \
+  --user "<project-id>:<project-secret>"
+```
+
+```php
+<?php
+// Let's assume $processout has already been instanciated
+
+\ProcessOut\ProcessOut::setDefault($processout);
+?>
+```
+
+```python
+from processout.processout import ProcessOut
+# Let's assume processout has already been instanciated
+
+ProcessOut.setDefault(processout)
+```
+
+ProcessOut libraries also allow you to globally set your default ProcessOut
+config keys, so that you don't need to pass the ProcessOut instance to every
+new object you wish to create.

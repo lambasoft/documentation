@@ -45,11 +45,10 @@ $processout = new \ProcessOut\ProcessOut(
     '<project-secret>');
 
 // Create a new invoice
-$invoice = new \ProcessOut\Invoice\Invoice(
-    $processout,                                  // ProcessOut instance
-    '1 copy of a wonderful product at $4.99 USD', // Title
-    4.99,                                         // Price
-    'USD');                                       // Currency
+$invoice = new \ProcessOut\Invoice\Invoice($processout);
+$invoice->setItemName('Amazing item')->setItemPrice(4.99)->setCurrency('USD');
+// And save it onto ProcessOut's servers
+$invoice->save();
 ?>
 ```
 
@@ -112,10 +111,12 @@ $processout = new \ProcessOut\ProcessOut(
     '<project-id>',
     '<project-secret>');
 
-// Create a new invoice from a tailored invoice
-$invoice = new \ProcessOut\Invoice\TailoredInvoice(
-    $processout,
-    '<tailored-invoice-id>');
+// Create a new tailored invoice
+$tailored = new \ProcessOut\Invoice\TailoredInvoice($processout);
+// Load it from ProcessOut
+$invoice = $tailored->from('1ca570ac-0cb4-4c54-8ff2-f7c82f4fb12b')->invoice();
+// $invoice is now a new tailored loaded from the tailored invoice data
+$invoice->save();
 ?>
 ```
 
@@ -248,8 +249,9 @@ invoice.sandbox      = true
 ```php
 <?php
 // Let's assume $invoice has previously been instantiated
+// and saved
 
-echo 'Link: ' . $invoice->getLink();
+echo 'Link: ' . $invoice->getUrl();
 // You may also only get the invoice id
 echo 'Id: ' . $invoice->getId();
 ?>
@@ -257,8 +259,9 @@ echo 'Id: ' . $invoice->getId();
 
 ```python
 # Let's assume invoice has previously been instantiated
+# and saved
 
-print ('Link: ' + invoice.getLink())
+print ('Link: ' + invoice.getUrl())
 # You may also only get the invoice id
 print ('Id: ' + invoice.getId())
 ```
