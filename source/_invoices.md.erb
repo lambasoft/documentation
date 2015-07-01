@@ -281,13 +281,23 @@ checkout page.
 ```
 
 > Make sure to replace `<invoice-id>` with your invoice id.
+> You may also use a tailored invoice id.
+
+```html
+<a class="processout-modal-button"
+    data-tailored-invoiceid="<tailored-invoice-id>"
+    href="https://checkout.processout.com/<tailored-invoice-id>">
+        Test modal
+</a>
+<script src="https://cdn.processout.com/scripts/modal-min.js"></script>
+```
 
 ProcessOut allows its users to directly host their checkout pages on their
 websites or applications. Most of the time, this is done using a modal.
 
 <a class="processout-modal-button"
-    data-invoiceid="c0d39419-5f38-45bf-85e4-7aa89a980d59"
-    href="https://checkout.processout.com/c0d39419-5f38-45bf-85e4-7aa89a980d59">
+    data-tailored-invoiceid="1708648b-e753-4015-864f-9bee7cc18a19"
+    href="https://checkout.processout.com/1708648b-e753-4015-864f-9bee7cc18a19/c/tailored-invoice">
         Test modal
 </a>
 <script src="https://cdn.processout.com/scripts/modal-min.js"></script>
