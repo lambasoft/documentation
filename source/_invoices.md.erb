@@ -7,7 +7,7 @@ Once an invoice is created, you will receive its checkout URL `url` as well as i
 ## Create a new invoice
 
 ```shell
-curl --user "<project-id>:<project-secret>" \
+curl --user "<project-id>:<project-key>" \
      --request POST \
      --header "Content-Type: application/json" \
      --data-binary "{
@@ -34,15 +34,21 @@ curl --user "<project-id>:<project-secret>" \
 }
 ```
 
+```javascript
+// Let's assume processout has previously been instantiated
+
+// Create a new invoice
+var invoice       = new ProcessOut.Invoice(processout);
+invoice.itemName  = 'Amazing item';
+invoice.itemPrice = 4.99;
+invoice.currency  = USD;
+// And save it onto ProcessOut's servers
+invoice.save()
+```
+
 ```php
 <?php
-// Load dependencies
-require 'vendor/autoload.php';
-
-// Instantiate ProcessOut
-$processout = new \ProcessOut\ProcessOut(
-    '<project-id>',
-    '<project-secret>');
+// Let's assume $processout has previously been instantiated
 
 // Create a new invoice
 $invoice = new \ProcessOut\Invoice\Invoice($processout);
@@ -53,21 +59,16 @@ $invoice->save();
 ```
 
 ```python
-# Load dependencies
-from processout.processout      import ProcessOut
-from processout.invoice.invoice import Invoice
-
-# Instantiate ProcessOut
-processout = ProcessOut(
-    '<project-id>',
-    '<project-secret>')
+# Let's assume processout has previously been instantiated
 
 # Create a new invoice
-invoice = Invoice(
-    processout,                                   # ProcessOut instance
-    '1 copy of a wonderful product at $4.99 USD', # Title
-    4.99,                                         # Price
-    'USD')                                        # Currency
+invoice           = Invoice(processout)
+invoice.itemName  = 'Amazing item'
+invoice.itemPrice = 4.99
+invoice.currency  = 'USD'
+
+# And save it onto ProcessOut's servers
+invoice.save()
 ```
 
 Create an invoice.
@@ -81,7 +82,7 @@ Adding the `recurring_days` field enables you to automatically charge a user eve
 ## Create from a tailored invoice
 
 ```shell
-curl --user "<project-id>:<project-secret>" \
+curl --user "<project-id>:<project-key>" \
      --request POST \
      --header "Content-Type: application/json" \
      --data-binary "{
@@ -101,39 +102,48 @@ curl --user "<project-id>:<project-secret>" \
 }
 ```
 
+```javascript
+// Let's assume processout has previously been instantiated
+
+// Create a new tailored invoice instance
+var tailored = new ProcessOut.TailoredInvoice(processout);
+// Pull its data from ProcessOut
+tailored.from('1ca570ac-0cb4-4c54-8ff2-f7c82f4fb12b').then(
+    function(tailored) {
+        // We successfully pulled the tailored invoice
+        // data from ProcessOut
+        var invoice = tailored.invoice();
+        // invoice is now a new invoice loaded from the
+        // tailored invoice data
+        invoice.save();
+    }, function(err) {
+        // An error occured
+        console.log(err);
+    });
+```
+
 ```php
 <?php
-// Load dependencies
-require 'vendor/autoload.php';
+// Let's assume processout has previously been instantiated
 
-// Instantiate ProcessOut
-$processout = new \ProcessOut\ProcessOut(
-    '<project-id>',
-    '<project-secret>');
-
-// Create a new tailored invoice
+// Create a new tailored invoice instance
 $tailored = new \ProcessOut\Invoice\TailoredInvoice($processout);
-// Load it from ProcessOut
+// Pull its data from ProcessOut and create a new invoice from it
 $invoice = $tailored->from('1ca570ac-0cb4-4c54-8ff2-f7c82f4fb12b')->invoice();
-// $invoice is now a new tailored loaded from the tailored invoice data
+// $invoice is now a new invoice loaded from the tailored invoice data
 $invoice->save();
 ?>
 ```
 
 ```python
-# Load dependencies
-from processout.processout              import ProcessOut
-from processout.invoice.tailoredinvoice import TailoredInvoice
+# Let's assume processout has previously been instantiated
 
-# Instantiate ProcessOut
-processout = ProcessOut(
-    '<project-id>',
-    '<project-secret>')
-
-# Create a new invoice from a tailored invoice
-invoice = TailoredInvoice(
-    processout,
-    '<tailored-invoice-id>')
+# Create a new tailored invoice instance
+tailored = TailoredInvoice(processout)
+# Pull its data from ProcessOut
+invoice = tailored.fromId('1ca570ac-0cb4-4c54-8ff2-f7c82f4fb12b').invoice()
+# invoice is now a new invoice loaded form the tailored invoice data
+invoice.save()
 ```
 
 > Make sure to replace `<tailored-invoice-id>` with your tailored invoice id.
@@ -158,6 +168,22 @@ tailored-invoice-id | The ID of the tailored invoice
 
 ```shell
 # There is no shell library
+```
+
+```javascript
+// Let's assume invoice has previously been instanciated
+
+console.log(invoice.itemName);
+console.log(invoice.itemPrice);
+console.log(invoice.itemQuantity);
+console.log(invoice.currency);
+console.log(invoice.taxes);
+console.log(invoice.shipping);
+console.log(invoice.returnUrl);
+console.log(invoice.cancelUrl);
+console.log(invoice.notifyUrl);
+console.log(invoice.custom);
+console.log(invoice.sandbox);
 ```
 
 ```php
@@ -244,6 +270,21 @@ invoice.sandbox      = true
 
 ```shell
 # Use the url field returned in the response
+```
+
+```javascript
+// Because http requests made using the ProcessOut's nodejs library are
+// asyncronous, you need to use promises in order to listen for when the
+// data will actually be available in the object
+invoice.save().then(
+    function(invoice) {
+       console.log('Link: ' + invoice.url);
+       // You may also get the invoice id
+       console.log('Id: ' + invoice.id);
+    }, function(err) {
+        // Oops, an error occured
+        console.log(err);
+    });
 ```
 
 ```php

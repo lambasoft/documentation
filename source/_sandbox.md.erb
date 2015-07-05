@@ -3,7 +3,7 @@
 ```php
 <?php
 $projectId     = '<project-id>';
-$projectSecret = '<project-secret>';
+$projectSecret = '<project-key>';
 
 // To enable the sandbox
 if($sandbox)
@@ -16,7 +16,7 @@ $processout = new \ProcessOut\ProcessOut(
 
 ```python
 projectId     = '<project-id>'
-projectSecret = '<project-secret>'
+projectSecret = '<project-key>'
 
 # To enable the sandbox
 if sandbox:
@@ -26,7 +26,20 @@ processout = ProcessOut(
     projectId, projectSecret)
 ```
 
-> When deploying to production, you should verify that your webhooks are 
+```javascript
+var projectId     = '<project-id>';
+var projectSecret = '<project-key>';
+
+// To enable the sandbox
+if(sandbox) {
+    projectId = 'sandbox-' + projectId
+}
+
+var processout = new ProcessOut.ProcessOut(
+    projectId, projectSecret)
+```
+
+> When deploying to production, you should verify that your webhooks are
 > not coming from the sandbox
 
 ```php
@@ -51,13 +64,23 @@ if data['sandbox'] and not sandbox:
     return
 ```
 
+```javascript
+// Let's assume data is filled with the webhook json decoded data
+
+// Verify that the webhook is NOT from the sandbox
+if(data['sandbox'] && !sandbox) {
+    console.log('Sandbox mode is not allowed.');
+    return;
+}
+```
+
 When developing your application, you might need to troubleshoot
 problems which may occur when implementing ProcessOut.
 
 We created a simple-to-use sandbox which lets you send all kinds of
 webhooks to your application. To enable the sandbox, all you need to do
 is to prepend `sandbox-` to your project id.
-The checkout page of invoices you create under the sandbox 
+The checkout page of invoices you create under the sandbox
 will display a list of states that you can trigger. These states,
 when triggered, will send a webhook to your application.
 

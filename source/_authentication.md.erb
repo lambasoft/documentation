@@ -5,7 +5,7 @@
 ```shell
 # cURL makes it easy to authenticate
 curl <%= api_link('/') %> \
-  --user "<project-id>:<project-secret>"
+  --user "<project-id>:<project-key>"
 ```
 
 ```php
@@ -16,7 +16,7 @@ require 'vendor/autoload.php';
 // Instanciate ProcessOut
 $processout = new \ProcessOut\ProcessOut(
     '<project-id>',
-    '<project-secret>');
+    '<project-key>');
 ?>
 ```
 
@@ -27,13 +27,23 @@ from processout.processout import ProcessOut
 # Instanciate ProcessOut
 processout = ProcessOut(
     '<project-id>',
-    '<project-secret>')
+    '<project-key>')
 ```
 
-> Make sure to replace `<project-id>` and `<project-secret>` with your details.
+```javascript
+// Load package
+var ProcessOut = require('processout');
+
+// Instanciate ProcessOut
+var processout = new ProcessOut.ProcessOut(
+    '<project-id>',
+    '<project-key>');
+```
+
+> Make sure to replace `<project-id>` and `<project-key>` with your details.
 
 To use ProcessOut's API, you will need to authenticate yourself using your API keys.
-Your API keys are composed of your `project-id` and `project-secret`. To get
+Your API keys are composed of your `project-id` and `project-key`. To get
 these keys, you will need to have created a new project on your dashboard,
 and browse that project's settings.
 
@@ -45,7 +55,7 @@ Authorization HTTP header:
 <aside class="notice">
 &lt;authorization-code> must be a base64 encoded string containing:
 
-"&lt;project-id>:&lt;project-secret>"
+"&lt;project-id>:&lt;project-key>"
 </aside>
 
 ## Globally set your default ProcessOut keys
@@ -53,22 +63,27 @@ Authorization HTTP header:
 ```shell
 # cURL makes it easy to authenticate
 curl <%= api_link('/') %> \
-  --user "<project-id>:<project-secret>"
+  --user "<project-id>:<project-key>"
 ```
 
 ```php
 <?php
-// Let's assume $processout has already been instanciated
+// Let's assume $processout has already been instantiated
 
 \ProcessOut\ProcessOut::setDefault($processout);
 ?>
 ```
 
 ```python
-from processout.processout import ProcessOut
-# Let's assume processout has already been instanciated
+# Let's assume processout has already been instantiated
 
 ProcessOut.setDefault(processout)
+```
+
+```javascript
+// Let's assume processout has already been instantiated
+
+ProcessOut.ProcessOut.setDefault(processout);
 ```
 
 ProcessOut libraries also allow you to globally set your default ProcessOut

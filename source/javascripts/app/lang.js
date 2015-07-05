@@ -25,10 +25,16 @@ under the License.
 
     $(".lang-selector a").removeClass('active');
     $(".lang-selector a[data-language-name='" + language + "']").addClass('active');
+
+    $(".highlight.javascript").parent().hide();
     for (var i=0; i < languages.length; i++) {
       $(".highlight." + languages[i]).parent().hide();
     }
+
     $(".highlight." + language).parent().show();
+    if(language == "node.js") {
+        $(".highlight.javascript").parent().show();
+    }
 
     global.toc.calculateHeights();
 
