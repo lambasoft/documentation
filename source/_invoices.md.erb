@@ -17,11 +17,17 @@ curl --user "<project-id>:<project-key>" \
         \"currency\": \"USD\",
         \"taxes\": 0.49,
         \"shipping\": 2.00,
+        \"recurring_days\": 7,
+        \"request_email\": false,
+        \"request_shipping\": false,
+        \"metas\": {
+            \"key 1\": \"value 1\",
+            \"key 2\": \"value 2\"
+        },
         \"return_url\": \"https://company.tld/success\",
         \"cancel_url\": \"https://company.tld/cancel\",
         \"notify_url\": \"https://company.tld/webhook\",
         \"custom\": \"42\",
-        \"recurring_days\": 7,
         \"sandbox\": 1
     }" \
     <%= api_link '/invoices' %>
@@ -171,7 +177,7 @@ tailored-invoice-id | The ID of the tailored invoice
 ```
 
 ```javascript
-// Let's assume invoice has previously been instanciated
+// Let's assume invoice has previously been instantiated
 
 console.log(invoice.itemName);
 console.log(invoice.itemPrice);
@@ -179,6 +185,13 @@ console.log(invoice.itemQuantity);
 console.log(invoice.currency);
 console.log(invoice.taxes);
 console.log(invoice.shipping);
+console.log(invoice.recurringDays);
+
+console.log(invoice.requestEmail);
+console.log(invoice.requestShipping);
+
+console.log(invoice.metas);
+
 console.log(invoice.returnUrl);
 console.log(invoice.cancelUrl);
 console.log(invoice.notifyUrl);
@@ -196,6 +209,13 @@ echo $invoice->getItemQuantity();
 echo $invoice->getCurrency();
 echo $invoice->getTaxes();
 echo $invoice->getShipping();
+echo $invoice->getRecurringDays();
+
+echo $invoice->getRequestEmail();
+echo $invoice->getRequestShipping();
+
+echo $invoice->getMetas();
+
 echo $invoice->getReturnUrl();
 echo $invoice->getCancelUrl();
 echo $invoice->getNotifyUrl();
@@ -213,6 +233,13 @@ print (invoice.itemQuantity)
 print (invoice.currency)
 print (invoice.taxes)
 print (invoice.shipping)
+print (invoice.recurringDays)
+
+print (invoice.requestEmail)
+print (invoice.requestShipping)
+
+print (invoice.metas)
+
 print (invoice.returnUrl)
 print (invoice.cancelUrl)
 print (invoice.notifyUrl)
@@ -232,6 +259,31 @@ attributes.
 # There is no shell library
 ```
 
+```javascript
+// Let's assume invoice has previously been instantiated
+
+invoice.itemName      = 'new name';
+invoice.itemPrice     = 4.20;
+invoice.itemQuantity  = 4;
+invoice.currency      = 'EUR';
+invoice.taxes         = 4.20;
+invoice.shipping      = 4.20;
+invoice.recurringDays = 7;
+
+invoice.requestEmail    = true;
+invoice.requestShipping = true;
+
+invoice.metas = {
+    'key 1': 'value 1',
+    'key 2': 'value 2'
+};
+
+invoice.returnUrl = 'http(s)://your.site/return';
+invoice.cancelUrl = 'http(s)://your.site/cancel';
+invoice.notifyUrl = 'http(s)://your.site/webhook';
+invoice.sandbox   = true;
+```
+
 ```php
 <?php
 // Let's assume $invoice has previously been instantiated
@@ -242,6 +294,16 @@ $invoice->setItemQuantity(4);
 $invoice->setCurrency('EUR');
 $invoice->setTaxes(4.20);
 $invoice->setShipping(4.20);
+$invoice->setRecurringDays(7);
+
+$invoice->setRequestEmail(true);
+$invoice->setRequestShipping(true);
+
+$invoice->setMetas(array(
+    'key 1' => 'value 1',
+    'key 2' => 'value 2'
+));
+
 $invoice->setReturnUrl('http(s)://your.site/return');
 $invoice->setCancelUrl('http(s)://your.site/cancel');
 $invoice->setNotifyUrl('http(s)://your.site/webhook');
@@ -253,17 +315,27 @@ $invoice->setSandbox(true);
 ```python
 # Let's assume invoice has previously been instantiated
 
-invoice.itemName     = 'new name'
-invoice.itemPrice    = 4.20
-invoice.itemQuantity = 4
-invoice.currency     = 'EUR'
-invoice.taxes        = 4.20
-invoice.shipping     = 4.20
-invoice.returnUrl    = 'http(s)://your.site/return'
-invoice.cancelUrl    = 'http(s)://your.site/cancel'
-invoice.notifyUrl    = 'http(s)://your.site/webhook'
-invoice.custom       = 'my_customer_id=1'
-invoice.sandbox      = true
+invoice.itemName      = 'new name'
+invoice.itemPrice     = 4.20
+invoice.itemQuantity  = 4
+invoice.currency      = 'EUR'
+invoice.taxes         = 4.20
+invoice.shipping      = 4.20
+invoice.recurringDays = 7
+
+invoice.requestEmail    = True
+invoice.requestShipping = True
+
+invoice.metas = {
+    "key 1": "value 1",
+    "key 2": "value 2"
+}
+
+invoice.returnUrl = 'http(s)://your.site/return'
+invoice.cancelUrl = 'http(s)://your.site/cancel'
+invoice.notifyUrl = 'http(s)://your.site/webhook'
+invoice.custom    = 'my_customer_id=1'
+invoice.sandbox   = true
 ```
 
 ## Redirect customer to checkout
