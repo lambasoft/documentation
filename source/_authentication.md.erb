@@ -13,7 +13,7 @@ curl <%= api_link('/') %> \
 // Load dependencies
 require 'vendor/autoload.php';
 
-// Instanciate ProcessOut
+// Instantiate ProcessOut
 $processout = new \ProcessOut\ProcessOut(
     '<project-id>',
     '<project-key>');
@@ -24,7 +24,7 @@ $processout = new \ProcessOut\ProcessOut(
 # Load dependencies
 from processout.processout import ProcessOut
 
-# Instanciate ProcessOut
+# Instantiate ProcessOut
 processout = ProcessOut(
     '<project-id>',
     '<project-key>')
@@ -34,10 +34,20 @@ processout = ProcessOut(
 // Load package
 var ProcessOut = require('processout');
 
-// Instanciate ProcessOut
+// Instantiate ProcessOut
 var processout = new ProcessOut.ProcessOut(
     '<project-id>',
     '<project-key>');
+```
+
+```csharp
+// Include the 'using' statement
+using ProcessOut;
+
+// Instantiating ProcessOut
+var MyProcessOut = new ProcessOut.ProcessOut(
+    "<project-id>",
+    "<project-key>");
 ```
 
 > Make sure to replace `<project-id>` and `<project-key>` with your details.
@@ -84,6 +94,12 @@ ProcessOut.setDefault(processout)
 // Let's assume processout has already been instantiated
 
 ProcessOut.ProcessOut.setDefault(processout);
+```
+
+```csharp
+// Let's assume MyProcessOut has already been instantiated
+
+ProcessOut.ProcessOut.Default = MyProcessOut;
 ```
 
 ProcessOut libraries also allow you to globally set your default ProcessOut
