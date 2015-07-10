@@ -77,6 +77,19 @@ invoice.currency  = 'USD'
 invoice.save()
 ```
 
+```csharp
+// Let's assume MyProcessOut has previously been instantiated
+
+// Creating a new invoice
+var Invoice = new ProcessOut.Invoice.Invoice(MyProcessOut);
+Invoice.ItemName = "Amazing item";
+Invoice.ItemPrice = 4.99m;
+Invoice.Currency = "USD";
+
+// Saving it onto ProcessOut's servers
+Invoice.Save();
+```
+
 Create an invoice.
 
 Adding the `recurring_days` field enables you to automatically charge a user every `x` days. Every payment iteration will automatically be managed by ProcessOut.
@@ -150,6 +163,24 @@ tailored = TailoredInvoice(processout)
 invoice = tailored.fromId('1ca570ac-0cb4-4c54-8ff2-f7c82f4fb12b').invoice()
 # invoice is now a new invoice loaded form the tailored invoice data
 invoice.save()
+```
+
+```csharp
+// Let's assume MyProcessOut and Invoice have previously been instantiated
+
+// Creating a new tailored invoice
+var Tailored = new ProcessOut.Invoice.TailoredInvoice(MyProcessOut);
+
+// Filling it with data from ProcessOut
+Tailored.From("1ca570ac-0cb4-4c54-8ff2-f7c82f4fb12b");
+
+// Turning it into a normal invoice
+Invoice = Tailored.Invoice();
+
+/* You can make modifications if you desire here */
+
+// Saving it into ProcessOut's servers
+Invoice.Save();
 ```
 
 > Make sure to replace `<tailored-invoice-id>` with your tailored invoice id.
@@ -247,6 +278,28 @@ print (invoice.custom)
 print (invoice.sandbox)
 ```
 
+```csharp
+# Let's assume Invoice has previously been instantiated
+
+Console.WriteLine(Invoice.ItemName);
+Console.WriteLine(Invoice.ItemPrice);
+Console.WriteLine(Invoice.ItemQuantity);
+Console.WriteLine(Invoice.Currency);
+Console.WriteLine(Invoice.Taxes);
+Console.WriteLine(Invoice.Shipping);
+Console.WriteLine(Invoice.RecurringDays);
+
+Console.WriteLine(Invoice.RequestEmail);
+Console.WriteLine(Invoice.RequestShipping);
+
+Console.WriteLine(Invoice.Meta);
+
+Console.WriteLine(Invoice.ReturnURL);
+Console.WriteLine(Invoice.CancelURL);
+Console.WriteLine(Invoice.NotifyURL);
+Console.WriteLine(Invoice.Sandbox);
+```
+
 Once an invoice instance has been created, you might need to access its
 attributes.
 
@@ -338,6 +391,30 @@ invoice.custom    = 'my_customer_id=1'
 invoice.sandbox   = true
 ```
 
+```csharp
+// Let's assume Invoice has previously been instantiated
+
+Invoice.ItemName      = "new name";
+Invoice.ItemPrice     = 4.20m;
+Invoice.ItemQuantity  = 4;
+Invoice.Currency      = "EUR";
+Invoice.Taxes         = 4.20m;
+Invoice.Shipping      = 4.20m;
+Invoice.RecurringDays = 7;
+
+Invoice.RequestEmail    = true;
+Invoice.RequestShipping = true;
+
+Invoice.Meta = new Dictionary<string, string>();
+Invoice.Meta.Add("key 1", "value 1");
+Invoice.Meta.Add("Key 2", "value 2");
+
+Invoice.returnUrl = "http(s)://your.site/return";
+Invoice.CancelUrl = "http(s)://your.site/cancel";
+Invoice.NotifyUrl = "http(s)://your.site/webhook";
+Invoice.Sandbox   = true;
+```
+
 ## Redirect customer to checkout
 
 ```shell
@@ -377,6 +454,18 @@ echo 'Id: ' . $invoice->getId();
 print ('Link: ' + invoice.getUrl())
 # You may also only get the invoice id
 print ('Id: ' + invoice.getId())
+```
+
+```csharp
+// Let's assume Invoice has previously been instantiated
+// and saved
+
+Console.WriteLine("Link: "
+          + Invoice.URL);
+          
+// You may also get the invoice's ID
+Console.WriteLine("ID: "
+          + Invoice.ID);
 ```
 
 Once an invoice is created, it is possible to redirect the customer to the
