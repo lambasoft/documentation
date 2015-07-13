@@ -38,6 +38,12 @@ $invoice->setNotifyUrl('http(s)://your.site/webhook');
 invoice.notifyUrl = 'http(s)://your.site/webhook'
 ```
 
+```csharp
+// Let's assume Invoice has previously been instantiated
+
+Invoice.NotifyURL = "http(s)://your.site/webhook";
+```
+
 ```javascript
 // Let's assume invoice has previously been instantiated
 
@@ -221,6 +227,64 @@ switch(input['action']) {
     default:
         console.log('Unknown webhook action');
         return;
+}
+```
+
+```csharp
+// Let's assume MyProcessout has previously been instantiated
+// and that Data is filled with the decoded json data from the request
+
+// We first need to check that the callback is coming from ProcessOut
+
+     // Instantiating the callback instance
+var MyCallback = new ProcessOut.Callback.Callback(MyProcessOut);
+
+     // Storing the validation boolean
+bool valid = MyCallback.Validate(Data["transaction_id"],
+     Data["hmac_signature"]);
+
+if (!valid)
+{
+     Console.WriteLine("Bad callback!");
+     return;
+}
+
+// Webhook is legit! Perform actions on it
+// /!\ Be sure to still check the price, currencies... /!\
+switch (Data["action"])
+{
+     case "invoice.completed":
+          Console.WriteLine("Transaction complete");
+          break;
+     case "invoice.pending":
+          Console.WriteLine("Transaction still needs some time to be processed");
+          break;
+     case "invoice.failed":
+         Console.WriteLine("Something went wrong");
+         break;
+     case "invoice.disputed":
+         Console.WriteLine("Your customer issued a dispute on the transaction");
+         break;
+     case "invoice.solved":
+         Console.WriteLine("You solved a dispute");
+         break;
+     case "invoice.reversed":
+         Console.WriteLine("You probably lost a dispute and the transaction was reversed");
+         break;
+     case "invoice.refunded":
+         Console.WriteLine("You refunded the transaction");
+         break;
+     case "recurring-invoice.started":
+        Console.WriteLine("A new recurring payment has been created");
+        break;
+     case "recurring-invoice.ended":
+        Console.WriteLine("A recurring payment has ended. It could be that the customer\n
+        simply didn't pay for the new period, or because he disputed the\n
+        transaction. In the latter case, another webhook invoice.disputed\n
+        is also sent.");
+        break;
+     default:
+         break;
 }
 ```
 
