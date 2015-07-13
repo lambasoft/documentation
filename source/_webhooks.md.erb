@@ -278,10 +278,7 @@ switch (Data["action"])
         Console.WriteLine("A new recurring payment has been created");
         break;
      case "recurring-invoice.ended":
-        Console.WriteLine("A recurring payment has ended. It could be that the customer\n
-        simply didn't pay for the new period, or because he disputed the\n
-        transaction. In the latter case, another webhook invoice.disputed\n
-        is also sent.");
+        Console.WriteLine("A recurring payment has ended. It could be that the customer simply didn't pay for the new period, or because he disputed the transaction. In the latter case, another webhook invoice.disputed is also sent.");
         break;
      default:
          break;
