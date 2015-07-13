@@ -14,6 +14,17 @@ $processout = new \ProcessOut\ProcessOut(
 ?>
 ```
 
+```csharp
+/* In order to work with the sandbox,
+ * simply prepend "sandbox-" to your
+ * project key
+ */
+ 
+ var MyProcessOut = new ProcessOut.ProcessOut(
+        "<project-id>",
+        "sandbox-<project-key>");
+```
+
 ```python
 projectId     = '<project-id>'
 projectSecret = '<project-key>'
