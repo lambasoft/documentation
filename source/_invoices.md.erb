@@ -27,8 +27,7 @@ curl --user "<project-id>:<project-key>" \
         \"return_url\": \"https://company.tld/success\",
         \"cancel_url\": \"https://company.tld/cancel\",
         \"notify_url\": \"https://company.tld/webhook\",
-        \"custom\": \"42\",
-        \"sandbox\": 1
+        \"custom\": \"42\"
     }" \
     <%= api_link '/invoices' %>
 
@@ -95,8 +94,7 @@ curl --user "<project-id>:<project-key>" \
         \"return_url\": \"https://company.tld/success\",
         \"cancel_url\": \"https://company.tld/cancel\",
         \"notify_url\": \"https://company.tld/webhook\",
-        \"custom\": \"my_customer_id=1\",
-        \"sandbox\": 1
+        \"custom\": \"my_customer_id=1\"
     }" \
     <%= api_link '/invoices/from-tailored/<tailored-invoice-id>' %>
 
@@ -196,7 +194,6 @@ console.log(invoice.returnUrl);
 console.log(invoice.cancelUrl);
 console.log(invoice.notifyUrl);
 console.log(invoice.custom);
-console.log(invoice.sandbox);
 ```
 
 ```php
@@ -220,7 +217,6 @@ echo $invoice->getReturnUrl();
 echo $invoice->getCancelUrl();
 echo $invoice->getNotifyUrl();
 echo $invoice->getCustom();
-echo $invoice->getSandbox();
 ?>
 ```
 
@@ -244,7 +240,6 @@ print (invoice.returnUrl)
 print (invoice.cancelUrl)
 print (invoice.notifyUrl)
 print (invoice.custom)
-print (invoice.sandbox)
 ```
 
 Once an invoice instance has been created, you might need to access its
@@ -281,7 +276,6 @@ invoice.metas = {
 invoice.returnUrl = 'http(s)://your.site/return';
 invoice.cancelUrl = 'http(s)://your.site/cancel';
 invoice.notifyUrl = 'http(s)://your.site/webhook';
-invoice.sandbox   = true;
 ```
 
 ```php
@@ -308,7 +302,6 @@ $invoice->setReturnUrl('http(s)://your.site/return');
 $invoice->setCancelUrl('http(s)://your.site/cancel');
 $invoice->setNotifyUrl('http(s)://your.site/webhook');
 $invoice->setCustom('my_customer_id=1');
-$invoice->setSandbox(true);
 ?>
 ```
 
@@ -335,7 +328,6 @@ invoice.returnUrl = 'http(s)://your.site/return'
 invoice.cancelUrl = 'http(s)://your.site/cancel'
 invoice.notifyUrl = 'http(s)://your.site/webhook'
 invoice.custom    = 'my_customer_id=1'
-invoice.sandbox   = true
 ```
 
 ## Redirect customer to checkout
