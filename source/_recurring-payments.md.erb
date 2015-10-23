@@ -1,0 +1,91 @@
+# Recurring payments
+
+## Overview
+
+Recurring invoices are a great way to get recurring income from your customers,
+with a high conversion rate. Because of how payment gateways differently handle
+this type of payment, ProcessOut will try to make most of the features offered
+by them.
+
+If recurring payments are not available for the payment gateway chosen
+by the customer, ProcessOut will handle the iterations of each payment by
+generating new invoices for every new period, and by sending reminder emails,
+but will keep it transparent for you.
+
+## Usage
+
+```javascript
+// Create a new recurring invoice
+var recurringInvoice      = new ProcessOut.RecurringInvoice();
+recurringInvoice.setName('Amazing item');
+recurringInvoice.setPrice(4.99);
+recurringInvoice.setCurrency('USD');
+// Set the recurring period to a month
+recurringInvoice.setRecurringDays(30);
+// You may set any field listed in table on the right pane
+
+// Push it to ProcessOut
+recurringInvoice.create()
+
+// Print the id of the recurring invoice to be used with the modal
+console.log(recurringInvoice.getId())
+// > 64db379a-301f-4db6-859e-a0b342ff0b66
+// or its checkout url
+console.log(recurringInvoice.getUrl())
+// > https://chceckout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+```
+
+```python
+from processout.recurringinvoice import RecurringInvoice
+
+# Create a new recurring invoice object
+recurringInvoice          = RecurringInvoice()
+recurringInvoice.name     = 'Amazing item'
+recurringInvoice.price    = 4.99
+recurringInvoice.currency = 'USD'
+# Set the recurring period to a month
+recurringInvoice.recurringDays = 30
+# You may set any field listed in table on the right pane
+
+# Push it to ProcessOut
+recurringInvoice.create()
+
+# Print the id of the recurring invoice to be used with the modal
+print(recurringInvoice.id)
+# or its checkout url
+# > 64db379a-301f-4db6-859e-a0b342ff0b66
+print(recurringInvoice.url)
+# > https://chceckout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+```
+
+```php
+<?php
+// Create a new recurring invoice
+$recurringInvoice = new \ProcessOut\RecurringInvoice();
+$recurringInvoice
+    ->setName('Amazing item')
+    ->setPrice(4.99)
+    ->setCurrency('USD')
+    // Set the recurring period to a month
+    ->setRecurringDays(30);
+// You may set any field listed in table on the right pane
+
+// Push it to ProcessOut
+$recurringInvoice->create();
+
+// Print the id of the recurring invoice to be used with the modal
+echo $recurringInvoice->getId();
+// > 64db379a-301f-4db6-859e-a0b342ff0b66
+// or its checkout url
+echo $recurringInvoice->getUrl();
+// > https://chceckout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+?>
+```
+
+Making a recurring invoice takes one line of code with ProcessOut,
+if you're already using our [invoicing solution](#invoices).
+
+The field `recurring_days` must be set to the `number of days` you wish your
+invoicing period to last (defaults to 0), and the field `request_email` will
+automatically be set to `true`. Otherwise, the same fields used
+when creating a normal invoice may be used.

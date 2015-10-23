@@ -1,59 +1,21 @@
 # Introduction
 
-Welcome to the ProcessOut documentation. The code provided here will mostly be based
-on libraries using our API endpoints, which can be found [here](http://docs.processout.apiary.io)
-
-Language bindings and examples for different libraries can be found on the right side of the page.
-You can switch to your preferred language using the menu at the top of the right side pane.
-
-## Helper libraries
-
 > Code samples of these libraries will be shown on this pane. Feel free to choose
 > your preferred language for samples by selecting it in the top bar of this pane.
 
-ProcessOut provides a set of API bindings and libraries created to help
-developers easily integrate our service into their applications. These libraries
-can be found on ProcessOut's GitHub page:
+Welcome to the [ProcessOut](https://www.processout.com) documentation.
+The code provided here will mostly be basedon libraries using our API endpoints.
+[More about it can be found here.](#api-reference)
 
-- PHP:
-    - [processout-php](https://github.com/ProcessOut/ProcessOut-php)
-- Python:
-    - [processout-python](https://github.com/ProcessOut/ProcessOut-python)
-- Node.js
-    - [processout-node](https://github.com/ProcessOut/ProcessOut-node)
-- C#
-    - [processout-cs](https://github.com/ProcessOut/processout-cs)
+Language bindings and examples for different libraries can be found on the right
+side of the page. You can switch to your preferred language using the menu at
+the top of the right side pane.
 
-We also have a set of libraries meant to directly include the checkout
-process into your website or application:
+## Libraries, modules and tools
 
-- Javascript:
-    - [processout-javascript-modal](https://github.com/ProcessOut/ProcessOut-javascript-modal)
-
-## Installation
-
-```javascript
-npm install processout
-```
-
-```php
-composer require processout/processout-php
-```
-
-```python
-pip install processout
-```
-
-```golang
-go get https://github.com/processout/processout-go
-```
-
-Installing and setting up the libraries/modules/packages in your project
-is most of the time really easy, and only consists of running a couple of
-commands and/or dropping in some files.
-
-You may also want to simply run a `git clone` command and manage the
-dependencies yourself.
+At ProcessOut, open-sourcing our projects takes a big part of our time and energy.
+This is why we are giving access to several tools, libraries and projects we
+use ourselves on a daily basis on our [GitHub page](https://github.com/ProcessOut/).
 
 ## API Reference
 
@@ -64,47 +26,7 @@ if you would like to make your own contribution to our libraries.
 
 [You may find our Apiary API documentation here.](http://docs.processout.apiary.io)
 
-## Making requests
+## Help and support
 
-ProcessOut's current API (v1) is *RESTful* (level 2 under [Richardson Maturity Model](http://martinfowler.com/articles/richardsonMaturityModel.html)). This means that you may perform
-`GET`, `POST`, `PUT` and `DELETE` requests and expect the adequate response when available.
-
-Furthermore, `POST`, `PUT` and `DELETE` can contain a json body if they have the
-`Content-Type: application/json` header.
-
-## Responses
-
-> Response of a successful request *(200)*
-
-```json
-{
-  "success": true,
-  "message": null
-}
-```
-
-> Response of a failed request *(4xx)*
-
-```json
-{
-  "success": false,
-  "message": "<Error message>"
-}
-```
-
-Responses are always **JSON encoded**.
-
-Responses should always contain at least the following keys:
-
-- `success`: A boolean indicating if the request was successful
-- `message`: A string giving more information about the error. Null if successful.
-
-**HTTP codes** will also be used, so you should check the response code to get
-a quick idea of the request's problem.
-
-- `200`: *OK*. All good.
-- `400`: *Bad request*. Your request body is most likely invalid or does not contain
-the required values. Check the response message for more information.
-- `401`: *Unauthorized*. Your API keys are most likely invalid, or not sent correctly.
-- `402`: *Payment required*. You should check the project linked to these API keys.
-- `404`: *Not found*. The item you are trying to fetch does not exist.
+We'd be glad to help you with any problem you may have during the integration
+of ProcessOut in your application. [Feel free to contact us!](https://www.processout.com/contact)

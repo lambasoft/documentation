@@ -1,0 +1,78 @@
+# Get started
+
+## Installation
+
+```javascript
+npm install processout
+```
+
+```php
+composer require processout/processout-php
+```
+
+```python
+pip install processout
+```
+
+```go
+go get https://github.com/processout/processout-go
+```
+
+Installing and setting up the libraries/modules/packages in your project
+is most of the time really easy, and only consists of running a couple of
+commands and/or dropping in some files.
+
+You may also want to simply run a `git clone` command or download an archive
+containg the library, and manage the dependencies yourself.
+
+## Authentication
+
+```php
+<?php
+// Load dependencies
+require 'vendor/autoload.php';
+
+// Instantiate ProcessOut
+$processout = new \ProcessOut\ProcessOut(
+    '<project-id>',
+    '<project-key>');
+
+// Set this project as the default one for the current request
+\ProcessOut\ProcessOut::setDefault($processout);
+?>
+```
+
+```python
+# Load dependencies
+from processout.processout import ProcessOut
+
+# Instantiate ProcessOut
+processout = ProcessOut(
+    '<project-id>',
+    '<project-key>')
+
+# Set this project as the default one for the current request
+ProcessOut.setDefault(processout);
+```
+
+```javascript
+// Load package
+var ProcessOut = require('processout');
+
+// Instantiate ProcessOut
+var processout = new ProcessOut.ProcessOut(
+    '<project-id>',
+    '<project-key>');
+
+// Set this project as the default one for the current request
+ProcessOut.ProcessOut.setDefault(processout);
+```
+
+> Make sure to replace `<project-id>` and `<project-key>` with your details.
+
+To use ProcessOut's API, you will need to authenticate yourself using your API keys.
+Your API keys are composed of your `project-id` and `project-key`. To get
+these keys, you will need to have created a new project on your dashboard.
+
+Once the authentication is done, a `ProcessOut` object should be returned,
+representing your ProcessOut project.

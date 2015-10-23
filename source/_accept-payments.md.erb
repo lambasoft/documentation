@@ -1,0 +1,130 @@
+# Accept payments
+
+## Payment modal
+
+```html
+<a class="processout-modal-button"
+    data-invoiceid="<invoice-id>"
+    href="https://checkout.processout.com/<invoice-id>">
+        Test modal
+</a>
+<script src="https://cdn.processout.com/scripts/modal-min.js"></script>
+```
+
+The easiest way to accept payments with ProcessOut is by using our payment modal,
+which takes care of creating the HTML forms and checkout experience, but still
+keeps your customer on your website. It is essentially a window showing up in front
+of your website when your customer wants to pay.
+
+> Replace `<invoice-id>` with the id of the invoice
+
+## Tailored invoices
+
+```html
+<a class="processout-modal-button"
+    data-tailored-invoiceid="t-<tailored-invoice-id>"
+    href="https://checkout.processout.com/t-<tailored-invoice-id>">
+        Test modal
+</a>
+<script src="https://cdn.processout.com/scripts/modal-min.js"></script>
+```
+
+> Mind the `t-` prefixing the `tailored-invoice-id`!
+
+Tailored invoices is a great way to start using our modal. All you need to do
+is [create a tailored invoice](https://processout.zendesk.com/hc/en-us/articles/205747058-Tailored-invoices).
+Once created, the id of your tailored invoice -- which can be retrieved from
+your dashboard -- can be injected in the modal as shown on the right pane.
+
+## Invoices
+
+```javascript
+// Create a new invoice
+var invoice      = new ProcessOut.Invoice();
+invoice.setName('Amazing item');
+invoice.setPrice(4.99);
+invoice.setCurrency('USD');
+// You may set any field listed in table on the right pane
+
+// Push it to ProcessOut
+invoice.create()
+
+// Print the id of the invoice to be used with the modal
+console.log(invoice.getId())
+// > 64db379a-301f-4db6-859e-a0b342ff0b66
+// or its checkout url
+console.log(invoice.getUrl())
+// > https://chceckout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+```
+
+```php
+<?php
+// Create a new invoice
+$invoice = new \ProcessOut\Invoice();
+$invoice
+    ->setName('Amazing item')
+    ->setPrice(4.99)
+    ->setCurrency('USD');
+// You may set any field listed in table on the right pane
+
+// Push it to ProcessOut
+$invoice->create();
+
+// Print the id of the invoice to be used with the modal
+echo invoice->getId();
+// > 64db379a-301f-4db6-859e-a0b342ff0b66
+// or its checkout url
+echo invoice->getUrl();
+// > https://chceckout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+?>
+```
+
+```python
+from processout.invoice import Invoice
+
+# Create a new invoice object
+invoice          = Invoice()
+invoice.name     = 'Amazing item'
+invoice.price    = 4.99
+invoice.currency = 'USD'
+# You may set any field listed in table on the right pane
+
+# Push it to ProcessOut
+invoice.create()
+
+# Print the id of the invoice to be used with the modal
+print(invoice.id)
+# > 64db379a-301f-4db6-859e-a0b342ff0b66
+# or its checkout url
+print(invoice.url)
+# > https://chceckout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+```
+
+
+Invoices may also be programmatically generated to provide a customized
+payment flow for your customers.
+
+Once an invoice is created, its checkout URL `url` and unique identifier `id`
+are returned. You may then choose to redirect your customer to our payment
+page, or to use our [payment modal](#payment-modal).
+
+Once an invoice is created, you will receive its checkout URL `url` as well as
+its unique identifier `id`. Simply redirect your customer to the `url` to perform
+the transaction, or create a new modal -- using our javascript library -- with the `id`.
+
+Several options and fields can be set when creating the invoice:
+
+| Field | Required | Description |
+| ----- | -------- | ----------- |
+| **name**  | **yes**      | Name of the transaction. Can be anything. |
+| **price** | **yes**      | Price of the transaction, without taxes and shipping fees. |
+| **currency** | **yes**    | Currency of the transaction. Ex: `USD` |
+| taxes        | no | Taxes applied to the transaction. *Default: 0* |
+| shipping     | no | Shipping fee applied to the transaction. *Default: 0* |
+| meta | no | Meta data in the form of a dictionary, containing additional information about the transaction. *Default: empty* |
+| return_url | no | URL to which the customer is returned after a successful transaction. *Default: ProcessOut payment landing page* |
+| cancel_url | no | URL to which the customer is redirected upon cancelation of the transaction. *Default: ProcessOut cancelation landing page* |
+| notify_url | no | URL where ProcessOut will send [webhooks](#) containing updates regarding the transaction. *Default: none* |
+| request_email | no | Boolean. Asks for the customer's email during the checkout flow. *Default: false* |
+| request_shipping | no | Boolean. Asks for the customer's shipping address during the checkout flow. *Default: false* |
+
