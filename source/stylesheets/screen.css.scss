@@ -124,10 +124,8 @@ html, body {
     @include transition-timing-function(ease-in-out);
     &.visible {
       height: 30%;
-      margin-bottom: 1em;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.3);
     }
-
-    @include embossed-bg;
 
     li {
       margin: 1em $nav-padding;
@@ -331,6 +329,12 @@ html, body {
     content: '';
     display: block;
     clear: both;
+  }
+
+
+
+  a {
+    color: $tertiary-color;
   }
 
   &>h1, &>h2, &>h3, &>h4, &>h5, &>h6, &>p, &>table, &>ul, &>ol, &>aside, &>dl {
@@ -610,6 +614,14 @@ html, body {
 
   .page-wrapper .lang-selector {
     display: none;
+    a {
+        height: 62px!important;
+        line-height: 62px!important;
+        vertical-align: middle;
+        i {
+            font-size: 4em!important;
+        }
+    }
   }
 
   %right-col {
