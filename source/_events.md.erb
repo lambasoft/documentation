@@ -1,0 +1,172 @@
+# Events
+
+When a transaction receive an update (such as when its state changes from
+pending to completed, or if the transaction gets reversed), ProcessOut creates
+an event which can be fetched and processed.
+
+ProcessOut may also fire events not directly related to a transaction, such as
+when the project gets updated.
+
+## Fetching events
+
+```javascript
+var events = ProcessOut.Event.pull();
+for (var i = 0; i < events.length; i++)
+{
+    var event = events[i];
+    var data  = event.getData();
+    // Do stuff on the event with its data
+
+    // Once you're done with the event, you may mark it
+    // as processed so that pull() won't return it anymore.
+    event.setProcessed();
+}
+
+// You may also find a specific not-processed event by its id
+var event = ProcessOut.Event.find('<event-id>');
+// And mark it as processed once done with it
+event.setProcessed();
+```
+
+```python
+from processout.event import Event
+
+events = Event.pull()
+for event in events:
+    var data = event.data
+    # Do stuff on the event with its data
+
+    # Once you're done with the event, you may mark it
+    # as processed so that pull() won't return it anymore.
+    event.setProcessed()
+
+# You may also find a specific not-processed event by its id
+event = Event.find('<event-id>')
+# And mark it as processed once done with it
+event.setProcessed()
+```
+
+```php
+<?php
+$events = ProcessOut\Event::pull();
+foreach($events as $event)
+{
+    $data = $event->getData();
+    // Do stuff on the event with its data
+
+    // Once you're done with the event, you may mark it
+    // as processed so that pull() won't return it anymore.
+    $event->setProcessed();
+}
+
+// You may also find a specific not-processed event by its id
+$event = ProcessOut\Event::find('<event-id>');
+// And mark it as processed once done with it
+$event->setProcessed();
+?>
+```
+
+Events can be fetched using the API, and they would then work as a queue
+(first in, first out). This means that you always get the first not-processed
+event. Once an event is marked as processed, it will not be listed by the API
+anymore. Simply fetching an event from ProcessOut will **not** mark an event
+as processed, it needs to be done explicitely.
+
+One could imagine setting up a background worker continuously fetching events
+from ProcessOut.
+
+We also provide [webhooks](#webhooks) to conveniently manage transaction events.
+
+## Invoice events
+
+The different events ProcessOut currently offers are listed below:
+
+### Completed
+
+```
+invoice.completed
+```
+
+The transaction has been completed, and can be trusted. Once the transaction
+reaches this state, you should be safe to deliver your customer what he paid for.
+
+### Pending
+
+```
+invoice.pending
+```
+
+The payment has been placed, but the transaction hasn't been completed yet.
+You should wait for the completed state.
+
+### Failed
+
+```
+invoice.failed
+```
+
+The payment had been placed, but it failed. If you had previously given
+your customer access, you should revoke it.
+
+### Disputed
+
+```
+invoice.disputed
+```
+
+The payment had been placed and the transaction completed, but your customer
+disputed the transaction on the payment processor website (such as PayPal).
+In most cases, this means that you already gave your customer access to what
+he paid for, so you may wish to revoke their access.
+
+### Solved
+
+```
+invoice.solved
+```
+
+The dispute that your customer opened has been solved, and the funds have been
+restored to your account. At this point, you may wish to give back to your
+customer the access to what he paid for.
+
+### Refunded
+
+```
+invoice.refunded
+```
+
+The dispute opened by your customer has been solved in his favor, and you
+permanently lost the funds. You should permanently revoke your customer's access.
+
+### Reversed
+
+```
+invoice.reversed
+```
+
+The payment had been placed and the transaction completed, but your customer
+reversed the payment, most likely through their bank. In most cases, it's hard to
+recover the funds so you should permanently revoke your customer's access.
+
+## Recurring invoice events
+
+In addition to the previous invoice events, ProcessOut also provides
+events related to your recurring invoices.
+
+### Started
+
+```
+recurring-invoice.started
+```
+
+The recurring invoice cycle started, and you may activate your customer's
+subscription.
+
+### Ended
+
+```
+recurring-invoice.ended
+```
+
+Your customer recurring invoice cycle stopped/ended. You may revoke your
+customer's access.

@@ -16,6 +16,8 @@ which takes care of creating the HTML forms and checkout experience, but still
 keeps your customer on your website. It is essentially a window showing up in front
 of your website when your customer wants to pay.
 
+[What's next? Accept dynamically generated invoices.](#invoices)
+
 > Replace `<invoice-id>` with the id of the invoice
 
 ## Tailored invoices
@@ -57,6 +59,27 @@ console.log(invoice.getUrl())
 // > https://chceckout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
 ```
 
+```python
+from processout.invoice import Invoice
+
+# Create a new invoice object
+invoice          = Invoice()
+invoice.name     = 'Amazing item'
+invoice.price    = 4.99
+invoice.currency = 'USD'
+# You may set any field listed in table on the right pane
+
+# Push it to ProcessOut
+invoice.create()
+
+# Print the id of the invoice to be used with the modal
+print(invoice.id)
+# > 64db379a-301f-4db6-859e-a0b342ff0b66
+# or its checkout url
+print(invoice.url)
+# > https://chceckout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+```
+
 ```php
 <?php
 // Create a new invoice
@@ -77,27 +100,6 @@ echo invoice->getId();
 echo invoice->getUrl();
 // > https://chceckout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
 ?>
-```
-
-```python
-from processout.invoice import Invoice
-
-# Create a new invoice object
-invoice          = Invoice()
-invoice.name     = 'Amazing item'
-invoice.price    = 4.99
-invoice.currency = 'USD'
-# You may set any field listed in table on the right pane
-
-# Push it to ProcessOut
-invoice.create()
-
-# Print the id of the invoice to be used with the modal
-print(invoice.id)
-# > 64db379a-301f-4db6-859e-a0b342ff0b66
-# or its checkout url
-print(invoice.url)
-# > https://chceckout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
 ```
 
 
