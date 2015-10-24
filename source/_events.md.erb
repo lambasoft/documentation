@@ -19,13 +19,13 @@ for (var i = 0; i < events.length; i++)
 
     // Once you're done with the event, you may mark it
     // as processed so that pull() won't return it anymore.
-    event.setProcessed();
+    event.markProcessed();
 }
 
 // You may also find a specific not-processed event by its id
 var event = ProcessOut.Event.find('<event-id>');
 // And mark it as processed once done with it
-event.setProcessed();
+event.markProcessed();
 ```
 
 ```python
@@ -38,12 +38,12 @@ for event in events:
 
     # Once you're done with the event, you may mark it
     # as processed so that pull() won't return it anymore.
-    event.setProcessed()
+    event.markProcessed()
 
 # You may also find a specific not-processed event by its id
 event = Event.find('<event-id>')
 # And mark it as processed once done with it
-event.setProcessed()
+event.markProcessed()
 ```
 
 ```php
@@ -56,13 +56,13 @@ foreach($events as $event)
 
     // Once you're done with the event, you may mark it
     // as processed so that pull() won't return it anymore.
-    $event->setProcessed();
+    $event->markProcessed();
 }
 
 // You may also find a specific not-processed event by its id
 $event = ProcessOut\Event::find('<event-id>');
 // And mark it as processed once done with it
-$event->setProcessed();
+$event->markProcessed();
 ?>
 ```
 
