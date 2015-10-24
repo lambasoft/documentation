@@ -16,98 +16,100 @@ under the License.
 <% language_tabs = current_page.data.language_tabs %>
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="shortcut icon" href="/favicon.ico">
-    <title><%= current_page.data.title || "API Documentation" %></title>
+    <head>
+        <meta charset="utf-8">
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link rel="shortcut icon" href="/favicon.ico">
+        <title><%= current_page.data.title || "API Documentation" %></title>
 
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato:300,%20500,%20700">
-    <link rel="stylesheet" type="text/css" href="//cdn.rawgit.com/konpa/devicon/89f2f44ba07ea3fff7e561c2142813b278c2d6c6/devicon.min.css">
-    <%= stylesheet_link_tag :screen, media: :screen %>
-    <%= stylesheet_link_tag :print, media: :print %>
-    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-    <% if current_page.data.search %>
-      <%= javascript_include_tag  "all" %>
-    <% else %>
-      <%= javascript_include_tag  "all_nosearch" %>
-    <% end %>
-
-    <% if language_tabs %>
-      <script>
-        $(function() {
-          setupLanguages(<%= language_tabs.map{ |lang| lang.is_a?(Hash) ? lang.keys.first : lang }.to_json %>);
-        });
-      </script>
-    <% end %>
-  </head>
-
-  <body class="<%= page_classes %>">
-    <a href="#" id="nav-button">
-      <span>
-        NAV
-        <%= image_tag('navbar.png') %>
-      </span>
-    </a>
-    <div class="tocify-wrapper">
-      <%= image_tag "logo.png", style: "margin-top: 10px; margin-left: 25px; width: 170px; opacity: 0.9;" %>
-      <% if language_tabs %>
-        <div class="lang-selector">
-          <% language_tabs.each do |lang| %>
-            <% if lang.is_a? Hash %>
-              <a href="#" data-language-name="<%= lang.keys.first %>"><%= lang.values.first %></a>
-            <% else %>
-              <a href="#" data-language-name="<%= lang %>"><%= lang %></a>
-            <% end %>
-          <% end %>
-        </div>
-      <% end %>
-      <% if current_page.data.search %>
-        <div class="search">
-          <input type="text" class="search" id="input-search" placeholder="Search">
-        </div>
-        <ul class="search-results"></ul>
-      <% end %>
-      <div id="toc">
-      </div>
-      <% if current_page.data.toc_footers %>
-        <ul class="toc-footer">
-          <% current_page.data.toc_footers.each do |footer| %>
-            <li><%= footer %></li>
-          <% end %>
-        </ul>
-      <% end %>
-    </div>
-    <div class="page-wrapper">
-      <div class="dark-box"></div>
-      <div class="content">
-        <%= yield %>
-        <% current_page.data.includes && current_page.data.includes.each do |include| %>
-          <%= partial "includes/#{include}" %>
+        <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato:300,%20500,%20700">
+        <link rel="stylesheet" type="text/css" href="//cdn.rawgit.com/konpa/devicon/89f2f44ba07ea3fff7e561c2142813b278c2d6c6/devicon.min.css">
+        <%= stylesheet_link_tag :screen, media: :screen %>
+        <%= stylesheet_link_tag :print, media: :print %>
+        <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+        <% if current_page.data.search %>
+        <%= javascript_include_tag  "all" %>
+        <% else %>
+        <%= javascript_include_tag  "all_nosearch" %>
         <% end %>
-      </div>
-      <div class="dark-box">
+
         <% if language_tabs %>
-          <div class="lang-selector">
-            <% language_tabs.each do |lang| %>
-              <% if lang == 'php' %>
-                <a href="#" data-language-name="<%= lang %>" style="line-height: 62px; vertical-align: 62px; font-size: 3em;"><i class="devicon-php-plain"></i></a>
-              <% elsif lang == 'python' %>
-                <a href="#" data-language-name="<%= lang %>" style="line-height: 62px; vertical-align: 62px; font-size: 2.5em;"><i class="devicon-python-plain-wordmark"></i></a>
-              <% elsif lang == 'go' %>
-                <a href="#" data-language-name="<%= lang %>" style="line-height: 62px; vertical-align: 62px; font-size: 2.5em;"><i class="devicon-go-plain"></i></a>
-              <% elsif lang == 'node.js' %>
-                <a href="#" data-language-name="<%= lang %>" style="line-height: 62px; vertical-align: 62px; font-size: 4em;"><i class="devicon-nodejs-plain-wordmark"></i></a>
-              <% elsif lang.is_a? Hash %>
-                <a href="#" data-language-name="<%= lang.keys.first %>"><%= lang.values.first %></a>
-              <% else %>
-                <a href="#" data-language-name="<%= lang %>"><%= lang %></a>
-              <% end %>
-            <% end %>
-          </div>
+        <script>
+            $(function() {
+                setupLanguages(<%= language_tabs.map{ |lang| lang.is_a?(Hash) ? lang.keys.first : lang }.to_json %>);
+            });
+        </script>
         <% end %>
-      </div>
-    </div>
-  </body>
+    </head>
+
+    <body class="<%= page_classes %>">
+        <div>
+            <a href="#" id="nav-button">
+                <span>
+                    NAV
+                    <%= image_tag('navbar.png') %>
+                </span>
+            </a>
+            <div class="tocify-wrapper">
+                <%= image_tag "logo.png", style: "margin-top: 10px; margin-left: 25px; width: 170px; opacity: 0.9;" %>
+                <% if language_tabs %>
+                    <div class="lang-selector">
+                        <% language_tabs.each do |lang| %>
+                            <% if lang.is_a? Hash %>
+                            <a href="#" data-language-name="<%= lang.keys.first %>"><%= lang.values.first %></a>
+                            <% else %>
+                            <a href="#" data-language-name="<%= lang %>"><%= lang %></a>
+                            <% end %>
+                        <% end %>
+                    </div>
+                <% end %>
+                <% if current_page.data.search %>
+                    <div class="search">
+                        <input type="text" class="search" id="input-search" placeholder="Search">
+                    </div>
+                    <ul class="search-results"></ul>
+                <% end %>
+                <div id="toc">
+                </div>
+                <% if current_page.data.toc_footers %>
+                    <ul class="toc-footer">
+                        <% current_page.data.toc_footers.each do |footer| %>
+                            <li><%= footer %></li>
+                        <% end %>
+                    </ul>
+                <% end %>
+            </div>
+            <div class="page-wrapper">
+                <div class="dark-box"></div>
+                <div class="content">
+                    <%= yield %>
+                    <% current_page.data.includes && current_page.data.includes.each do |include| %>
+                        <%= partial "includes/#{include}" %>
+                    <% end %>
+                </div>
+                <div class="dark-box">
+                    <% if language_tabs %>
+                        <div class="lang-selector">
+                            <% language_tabs.each do |lang| %>
+                                <% if lang == 'php' %>
+                                <a href="#" data-language-name="<%= lang %>" style="line-height: 62px; vertical-align: 62px; font-size: 3em;"><i class="devicon-php-plain"></i></a>
+                                <% elsif lang == 'python' %>
+                                <a href="#" data-language-name="<%= lang %>" style="line-height: 62px; vertical-align: 62px; font-size: 2.5em;"><i class="devicon-python-plain-wordmark"></i></a>
+                                <% elsif lang == 'go' %>
+                                <a href="#" data-language-name="<%= lang %>" style="line-height: 62px; vertical-align: 62px; font-size: 2.5em;"><i class="devicon-go-plain"></i></a>
+                                <% elsif lang == 'node.js' %>
+                                <a href="#" data-language-name="<%= lang %>" style="line-height: 62px; vertical-align: 62px; font-size: 4em;"><i class="devicon-nodejs-plain-wordmark"></i></a>
+                                <% elsif lang.is_a? Hash %>
+                                <a href="#" data-language-name="<%= lang.keys.first %>"><%= lang.values.first %></a>
+                                <% else %>
+                                <a href="#" data-language-name="<%= lang %>"><%= lang %></a>
+                                <% end %>
+                            <% end %>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>
