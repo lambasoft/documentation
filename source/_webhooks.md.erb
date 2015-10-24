@@ -35,6 +35,14 @@ The URL to which ProcessOut will post webhooks has to be specified in the
 [invoice](#invoice), or a [recurring invoice](#recurring-payment). By default,
 this field will be empty, and the webhook will therefore never be sent.
 
+You should also note that **we will always `POST` a json encoded body request**
+to your application. Therefore, you should accept POST requests with a json body.
+
+Furthermore, you should **remove all CSRF protection** on the URL you provide
+using `notify_url`. Most frameworks and CMS activate it by default, which could
+prevent ProcessOut from correctly posting webhooks to your application.
+
+
 ## Webhooks usage
 
 ```javascript
@@ -133,9 +141,9 @@ default:
 Now that your webhook is correctly set up, we need to make sure it is correctly
 processed by your application.
 
-You should first note that **we will always `POST` a json encoded body request**
-to your application. Therefore, you should accept POST requests with a json body.
+You may notice that we actually send the name of the event under the `action`
+field. Learn more about it [here](#invoice-events) and
+[here](#recurring-invoice-events).
 
-Furthermore, you should **remove all CSRF protection** on this route/url. Most
-frameworks activate it by default, which could prevent ProcessOut from
-correctly posting to your application.
+You should also make sure that when deployed on your production environment,
+you do not accept sandbox webhooks anymore.
