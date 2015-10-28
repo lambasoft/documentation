@@ -33,9 +33,9 @@ containg the library, and manage the dependencies yourself.
 require 'vendor/autoload.php';
 
 // Instantiate ProcessOut
-$processout = new \ProcessOut\ProcessOut(
-    '<project-id>',
-    '<project-key>');
+$processout = new \ProcessOut\ProcessOut();
+$processout->setProjectId('<project-id>');
+$processout->setProjectSecret('<project-key>');
 
 // Set this project as the default one for the current request
 \ProcessOut\ProcessOut::setDefault($processout);
@@ -47,9 +47,9 @@ $processout = new \ProcessOut\ProcessOut(
 from processout.processout import ProcessOut
 
 # Instantiate ProcessOut
-processout = ProcessOut(
-    '<project-id>',
-    '<project-key>')
+processout = ProcessOut()
+processout.projectId     = '<project-id>'
+processout.projectSecret = '<project-key>'
 
 # Set this project as the default one for the current request
 ProcessOut.setDefault(processout)
@@ -60,9 +60,9 @@ ProcessOut.setDefault(processout)
 var ProcessOut = require('processout');
 
 // Instantiate ProcessOut
-var processout = new ProcessOut.ProcessOut(
-    '<project-id>',
-    '<project-key>');
+var processout = new ProcessOut.ProcessOut();
+processout.setProjectId('<project-id>');
+processout.setProjectSecret('<project-key>');
 
 // Set this project as the default one for the current request
 ProcessOut.ProcessOut.setDefault(processout);
@@ -71,7 +71,7 @@ ProcessOut.ProcessOut.setDefault(processout);
 > Make sure to replace `<project-id>` and `<project-key>` with your details.
 
 To use ProcessOut's API, you will need to authenticate yourself using your API keys.
-Your API keys are composed of your `project-id` and `project-key`. To get
+Your API keys are composed of your `project-id` and `project-secret`. To get
 these keys, you will need to have created a new project on your dashboard.
 
 Once the authentication is done, a `ProcessOut` object should be returned,
