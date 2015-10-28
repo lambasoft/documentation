@@ -124,6 +124,7 @@ Several options and fields can be set when creating the invoice:
 | taxes        | no | Taxes applied to the transaction. *Default: 0* |
 | shipping     | no | Shipping fee applied to the transaction. *Default: 0* |
 | meta | no | Meta data in the form of a dictionary, containing additional information about the transaction. *Default: empty* |
+| custom | no | Custom data that will be passed again in the events and webhooks (ex: id of the buyer in your app). *Default: empty* |
 | return_url | no | URL to which the customer is returned after a successful transaction. *Default: ProcessOut payment landing page* |
 | cancel_url | no | URL to which the customer is redirected upon cancelation of the transaction. *Default: ProcessOut cancelation landing page* |
 | notify_url | no | URL where ProcessOut will send [webhooks](#) containing updates regarding the transaction. *Default: none* |
