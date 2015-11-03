@@ -75,6 +75,8 @@ as processed, it needs to be done explicitely.
 One could imagine setting up a background worker continuously fetching events
 from ProcessOut.
 
+You may access the actual [data](#data) related to the event in its `data` field.
+
 We also provide [webhooks](#webhooks) to conveniently manage transaction events.
 
 ## Invoice events
@@ -117,7 +119,7 @@ invoice.disputed
 ```
 
 The payment had been placed and the transaction completed, but your customer
-disputed the transaction on the payment processor website (such as PayPal).
+disputed the transaction on the payment gateway website (such as PayPal).
 In most cases, this means that you already gave your customer access to what
 he paid for, so you may wish to revoke their access.
 
@@ -172,3 +174,75 @@ recurring-invoice.ended
 
 Your customer recurring invoice cycle stopped/ended. You may revoke your
 customer's access.
+
+## Data
+
+```json
+{
+    "action": "invoice.completed",
+    "metas": {
+        "Meta 1": "data 1",
+        "Meta 2": "data 2"
+    },
+    "custom":         null,
+    "hmac_signature": "Q4aUOlHGhbrcnjAdS1mJmTwBp6W8TI+52UT5tcEblws=",
+    "project_id":     "fced400c-6d63-48a1-a68a-748295017100",
+    "transaction_id": "7fa334ca-7714-4eaa-8961-d34953298d08",
+    "item": {
+        "name":     "Amazing item",
+        "price":    42.00,
+        "taxes":    24.00,
+        "shipping": 4.20,
+        "total":    70.20,
+        "currency": "EUR"
+    },
+    "customer": {
+        "email":        "john@smith.com",
+        "first_name":   "John",
+        "last_name":    "Smith",
+        "address1":     "42 John street",
+        "address2":     "Suite B",
+        "city":         "Paris",
+        "state":        "",
+        "zip":          "75000",
+        "country_code": "FR"
+    },
+    "customer_gateway": {
+        "name":    "John Smith",
+        "email":   "john@smith.com",
+        "address": "42 John street, 42000 City, Country",
+        "phone":   "+14444444444"
+    },
+    "gateway": {
+        "name":     "paypal",
+        "response": [
+
+        ],
+        "payment_id":   "7fa334ca-7714-4eaa-8961-d34953298d08",
+        "fee":          4.20,
+        "fee_currency": "USD"
+    },
+    "sandbox": true
+}
+```
+
+Data sent with events and [webhooks](#webhooks) are all normalized to be as
+easy to use and remember as possible. You will find the most common data
+pattern sent on the right pane. Please keep in mind that some data may not be
+sent depending on the action.
+
+You may access this data in the `data` field of the event.
+
+| Field | Description |
+| ----- | ----------- |
+| action | [Event name](#invoice-events) |
+| metas  | Meta data sent when creating the invoice |
+| custom | Custom value sent when creating the invoice |
+| hmac_signature | Signature used to check the authencity of the webhook / event |
+| project_id | Project id under which the invoice was created |
+| transaction_id | Transaction id linked to the invoice |
+| item | Information related to the item that was sold |
+| customer | Data related to the customer, which was requested during the checkout |
+| customer_gateway | Data related to the customer, returned by the payment gateway |
+| gateway | Data related to the payment gateway, including its name, raw response and fees |
+| sandbox | Boolean. Sandbox enabled if true |

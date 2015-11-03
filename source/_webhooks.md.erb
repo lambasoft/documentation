@@ -7,7 +7,7 @@ Webhooks can be very useful to automatically deliver an item upon successful
 payment, for instance, without the need for an application running in the
 background.
 
-However, as a lot of payment processors are used at the same time, ProcessOut
+However, as a lot of payment gateways may be used at the same time, ProcessOut
 provides webhooks containing unified, normalized and easy to use data, as well
 as transaction states corresponding to the triggered event.
 
@@ -46,17 +46,17 @@ prevent ProcessOut from correctly posting webhooks to your application.
 ## Usage
 
 ```javascript
-// Let's assume data is filled with the decoded json data from the request body
+// Let's assume req is filled with the decoded json data from the request body
 
 // We first need to check that the callback is coming from ProcessOut
 var callback = new ProcessOut.Callback();
-if (! callback.validate(data['transaction_id'], data['hmac_signature'])) {
+if (! callback.validate(req['transaction_id'], req['hmac_signature'])) {
     console.log('Bad webhook');
     return;
 }
 
 // Then make sure the event isn't coming from the sandbox (if in production)
-if ('sandbox' in data && data['sandbox']) {
+if ('sandbox' in req && req['sandbox']) {
     console.log('Not in sandbox env');
     return;
 }
@@ -80,21 +80,21 @@ default:
 ```python
 from processout.callback import Callback
 
-# Let's assume data is filled with the decoded json data from the request body
+# Let's assume req is filled with the decoded json data from the request body
 
 # We first need to check that the webhook is coming from ProcessOut
 callback = Callback()
-if not callback.validate(data['transaction_id'], data['hmac_signature']):
+if not callback.validate(req['transaction_id'], req['hmac_signature']):
     print ('Bad webhook')
     return
 
 # Webhook is legit! Perform actions on it
 # /!\ Be sure to still check the amount, currencies... /!\
-if data['action'] == 'invoice.completed':
+if req['action'] == 'invoice.completed':
     # Transaction successful
     pass
 
-elif data['action'] == 'invoice.pending':
+elif req['action'] == 'invoice.pending':
     # Transaction still needs some time to be processed
     pass
 
@@ -107,23 +107,23 @@ else:
 
 ```php
 <?php
-$data = json_decode(file_get_contents('php://input'), true);
+$req = json_decode(file_get_contents('php://input'), true);
 
 // We first need to check that the callback is coming from ProcessOut
 $callback = new \ProcessOut\Callback();
-if (! $callback->validate($data))
+if (! $callback->validate($req))
 {
     echo 'Bad webhook'; exit();
 }
 
 // Then make sure the event isn't coming from the sandbox (if in production)
-if (! empty($data['sandbox']) && $data['sandbox']) {
+if (! empty($req['sandbox']) && $req['sandbox']) {
     echo 'Not in sandbox env'; exit();
 }
 
 // Webhook is legit! Perform actions on it
 // /!\ Be sure to still check the price, currencies... /!\
-switch($data['action'])
+switch($req['action'])
 {
 case 'invoice.completed':
     // Transaction successful
@@ -153,48 +153,3 @@ Once correctly processed by your application, you should always return a
 <strong>status 200 response</strong>. If you don't, ProcessOut will try to send the webhook
 again, waiting an increasing amount of time between each tries.
 </aside>
-
-## Data
-
-```json
-{
-    "action": "invoice.completed",
-    "metas": {
-        "Meta 1": "data 1",
-        "Meta 2": "data 2"
-    },
-    "custom":         null,
-    "hmac_signature": "Q4aUOlHGhbrcnjAdS1mJmTwBp6W8TI+52UT5tcEblws=",
-    "project_id":     "fced400c-6d63-48a1-a68a-748295017100",
-    "transaction_id": "7fa334ca-7714-4eaa-8961-d34953298d08",
-    "item": {
-        "name":     "Amazing item",
-        "price":    42.00,
-        "taxes":    24.00,
-        "shipping": 4.20,
-        "total":    70.20,
-        "currency": "EUR"
-    },
-    "customer_processor": {
-        "name":    "John Smith",
-        "email":   "john@smith.com",
-        "address": "42 John street, 42000 City, Country",
-        "phone":   "+14444444444"
-    },
-    "processor": {
-        "name":     "paypal",
-        "response": [
-
-        ],
-        "payment_id": "7fa334ca-7714-4eaa-8961-d34953298d08",
-        "fee":     0,
-        "fee_currency":"-"
-    },
-    "sandbox":true
-}
-```
-
-Data sent with events and webhooks are all normalized to be as easy to use and
-remember as possible. You will find the most common data pattern sent on the
-right pane. Please keep in mind that some data may not be sent depending
-on the action.
