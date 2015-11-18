@@ -95,10 +95,10 @@ $invoice
 $invoice->create();
 
 // Print the id of the invoice to be used with the modal
-echo invoice->getId();
+echo $invoice->getId();
 // > 64db379a-301f-4db6-859e-a0b342ff0b66
 // or its checkout url
-echo invoice->getUrl();
+echo $invoice->getUrl();
 // > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
 ?>
 ```
