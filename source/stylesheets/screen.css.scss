@@ -55,6 +55,7 @@ html, body {
 }
 
 .tocify-wrapper {
+  @extend %header-font;
   @include transition(left ease-in-out 0.3s);
   overflow-y: auto;
   overflow-x: hidden;
@@ -67,6 +68,7 @@ html, body {
   background-color: $nav-bg;
   font-size: 13px;
   font-weight: 500;
+  border-right: 1px solid darken($nav-bg, 3);
 
   // language selector for mobile devices
   .lang-selector {
@@ -78,8 +80,20 @@ html, body {
   }
 
   // This is the logo at the top of the ToC
-  &>img {
+  &>a {
     display: block;
+    line-height: 67px;
+    vertical-align: middle;
+    border-bottom: 1px solid darken($nav-bg, 3);
+    margin-bottom: 15px;
+    margin-left: $nav-padding;
+
+    img {
+        max-height: 40px;
+        vertical-align: middle;
+        display: inline-block;
+        position: relative;
+    }
   }
 
   &>.search {
@@ -163,16 +177,13 @@ html, body {
 
   li {
     color: $nav-text;
-    @include transition-property('background');
-    @include transition-timing-function('linear');
-    @include transition-duration(230ms);
   }
 
   // This is the currently selected ToC entry
   .tocify-focus {
-    @include box-shadow(0px 1px 0px $nav-active-shadow);
     background-color: $nav-active-bg;
     color: $nav-active-text;
+    font-weight: 600;
   }
 
   // Subheaders are the submenus that slide open
@@ -184,6 +195,7 @@ html, body {
     .tocify-item>a {
       padding-left: $nav-padding + $nav-indent;
       font-size: 12px;
+      font-size: 0.9em;
     }
 
     // for embossed look:
@@ -342,7 +354,6 @@ html, body {
     padding: 0 $main-padding;
     @include box-sizing(border-box);
     display: block;
-    @include text-shadow($main-embossed-text-shadow);
 
     @extend %left-col;
   }
@@ -356,18 +367,18 @@ html, body {
     clear:both;
   }
 
+  h1, h2, h3 {
+    color: $header-color;
+  }
+
   h1 {
     @extend %header-font;
-    font-size: 30px;
-    padding-top: 0.5em;
+    font-size: 38px;
+    padding-top: 80px;
     padding-bottom: 0.5em;
-    border-bottom: 1px solid #ccc;
     margin-bottom: $h1-margin-bottom;
     margin-top: 2em;
-    border-top: 1px solid #ddd;
-    @include background-image(
-      linear-gradient(top, #fff, #f9f9f9)
-    );
+    border-top: 1px solid rgba(#dddddd, 0.8);
   }
 
   h1:first-child, div:first-child + h1 {
@@ -377,15 +388,11 @@ html, body {
 
   h2 {
     @extend %header-font;
-    font-size: 20px;
+    font-size: 26px;
     margin-top: 4em;
     margin-bottom: 0;
-    border-top: 1px solid #ccc;
     padding-top: 1.2em;
     padding-bottom: 1.2em;
-    @include background-image(
-      linear-gradient(top, rgba(#fff,0.4), rgba(#fff, 0))
-    );
   }
 
   // h2s right after h1s should bump right up
@@ -404,7 +411,7 @@ html, body {
   }
 
   h4, h5, h6 {
-    font-size: 10px;
+    font-size: 15px;
   }
 
   hr {
@@ -416,32 +423,29 @@ html, body {
   table {
     margin-bottom: 1em;
     overflow: auto;
-    th,td {
+
+    th, td {
       text-align: left;
       vertical-align: top;
-      line-height: 1.6;
+      padding: 20px;
+    }
+    th:first-child, td:first-child {
+      padding-left: 0;
+    }
+    th:last-child, td:last-child {
+      padding-right: 0;
     }
 
     th {
-      padding: 5px 10px;
-      border-bottom: 1px solid #ccc;
       vertical-align: bottom;
     }
 
     td {
-      padding: 10px;
+      border-top: 1px solid darken($nav-bg, 3);
     }
 
-    tr:last-child {
-      border-bottom: 1px solid #ccc;
-    }
-
-    tr:nth-child(odd)>td {
-      background-color: lighten($main-bg,4.2%);
-    }
-
-    tr:nth-child(even)>td {
-      background-color: lighten($main-bg,2.4%);
+    thead tr:last-child {
+      border-bottom: 1px solid darken($nav-bg, 3);
     }
   }
 
@@ -478,7 +482,6 @@ html, body {
   aside {
     padding-top: 1em;
     padding-bottom: 1em;
-    @include text-shadow(0 1px 0 lighten($aside-notice-bg, 15%));
     margin-top: 1.5em;
     margin-bottom: 1.5em;
     background: $aside-notice-bg;
@@ -486,12 +489,10 @@ html, body {
 
     &.warning {
       background-color: $aside-warning-bg;
-      @include text-shadow(0 1px 0 lighten($aside-warning-bg, 15%));
     }
 
     &.success {
       background-color: $aside-success-bg;
-      @include text-shadow(0 1px 0 lighten($aside-success-bg, 15%));
     }
   }
 
@@ -518,7 +519,6 @@ html, body {
     margin: -2px;
     border-radius: 4px;
     border: 1px solid #F7E633;
-    @include text-shadow(1px 1px 0 #666);
     @include background(linear-gradient(bottom right, #F7E633 0%, #F1D32F 100%));
   }
 }
@@ -541,7 +541,6 @@ html, body {
     clear:right;
 
     @include box-sizing(border-box);
-    @include text-shadow(0px 1px 2px rgba(0,0,0,0.4));
 
     @extend %right-col;
 

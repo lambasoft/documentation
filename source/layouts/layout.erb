@@ -52,8 +52,8 @@ under the License.
                 </span>
             </a>
             <div class="tocify-wrapper">
-                <a href="https://www.processout.com">
-                    <%= image_tag "logo.png", style: "margin-top: 10px; margin-left: 25px; width: 170px; opacity: 0.9;" %>
+                <a href="https://www.processout.com" class="main-logo">
+                    <%= image_tag "logo.png" %>
                 </a>
                 <% if language_tabs %>
                     <div class="lang-selector">
@@ -65,12 +65,6 @@ under the License.
                             <% end %>
                         <% end %>
                     </div>
-                <% end %>
-                <% if current_page.data.search %>
-                    <div class="search">
-                        <input type="text" class="search" id="input-search" placeholder="Search">
-                    </div>
-                    <ul class="search-results"></ul>
                 <% end %>
                 <div id="toc">
                 </div>
