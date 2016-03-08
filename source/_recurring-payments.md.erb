@@ -1,18 +1,36 @@
-# Recurring payments
+## Subscriptions
 
-## Overview
-
-Recurring invoices are a great way to get recurring income from your customers,
+Recurring invoices, or subscriptions, are a great way to get recurring income from your customers,
 with a high conversion rate. Because of how payment gateways differently handle
 this type of payment, ProcessOut will try to make most of the features offered
 by them.
 
 If recurring payments are not available for the payment gateway chosen
-by the customer, ProcessOut will handle the iterations of each payment by
-generating new invoices for every new period, and by sending reminder emails,
-but will keep it transparent for you.
+by the customer, ProcessOut will handle the iterations of each payment gateway,
+keeping it transparent to you.
 
-## Usage
+##### Attributes
+|||
+--:|:--
+**id**<br />*string*<br />Read-only |
+**url**<br />*string*<br />Read-only | `url` to the ProcessOut checkout page
+**project**<br />*[Project](#reference/projects)*<br />Read-only |
+**customer**<br />*[Customer](#reference/customers)*<br />Read-only |
+**name**<br />*string*<br />Required | Name of the recurring invoice/item to sell
+**price**<br />*string*<br />Required | Price of the invoice/item
+**taxes**<br />*string* | Taxes applied to the invoice/item
+**shipping**<br />*string* | Shipping fees applied to the invoice/item
+**currency**<br />*string*<br />Required | Currency of the recurring invoice, in the ISO 4217 format (ex: `USD`, `EUR`)
+**recurring_days**<br />*integer*<br />Required | Number of days for the recurring period
+**trial_days**<br />*integer* | Number of days for the trial period, before which the customer won't pay. Defaults to `0`
+**return_url**<br />*string* | `url` used to redirect the customer once the payment is placed
+**cancel_url**<br />*string* | `url` used to redirect the customer when the payment is canceled |ProcessOut cancelation landing page
+**ended**<br />*boolean* |
+**ended_reason**<br />*boolean* | If `ended` is true, represents the reason why the recurring invoice was ended
+**custom**<br />*string* | Custom data passed in the [webhooks](#webhooks) (ex: id of the customer in your database)
+**sandbox**<br />*boolean*<br />Read-only |
+
+### Create a subscription
 
 ```javascript
 // Create a new recurring invoice
@@ -82,10 +100,80 @@ echo $recurringInvoice->getUrl();
 ?>
 ```
 
-Making a recurring invoice takes one line of code with ProcessOut,
-if you're already using our [invoicing solution](#invoices).
+Create a recurring invoice.
+The field `recurring_days` must be set to the number of days you wish your
+recurring period to last.
 
-The field `recurring_days` must be set to the `number of days` you wish your
-invoicing period to last (defaults to 0), and the field `request_email` will
-automatically be set to `true`. Otherwise, the same fields used
-when creating a normal invoice may be used.
+Once the recurring payment is created, you may use our [payment modal](#payment-modal)
+to keep your customer on your website instead of redirecting it to our checkout page.
+
+#### What's next?
+
+- [Find a subscription](#find-a-subscription)
+- [Cancel a subscription](#cancel-a-subscription)
+
+### Find a subscription
+
+```javascript
+// Find a recurring invoice from its id
+var recurringInvoice = ProcessOut.RecurringInvoice.find('recurring-invoice-id');
+```
+
+```python
+from processout.recurringinvoice import RecurringInvoice
+
+# Find a recurring invoice from its id
+recurringInvoice = RecurringInvoice.find('recurring-invoice-id')
+```
+
+```php
+<?php
+// Find a recurring invoice from its id
+$recurringInvoice = \ProcessOut\RecurringInvoice::find('recurring-invoice-id');
+?>
+```
+
+Find a subscription by its `id`.
+
+If a subscription corresponding to the `id` is found, a new subscription object
+is returned.
+
+##### Parameters
+|||
+--:|:--
+**id**<br />*string* | ID of the subscription/recurring invoice
+
+
+### Cancel a subscription
+
+```javascript
+// Find a recurring invoice from its id
+var recurringInvoice = ProcessOut.RecurringInvoice.find('recurring-invoice-id');
+// Ending the recurring invoice with a reason
+var success = recurringInvoice.end('Reason goes here');
+```
+
+```python
+from processout.recurringinvoice import RecurringInvoice
+
+# Find a recurring invoice from its id
+recurringInvoice = RecurringInvoice.find('recurring-invoice-id')
+# Ending the recurring invoice with a reason
+success = recurringInvoice.end('Reason goes here');
+```
+
+```php
+<?php
+// Find a recurring invoice from its id
+$recurringInvoice = \ProcessOut\RecurringInvoice::find('recurring-invoice-id');
+// Ending the recurring invoice with a reason
+$success = $recurringInvoice.end('Reason goes here');
+?>
+```
+
+Once a subscription is created, you might want to stop or cancel it. ProcessOut
+makes it very easy and abstract away all the complexity linked to the payment
+gateway used by your customer when setting up the subscription.
+
+A `ended_reason` may also be specified when ending/canceling a subscription,
+for later reference.

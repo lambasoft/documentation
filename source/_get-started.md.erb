@@ -1,6 +1,6 @@
-# Get started
+## Get started
 
-## Installation
+### Installation
 
 ```javascript
 npm install processout
@@ -25,7 +25,15 @@ commands and/or dropping in some files.
 You may also want to simply run a `git clone` command or download an archive
 containg the library, and manage the dependencies yourself.
 
-## Authentication
+### Versionning
+
+The ProcessOut API is entirely `versionized` to ensure backward compatibility
+when we release new features or push breaking changes. This is done thanks to the
+`API-Version` header.
+
+The API version is automatically set in the libraries so you don't need to worry about it.
+
+### Authentication
 
 ```php
 <?php
@@ -76,3 +84,83 @@ these keys, you will need to have created a new project on your dashboard.
 
 Once the authentication is done, a `ProcessOut` object should be returned,
 representing your ProcessOut project.
+
+## Sandbox
+
+```javascript
+var projectId     = '<project-id>';
+var projectSecret = '<project-key>';
+
+// To enable the sandbox
+if(sandbox) {
+    projectId = 'sandbox-' + projectId
+}
+
+var processout = new ProcessOut.ProcessOut(projectId, projectSecret)
+```
+
+```python
+projectId     = '<project-id>'
+projectSecret = '<project-key>'
+
+# To enable the sandbox
+if sandbox:
+    projectId = 'sandbox-' + projectId
+
+processout = ProcessOut(projectId, projectSecret)
+```
+
+```php
+<?php
+$projectId     = '<project-id>';
+$projectSecret = '<project-key>';
+
+// To enable the sandbox
+if($sandbox)
+    $projectId = 'sandbox-' . $projectId;
+
+$processout = new \ProcessOut\ProcessOut($projectId, $projectSecret);
+?>
+```
+
+> When deploying to production, you should verify that your webhooks are
+> not coming from the sandbox
+
+```javascript
+// Let's assume data is filled with the webhook json decoded data
+// Verify that the webhook is NOT from the sandbox
+if(data['sandbox'] && !sandbox) {
+    console.log('Sandbox mode is not allowed.');
+    return;
+}
+```
+
+```python
+# Let's assume data is filled with the webhook json decoded data
+# Verify that the webhook is NOT from the sandbox
+if data['sandbox'] and not sandbox:
+    print ('Sandbox mode is not allowed.')
+    return
+```
+
+```php
+<?php
+// Let's assume $data is filled with the webhook json decoded data
+// Verify that the webhook is NOT from the sandbox
+if($data['sandbox'] && !$sandbox)
+{
+    echo 'Sandbox mode is not allowed.';
+    exit();
+}
+?>
+```
+
+When developing your application, you might need to troubleshoot
+problems which may occur in your ProcessOut implementation.
+
+The ProcessOut sandbox lets you send all kinds of
+webhooks or events to your application. To enable the sandbox, prepend `sandbox-`
+to your project id. The checkout page of invoices you create under the sandbox
+will display a list of events that you can trigger. These events, when triggered,
+will send a webhook to your application if a `notify_url` was set in your
+[dashboard](https://dashboard.processout.com).

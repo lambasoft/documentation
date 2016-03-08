@@ -22,7 +22,7 @@ under the License.
 
 $primary-color: #5b4388;
 $secondary-color: #9059BD;
-$tertiary-color: #464F89;
+$tertiary-color: #9b59b6;
 
 
 // BACKGROUND COLORS
@@ -48,7 +48,7 @@ $search-notice-bg: #c97a7e;
 ////////////////////
 $main-text: #34495e; // main content text color
 $nav-text: rgb(62, 73, 86);
-$nav-active-text: $primary-color;
+$nav-active-text: $tertiary-color;
 $lang-select-text: #fff; // color of unselected language tab text
 $lang-select-active-text: #fff; // color of selected language tab text
 $lang-select-pressed-text: #fff; // color of language tab text when mouse is pressed
@@ -61,7 +61,7 @@ $nav-width: 230px; // width of the navbar
 $examples-width: 50%; // portion of the screen taken up by code examples
 $logo-margin: 40px; // margin between nav items and logo, ignored if search is active
 $main-padding: 28px; // padding to left and right of content & examples
-$nav-padding: 15px; // padding to left and right of navbar
+$nav-padding: 25px; // padding to left and right of navbar
 $nav-v-padding: 5px; // padding used vertically around search boxes and results
 $search-bottom-margin: 10px;
 $nav-indent: 15px; // extra padding for ToC subitems
@@ -75,18 +75,18 @@ $phone-width: $tablet-width - $nav-width; // min width before reverting to mobil
 ////////////////////
 %default-font {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 %header-font {
   font-family: "Lato" ,"Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 300;
 }
 
 %code-font {
   font-family: Consolas, Menlo, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace, serif;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.5;
 }
 

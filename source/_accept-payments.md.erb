@@ -1,45 +1,77 @@
-# Accept payments
+## Accept payments
 
-## Payment modal
+### Payment modal
 
 ```html
 <a class="processout-modal-button"
-    data-invoiceid="<invoice-id>"
     href="https://checkout.processout.com/<invoice-id>">
         Test modal
 </a>
-<script src="https://cdn.processout.com/scripts/modal-min.js"></script>
+<script src="https://cdn.processout.com/modal-min.js"></script>
 ```
 
-The easiest way to accept payments with ProcessOut is by using our payment modal,
+> Replace `href` with any link to checkout.processout.com
+
+The easiest way to accept payments with ProcessOut is by using the payment modal,
 which takes care of creating the HTML forms and checkout experience, but still
 keeps your customer on your website. It is essentially a window showing up in front
 of your website when your customer wants to pay.
 
-[What's next? Accept dynamically generated invoices.](#invoices)
+It is important to note that the modal is compatible with every ProcessOut
+checkout pages, being a one-off payment, a recurring invoice or an authorization
+to be charged later.
 
-> Replace `<invoice-id>` with the id of the invoice
+#### What's next?
 
-## Tailored invoices
+- [Accept dynamically generated invoices](#invoices)
+- [Accept recurring payments](#recurring-invoices)
+
+### Tailored invoices
 
 ```html
 <a class="processout-modal-button"
-    data-invoiceid="t-<tailored-invoice-id>"
     href="https://checkout.processout.com/t-<tailored-invoice-id>">
         Test modal
 </a>
-<script src="https://cdn.processout.com/scripts/modal-min.js"></script>
+<script src="https://cdn.processout.com/modal-min.js"></script>
 ```
 
 > Mind the `t-` prefixing the `tailored-invoice-id`!
 
-Tailored invoices is a great way to start using our modal. All you need to do
+Tailored invoices is a great way to start using the modal. All you need to do
 is [create a tailored invoice](https://processout.zendesk.com/hc/en-us/articles/205747058-Tailored-invoices).
 Once created, the id of your tailored invoice -- which can be retrieved from
 your dashboard -- can be injected in the modal as shown on the right pane,
 using the same code as for common invoices.
 
 ## Invoices
+
+Invoice objects are tailored invoices, but dynamic. ProcessOut gives you ability
+to programmatically create and mange invoices compatible with all your payment gateways,
+in one simple call.
+
+##### Attributes
+|||
+--:|:--
+**id**<br />*string*<br />Read-only |
+**url**<br />*string*<br />Read-only | `url` to the ProcessOut checkout page
+**project**<br />*[Project](#reference/projects)*<br />Read-only |
+**customer**<br />*[Customer](#reference/customers)*<br />Read-only |
+**name**<br />*string*<br />Required | Name of the invoice/item to sell
+**price**<br />*string*<br />Required | Price of the invoice/item
+**taxes**<br />*string* | Taxes applied to the invoice/item
+**shipping**<br />*string* | Shipping fees applied to the invoice/item
+**total**<br />*string*<br />Read-only | Total amount of the invoice
+**currency**<br />*string*<br />Required | Currency of the invoice, in the ISO 4217 format (ex: `USD`, `EUR`)
+**metas**<br />*map/dictionary* | Meta data displayed on the checkout page
+**request_email**<br />*boolean* | If set to `true`, a customer with an email will be required
+**request_shipping**<br />*boolean* | If set to `true`, a customer with a shipping address will be required
+**return_url**<br />*string* | `url` used to redirect the customer once the payment is placed
+**cancel_url**<br />*string* | `url` used to redirect the customer when the payment is canceled |ProcessOut cancelation landing page
+**custom**<br />*string* | Custom data passed in the [webhooks](#webhooks) (ex: id of the customer in your database)
+**sandbox**<br />*boolean*<br />Read-only |
+
+### One-off payments
 
 ```javascript
 // Create a new invoice
@@ -110,25 +142,3 @@ payment flow for your customers.
 Once an invoice is created, its checkout URL `url` and unique identifier `id`
 are returned. You may then choose to redirect your customer to our payment
 page, or to use our [payment modal](#payment-modal).
-
-Once an invoice is created, you will receive its checkout URL `url` as well as
-its unique identifier `id`. Simply redirect your customer to the `url` to perform
-the transaction, or create a new modal -- using our javascript library -- with the `id`.
-
-Several options and fields can be set when creating the invoice:
-
-| Field | Required | Description |
-| ----- | -------- | ----------- |
-| **name**  | **yes**      | Name of the transaction. Can be anything. |
-| **price** | **yes**      | Price of the transaction, without taxes and shipping fees. |
-| **currency** | **yes**    | Currency of the transaction. Ex: `USD` |
-| taxes        | no | Taxes applied to the transaction. *Default: 0* |
-| shipping     | no | Shipping fee applied to the transaction. *Default: 0* |
-| meta | no | Meta data in the form of a dictionary, containing additional information about the transaction. *Default: empty* |
-| custom | no | Custom data that will be passed again in the events and webhooks (ex: id of the buyer in your app). *Default: empty* |
-| return_url | no | URL to which the customer is returned after a successful transaction. *Default: ProcessOut payment landing page* |
-| cancel_url | no | URL to which the customer is redirected upon cancelation of the transaction. *Default: ProcessOut cancelation landing page* |
-| notify_url | no | URL where ProcessOut will send [webhooks](#webhooks) containing updates regarding the transaction. *Default: none* |
-| request_email | no | Boolean. Asks for the customer's email during the checkout flow. *Default: false* |
-| request_shipping | no | Boolean. Asks for the customer's shipping address during the checkout flow. *Default: false* |
-

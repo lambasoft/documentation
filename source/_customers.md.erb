@@ -1,0 +1,203 @@
+## Customers
+
+Customer objects provide an easy to track your customers sales across all payment
+gateways, as well as collecting their information, such as their `email address`
+or their `shipping/billing address`.
+
+##### Attributes
+|||
+--:|:--
+**id**<br />*string*<br />Read-only |
+**authorization_url**<br />*string*<br />Read-only | `url` to the ProcessOut checkout page
+**authorization_return_url**<br />*string* | `url` used to redirect the customer once an authorization is placed
+**authorization_cancel_url**<br />*string* | `url` used to redirect the customer when an authorization is canceled |ProcessOut cancelation landing page
+**pin**<br />*string*<br />Required if previously set | PIN code the customer will need in order to update its information or pay using one of its stored tokens on a public application.
+**has_ping**<br />*boolean*<br /> | `true` if the field `pin` was previously set
+**email**<br />*string* | Customer's email
+**first_name**<br />*string* |
+**last_name**<br />*string* |
+**address1**<br />*string* |
+**address2**<br />*string* |
+**city**<br />*string* |
+**state**<br />*string* |
+**zip**<br />*string* |
+**country_code**<br />*string* | Customer's address country code (ex: `US`, `FR`)
+**sandbox**<br />*boolean*<br />Read-only |
+
+### Create a customer
+
+```javascript
+// Create a new customer object
+var customer = new ProcessOut.Customer();
+// Fill the customer object with data
+customer.setEmail('john@smith.com');
+customer.setFirstName('John');
+customer.setLastName('Smith');
+
+// Push the customer to ProcessOut
+customer.create();
+
+// We may now access its id
+console.log(customer.getId());
+// > 64db379a-301f-4db6-859e-a0b342ff0b66
+```
+
+```python
+from processout.customer import Customer
+
+# Create a new customer object
+customer = Customer()
+# Fill the customer object with data
+customer.email = 'john@smith.com';
+customer.firstName = 'John';
+customer.lastName = 'Smith';
+
+# Push the customer to ProcessOut
+customer.create()
+
+# We may now access its id
+print(customer.id)
+# > 64db379a-301f-4db6-859e-a0b342ff0b66
+```
+
+```php
+<?php
+// Create a new customer object
+$customer = new \ProcessOut\Customer();
+// Fill the customer object with data
+$customer->setEmail('john@smith.com');
+$customer->setFirstName('John');
+$customer->setLastName('Smith');
+
+// Push the customer to ProcessOut
+$customer->create();
+
+// We may now access its id
+echo $customer->getId();
+// > 64db379a-301f-4db6-859e-a0b342ff0b66
+?>
+```
+
+Creates a new customer.
+
+The `pin` field must be set by the customer when storing a new
+[authorization token](#authorization-token) if you later use one of our
+public authentication library (such as our iOS framework).
+
+### Find a customer
+
+```javascript
+// Find a customer by its id
+var customer = ProcessOut.Customer.find('customer-id');
+```
+
+```python
+from processout.customer import Customer
+
+# Find a customer by its id
+customer = Customer.find('customer-id')
+```
+
+```php
+<?php
+// Find a customer by its id
+$customer = \ProcessOut\Customer::find('customer-id');
+?>
+```
+
+Finds a customer by its `id`.
+
+If a customer corresponding to the given `id` is found, a new customer object
+is returned.
+
+##### Parameters
+|||
+--:|:--
+**id**<br />*string* | ID of the customer
+
+### Update a customer
+
+```javascript
+// Find a customer by its id
+var customer = ProcessOut.Customer.find('customer-id');
+
+// Fill the customer object with new data
+customer.setEmail('john@smith.com');
+customer.setFirstName('John');
+customer.setLastName('Smith');
+
+// Push the updates to ProcessOut
+customer.save();
+```
+
+```python
+from processout.customer import Customer
+
+# Find a customer by its id
+customer = Customer.find('customer-id')
+
+# Fill the customer object with new data
+customer.email     = 'john@smith.com';
+customer.firstName = 'John';
+customer.lastName  = 'Smith';
+
+# Push the updates to ProcessOut
+customer.save()
+```
+
+```php
+<?php
+// Find a customer by its id
+$customer = \ProcessOut\Customer::find('customer-id');
+
+// Fill the customer object with new data
+$customer->setEmail('john@smith.com');
+$customer->setFirstName('John');
+$customer->setLastName('Smith');
+
+// Push the updates to ProcessOut
+$customer->save();
+?>
+```
+
+Updates a customer.
+
+This request accepts mostly the same arguments as the creation request.
+
+If the update is successful, the current object instance is filled with its
+updated data as well.
+
+### Delete a customer
+
+```javascript
+// Find a customer by its id
+var customer = ProcessOut.Customer.find('customer-id');
+
+// Delete the customer
+customer.delete();
+```
+
+```python
+from processout.customer import Customer
+
+# Find a customer by its id
+customer = Customer.find('customer-id')
+
+# Delete the customer
+customer.delete()
+```
+
+```php
+<?php
+// Find a customer by its id
+$customer = \ProcessOut\Customer::find('customer-id');
+
+// Delete the customer
+$customer->delete();
+?>
+```
+
+Deletes a customer.
+
+Once a customer is deleted, all data associated with it will be deleted as well.
+**This can't be undone.**

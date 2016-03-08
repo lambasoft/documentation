@@ -1,4 +1,4 @@
-# Handle errors
+## Handle exceptions
 
 ```javascript
 // Promises should be used to check for any error
@@ -70,5 +70,11 @@ catch(ProcessOut\Exceptions\NotFoundException $e)
 ```
 
 To make it easy for developers to handle errors in their applications,
-ProcessOut provides a set of tools to easily handle errors and exceptions,
-directly in their code.
+ProcessOut provides a set of class/objects to programmatically handle each different case.
+
+##### Exceptions
+|||
+--:|:--
+API authentication exception | The provided API credentials could not be verified
+API exception | The request could not complete: the parameters are incorrect
+Not found exception | The requested resource could not be found

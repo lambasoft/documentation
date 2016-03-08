@@ -1,56 +1,38 @@
-# Webhooks
+## Webhooks
 
 Processing [events](#events) can also be done through webhooks (also called
 callbacks or Instant Payment Notification: IPN). It is essentially a web
 request made to your web application, posting the data related to the event.
-Webhooks can be very useful to automatically deliver an item upon successful
+Webhooks can be used to automatically deliver an item upon successful
 payment, for instance, without the need for an application running in the
 background.
 
-However, as a lot of payment gateways may be used at the same time, ProcessOut
+However, as many payment gateways can be used at the same time, ProcessOut
 provides webhooks containing unified, normalized and easy to use data, as well
 as transaction states corresponding to the triggered event.
 
-## Pre-requisites
+### Pre-requisites
 
-```javascript
-// Let's assume invoice has previously been instantiated
-invoice.notifyUrl = 'http(s)://your.site/webhook';
-```
+In order to start receiving webhooks, you must add your `notify_url`s in your
+[ProcessOut dashboard](https://dashboard.processout.com).
 
-```python
-# Let's assume invoice has previously been instantiated
-invoice.notifyUrl = 'http(s)://your.site/webhook'
-```
-
-```php
-<?php
-// Let's assume $invoice has previously been instantiated
-$invoice->setNotifyUrl('http(s)://your.site/webhook');
-?>
-```
-
-The URL to which ProcessOut will post webhooks has to be specified in the
-`notify_url` field that you post to ProcessOut when creating an
-[invoice](#invoice), or a [recurring invoice](#recurring-payment). By default,
-this field will be empty, and the webhook will therefore never be sent.
-
-You should also note that **we will always `POST` a json encoded body request**
+You should also note that *we will always `POST` a json encoded body request*
 to your application. Therefore, you should accept POST requests with a json body.
 
-Furthermore, you should **remove all CSRF protection** on the URL you provide
-using `notify_url`. Most frameworks and CMS activate it by default, which could
+Furthermore, you should *remove all CSRF protection* on your endpoints receiving
+webhooks. Most frameworks and CMS activate it by default, which could
 prevent ProcessOut from correctly posting webhooks to your application.
 
 
-## Usage
+### Usage
 
 ```javascript
-// Let's assume req is filled with the decoded json data from the request body
+// Let's assume reqRaw is filled with the raw request content
+// and req is filled with the decoded json data from the request body
 
 // We first need to check that the callback is coming from ProcessOut
 var callback = new ProcessOut.Callback();
-if (! callback.validate(req['transaction_id'], req['hmac_signature'])) {
+if (! callback.validate(reqRaw)) {
     console.log('Bad webhook');
     return;
 }
@@ -62,12 +44,11 @@ if ('sandbox' in req && req['sandbox']) {
 }
 
 // Webhook is legit! Perform actions on it
-// /!\ Be sure to still check the price, currencies... /!\
-switch (input['action']) {
-case 'invoice.completed':
+switch (input['name']) {
+case 'invoice.transaction.completed':
     // Transaction successful
     break;
-case 'invoice.pending':
+case 'invoice.transaction.pending':
     // Transaction still needs some time to be processed
     break;
 // ...
@@ -80,21 +61,21 @@ default:
 ```python
 from processout.callback import Callback
 
-# Let's assume req is filled with the decoded json data from the request body
+# Let's assume reqRaw is filled with the raw request content
+# and req is filled with the decoded json data from the request body
 
 # We first need to check that the webhook is coming from ProcessOut
 callback = Callback()
-if not callback.validate(req['transaction_id'], req['hmac_signature']):
+if not callback.validate(reqRaw):
     print ('Bad webhook')
     return
 
 # Webhook is legit! Perform actions on it
-# /!\ Be sure to still check the amount, currencies... /!\
-if req['action'] == 'invoice.completed':
+if req['name'] == 'invoice.transaction.completed':
     # Transaction successful
     pass
 
-elif req['action'] == 'invoice.pending':
+elif req['name'] == 'invoice.transaction.pending':
     # Transaction still needs some time to be processed
     pass
 
@@ -107,11 +88,12 @@ else:
 
 ```php
 <?php
-$req = json_decode(file_get_contents('php://input'), true);
+$reqRaw = file_get_contents('php://input');
+$req    = json_decode($reqRaw, true);
 
 // We first need to check that the callback is coming from ProcessOut
 $callback = new \ProcessOut\Callback();
-if (! $callback->validate($req))
+if (! $callback->validate($reqRaw))
 {
     echo 'Bad webhook'; exit();
 }
@@ -122,13 +104,12 @@ if (! empty($req['sandbox']) && $req['sandbox']) {
 }
 
 // Webhook is legit! Perform actions on it
-// /!\ Be sure to still check the price, currencies... /!\
-switch($req['action'])
+switch($req['name'])
 {
-case 'invoice.completed':
+case 'invoice.transaction.completed':
     // Transaction successful
     break;
-case 'invoice.pending':
+case 'invoice.transaction.pending':
     // Transaction still needs some time to be processed
     break;
 // ...
@@ -139,17 +120,11 @@ default:
 ```
 
 Now that your webhook is correctly set up, we need to make sure it is correctly
-processed by your application.
-
-You may notice that we actually send the name of the event under the `action`
-field. Learn more about it [here](#invoice-events) and
-[here](#recurring-invoice-events).
+processed and authenticated by your application.
 
 You should also make sure that when deployed on your production environment,
 you do not accept sandbox webhooks anymore.
 
-<aside class="notice">
 Once correctly processed by your application, you should always return a
-<strong>status 200 response</strong>. If you don't, ProcessOut will try to send the webhook
+`status 200 response`. If you don't, ProcessOut will try to send the webhook
 again, waiting an increasing amount of time between each tries.
-</aside>

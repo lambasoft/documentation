@@ -31,6 +31,8 @@
         tocHoverClassName = "tocify-hover",
         hideTocClassName = "tocify-hide",
         hideTocClass = "." + hideTocClassName,
+        separatorClassName = "tocify-separator",
+        separatorClass = "." + separatorClassName,
         headerClassName = "tocify-header",
         headerClass = "." + headerClassName,
         subheaderClassName = "tocify-subheader",
@@ -60,6 +62,10 @@
             // **selectors**: Accepts an Array of Strings: Any jQuery selectors
             // The element's used to generate the table of contents.  The order is very important since it will determine the table of content's nesting structure
             selectors: "h1, h2, h3",
+
+            root: "h1, h2",
+
+            separator: "h1",
 
             // **showAndHide**: Accepts a boolean: true or false
             // Used to determine if elements should be shown and hidden
@@ -224,21 +230,8 @@
                 ul,
                 ignoreSelector = self.options.ignoreSelector;
 
-             // If the selectors option has a comma within the string
-             if(this.options.selectors.indexOf(",") !== -1) {
 
-                 // Grabs the first selector from the string
-                 firstElem = $(this.options.context).find(this.options.selectors.replace(/ /g,"").substr(0, this.options.selectors.indexOf(",")));
-
-             }
-
-             // If the selectors option does not have a comman within the string
-             else {
-
-                 // Grabs the first selector from the string and makes sure there are no spaces
-                 firstElem = $(this.options.context).find(this.options.selectors.replace(/ /g,""));
-
-             }
+            firstElem = $(this.options.context).find(this.options.root);
 
             if(!firstElem.length) {
 
@@ -255,6 +248,11 @@
 
                 //If the element matches the ignoreSelector then we skip it
                 if($(this).is(ignoreSelector)) {
+                    return;
+                }
+
+                if ($(this).is(self.options.separator)) {
+                    self.element.append($(this));
                     return;
                 }
 
