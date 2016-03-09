@@ -24,7 +24,7 @@ to be charged later.
 #### What's next?
 
 - [Accept dynamically generated invoices](#invoices)
-- [Accept recurring payments](#recurring-invoices)
+- [Accept recurring payments/subscriptions](#subscriptions)
 
 ### Tailored invoices
 
@@ -55,8 +55,8 @@ in one simple call.
 --:|:--
 **id**<br />*string*<br />Read-only |
 **url**<br />*string*<br />Read-only | `url` to the ProcessOut checkout page
-**project**<br />*[Project](#reference/projects)*<br />Read-only |
-**customer**<br />*[Customer](#reference/customers)*<br />Read-only |
+**project**<br />*[Project](#projects)*<br />Read-only |
+**customer**<br />*[Customer](#customers)*<br />Read-only |
 **name**<br />*string*<br />Required | Name of the invoice/item to sell
 **price**<br />*string*<br />Required | Price of the invoice/item
 **taxes**<br />*string* | Taxes applied to the invoice/item

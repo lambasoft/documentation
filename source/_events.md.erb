@@ -131,14 +131,14 @@ comes resources associated with it. Each event may describe different resources.
 ##### Events
 |||
 --:|:--
-invoice.transaction.waiting | No payment has been placed yet <br />*Describes:* [invoice](#invoice), [transaction](#transaction), [customer](#customer)
-invoice.transaction.pending | The payment is pending completion by the payment gateway <br />*Describes:* [invoice](#invoice), [transaction](#transaction), [customer](#customer)
-invoice.transaction.completed | The payment was sucessfully completed <br />*Describes:* [invoice](#invoice), [transaction](#transaction), [customer](#customer)
-invoice.transaction.failed | The payment has been placed, but failed <br />*Describes:* [invoice](#invoice), [transaction](#transaction), [customer](#customer)
-invoice.transaction.disputed | The payment was previously completed but the customer filled a dispute <br />*Describes:* [invoice](#invoice), [transaction](#transaction), [customer](#customer)
-invoice.transaction.solved | The previous dispute has been resolved in your favor <br />*Describes:* [invoice](#invoice), [transaction](#transaction), [customer](#customer)
-invoice.transaction.reversed | The previous dispute has been resolved in your customer's favor <br />*Describes:* [invoice](#invoice), [transaction](#transaction), [customer](#customer)
-invoice.transaction.refunded | You refunded the transaction <br />*Describes:* [invoice](#invoice), [transaction](#transaction), [customer](#customer)
+invoice.transaction.waiting | No payment has been placed yet <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
+invoice.transaction.pending | The payment is pending completion by the payment gateway <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
+invoice.transaction.completed | The payment was sucessfully completed <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
+invoice.transaction.failed | The payment has been placed, but failed <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
+invoice.transaction.disputed | The payment was previously completed but the customer filled a dispute <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
+invoice.transaction.solved | The previous dispute has been resolved in your favor <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
+invoice.transaction.reversed | The previous dispute has been resolved in your customer's favor <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
+invoice.transaction.refunded | You refunded the transaction <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
 
 ### Recurring invoice events
 
@@ -150,9 +150,9 @@ events related to your recurring invoices.
 ##### Events
 |||
 --:|:--
-customer.recurring-invoice.started | The subscription started <br />*Describes:* [recurring-invoice](#recurring-invoice), [customer](#customer)
-customer.recurring-invoice.iterated | The customer paid for the current iteration of its subscription <br />*Describes:* [recurring-invoice](#recurring-invoice), [customer](#customer)
-customer.recurring-invoice.ended | The customer's subscription ended <br />*Note:* It might have ended because the payment gateway refused your customer's payment (ex: when the credit card expired) <br />*Describes:* [recurring-invoice](#recurring-invoice), [customer](#customer)
+customer.recurring-invoice.started | The subscription started <br />*Describes:* [recurring-invoice](#subcriptions), [customer](#customers)
+customer.recurring-invoice.iterated | The customer paid for the current iteration of its subscription <br />*Describes:* [recurring-invoice](#subscriptions), [customer](#customers)
+customer.recurring-invoice.ended | The customer's subscription ended <br />*Note:* It might have ended because the payment gateway refused your customer's payment (ex: when the credit card expired) <br />*Describes:* [recurring-invoice](#subscriptions), [customer](#customers)
 
 ### Example
 
