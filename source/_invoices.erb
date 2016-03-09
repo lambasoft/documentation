@@ -1,54 +1,10 @@
-## Accept payments
-
-### Payment modal
-
-```html
-<a class="processout-modal-button"
-    href="https://checkout.processout.com/<invoice-id>">
-        Test modal
-</a>
-<script src="https://cdn.processout.com/modal-min.js"></script>
-```
-
-> Replace `href` with any link to checkout.processout.com
-
-The easiest way to accept payments with ProcessOut is by using the payment modal,
-which takes care of creating the HTML forms and checkout experience, but still
-keeps your customer on your website. It is essentially a window showing up in front
-of your website when your customer wants to pay.
-
-It is important to note that the modal is compatible with every ProcessOut
-checkout pages, being a one-off payment, a recurring invoice or an authorization
-to be charged later.
-
-#### What's next?
-
-- [Accept dynamically generated invoices](#invoices)
-- [Accept recurring payments/subscriptions](#subscriptions)
-
-### Tailored invoices
-
-```html
-<a class="processout-modal-button"
-    href="https://checkout.processout.com/t-<tailored-invoice-id>">
-        Test modal
-</a>
-<script src="https://cdn.processout.com/modal-min.js"></script>
-```
-
-> Mind the `t-` prefixing the `tailored-invoice-id`!
-
-Tailored invoices is a great way to start using the modal. All you need to do
-is [create a tailored invoice](https://processout.zendesk.com/hc/en-us/articles/205747058-Tailored-invoices).
-Once created, the id of your tailored invoice -- which can be retrieved from
-your dashboard -- can be injected in the modal as shown on the right pane,
-using the same code as for common invoices.
-
 ## Invoices
 
-Invoice objects are tailored invoices, but dynamic. ProcessOut gives you ability
-to programmatically create and mange invoices compatible with all your payment gateways,
-in one simple call.
+ProcessOut gives you ability to programmatically create and manage invoices
+compatible with all your payment gateways, in one simple call.
+
+Invoices are the best way to perform simple, quick, **one-off payments**.
+
 
 ##### Attributes
 |||
@@ -71,11 +27,11 @@ in one simple call.
 **custom**<br />*string* | Custom data passed in the [webhooks](#webhooks) (ex: id of the customer in your database)
 **sandbox**<br />*boolean*<br />Read-only |
 
-### One-off payments
+### Create an invoice
 
 ```javascript
 // Create a new invoice
-var invoice      = new ProcessOut.Invoice();
+var invoice = new ProcessOut.Invoice();
 invoice.setName('Amazing item');
 invoice.setPrice(4.99);
 invoice.setCurrency('USD');
@@ -95,7 +51,7 @@ console.log(invoice.getUrl())
 ```python
 from processout.invoice import Invoice
 
-# Create a new invoice object
+# Create a new invoice
 invoice          = Invoice()
 invoice.name     = 'Amazing item'
 invoice.price    = 4.99
@@ -135,10 +91,94 @@ echo $invoice->getUrl();
 ?>
 ```
 
-
-Invoices may also be programmatically generated to provide a customized
-payment flow for your customers.
+It is possible to dynamically create one-off payment invoices.
 
 Once an invoice is created, its checkout URL `url` and unique identifier `id`
 are returned. You may then choose to redirect your customer to our payment
 page, or to use our [payment modal](#payment-modal).
+
+#### What's next?
+
+- [Accept recurring payments/subscriptions](#subscriptions)
+- [Use the payment modal](#payment-modal)
+
+
+### Find an invoice
+
+```javascript
+// Find an invoice
+var invoice = ProcessOut.Invoice.find('invoice-id');
+
+// Print the id of the invoice to be used with the modal
+console.log(invoice.getId())
+// > 64db379a-301f-4db6-859e-a0b342ff0b66
+// or its checkout url
+console.log(invoice.getUrl())
+// > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+```
+
+```python
+from processout.invoice import Invoice
+
+# Find an invoice
+invoice = Invoice.find('invoice-id')
+
+# Print the id of the invoice to be used with the modal
+print(invoice.id)
+# > 64db379a-301f-4db6-859e-a0b342ff0b66
+# or its checkout url
+print(invoice.url)
+# > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+```
+
+```php
+<?php
+// Find an invoice
+$invoice = \ProcessOut\Invoice::find('invoice-id');
+
+// Print the id of the invoice to be used with the modal
+echo $invoice->getId();
+// > 64db379a-301f-4db6-859e-a0b342ff0b66
+// or its checkout url
+echo $invoice->getUrl();
+// > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+?>
+```
+
+It is also possible to find an invoice using its `id`.
+
+##### Parameters
+|||
+--:|:--
+**id**<br />*string* | ID of the invoice
+
+
+### Transactions
+
+Transactions are *read-only* objects linked to their corresponding [invoice](#invoices).
+Compared to invoices, transactions are closely linked to the payment gateway
+with which the invoice's customer interacted.
+
+##### Attributes
+|||
+--:|:--
+**id**<br />*string*<br />Read-only |
+**status**<br />*string*<br />Read-only | [Status](#statuses) of the transaction
+**processout_fee**<br />*string*<br />Read-only | Fee taken by ProcessOut to process the transaction
+**gateway**<br />*map/dictionary*<br />Read-only | Contains information related to the transaction's gateway: `name`, `payment_id`, `fee` and `fee_currency`
+
+As seen in the transaction's attributes, it also contains a `status`, representing
+the latest known status of the transaction. This status is automatically updated
+by ProcessOut when the payment gateway pushes an update.
+
+##### Statuses
+|||
+--:|:--
+**waiting** | No payment has been placed yet
+**pending** | The payment is pending confirmation by the payment gateway
+**completed** | The payment was sucessfully completed
+**failed** | The payment has been placed, but failed
+**disputed** | The payment was previously completed but the customer filled a dispute
+**solved** | The previous dispute has been resolved in your favor
+**reversed** | The previous dispute has been resolved in your customer’s favor
+**refunded** | You refunded the transaction

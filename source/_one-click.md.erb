@@ -1,0 +1,174 @@
+## One-click payments
+
+Very often, merchants want to store their customers' payment details, such
+as their credit card, to be able to charge them later, a bit like *Uber* does.
+Doing so is especially useful for *Softward as a Service* companies,
+where they need to charge their users based on their usage of the service.
+ProcessOut provides an easy of doing so, while removing all the PCI-DSS compliancy
+and payment gateway mangement nightmare thanks to [one-click tokens](#one-click-tokens).
+
+
+### One-click tokens
+
+One-click token objects represent the abstraction of the token and the payment
+gateway it is linked to. For the merchant, charging a one-click token will also
+be done in the same way, no matter what payment gateway is used in the background.
+
+##### Attributes
+|||
+--:|:--
+**id**<br />*string*<br />Read-only |
+**name**<br />*string* | Name given to the token
+**customer**<br />*[Customer](#customers)*<br />Read-only |
+**gateway**<br />*string*<br />Read-only | Payment gateway to which the token is linked
+**recurring**<br />*boolean*<br />Read-only | Defines if the token is assigned to a recurring invoice. If it is, it may not be used for one-click payments.
+
+### Create a token
+
+```javascript
+// Find a customer by its id
+var customer = ProcessOut.Customer.find('customer-id');
+
+// Get its authorization URL
+console.log(customer.getAuthorizationUrl());
+```
+
+```python
+from processout.customer import Customer
+
+# Find a customer by its id
+customer = Customer.find('customer-id')
+
+# Get its authorization URL
+print(customer.authorizationUrl)
+```
+
+```php
+<?php
+// Find a customer by its id
+$customer = \ProcessOut\Customer::find('customer-id');
+
+// Get its authorization URL
+echo $customer->getAuthorizationUrl();
+?>
+```
+
+In order to create a one-click token, it has to be linked to a [customer](#customers).
+
+Creating a token is very simple: the customer has to be redirect to the url
+available in its `authorization_url` field. The [modal](#payment-modal) may also be used for in-site
+authorization. Once the customer authorized the merchant to perform one-click payments,
+a `customer.token.authorized` [event](#events) will be created so the merchant
+can retrieve the newly created token.
+
+##### Parameters
+|||
+--:|:--
+**id**<br />*string* | ID of the customer
+
+### Find a token
+
+```javascript
+// Find a token
+var token = ProcessOut.CustomerToken.find('token-id');
+```
+
+```python
+from processout.customertoken import CustomerToken
+
+# Find a token
+token = CustomerToken.find('token-id')
+```
+
+```php
+<?php
+// Find a token
+$token = \ProcessOut\CustomerToken::find('token-id');
+?>
+```
+
+Finds a token by its `id`.
+
+If a token corresponding to the given `id` is found, a new customer token object
+is returned.
+
+##### Parameters
+|||
+--:|:--
+**id**<br />*string* | ID of the token
+
+### Charge a token
+
+```javascript
+// Find an invoice
+var invoice = ProcessOut.Invoice.find('invoice-id');
+
+// Charge the invoice using the token
+invoice.chargeWithToken('token-id');
+```
+
+```python
+from processout.invoice import Invoice
+
+# Find an invoice
+invoice = Invoice.find('invoice-id')
+
+# Charge the invoice using the token
+invoice.chargeWithToken('token-id')
+```
+
+```php
+<?php
+// Find an invoice
+$invoice = \ProcessOut\Invoice::find('invoice-id');
+
+// Charge the invoice using the token
+$invoice->chargeWithToken('token-id');
+?>
+```
+
+Tokens can be applied on [invoices](#invoices) in order to automatically charge
+them.
+
+If the charge is successful, a `invoice.transaction.completed` [event](#events)
+will be created.
+
+##### Parameters
+|||
+--:|:--
+**id**<br />*string* | ID of the token
+
+### Delete a token
+
+```javascript
+// Find a token
+var token = ProcessOut.CustomerToken.find('token-id');
+
+// Delete the token
+token.delete();
+```
+
+```python
+from processout.customertoken import CustomerToken
+
+# Find a token
+token = CustomerToken.find('token-id')
+
+# Delete the token
+token.delete()
+```
+
+```php
+<?php
+// Find a token
+$token = \ProcessOut\CustomerToken::find('token-id');
+
+// Delete the token
+$token->delete();
+?>
+```
+
+Deletes a token.
+
+Once a token is deleted, all data associated with it will be deleted as well.
+**This can't be undone.**

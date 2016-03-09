@@ -5,9 +5,15 @@ with a high conversion rate. Because of how payment gateways differently handle
 this type of payment, ProcessOut will try to make most of the features offered
 by them.
 
-If recurring payments are not available for the payment gateway chosen
-by the customer, ProcessOut will handle the iterations of each payment gateway,
-keeping it transparent to you.
+At each payment iteration, a new [invoice](#invoices) will be created and marked
+as paid, when successful. Both an `invoice.transaction.completed` and
+`customer.recurring-invoice.iterated` [event](#events) will therefore be sent.
+
+Keep in mind that when using recurring invoices, you will not be able to change
+the amount nor the frequency of the charges once the subscription has started.
+If this is something that you want, if you run a *Software as a Service* for
+instance, our [one-click payment/authorization](#one-click-payments) technology
+would better suit your needs.
 
 ##### Attributes
 |||
@@ -111,6 +117,8 @@ to keep your customer on your website instead of redirecting it to our checkout 
 
 - [Find a subscription](#find-a-subscription)
 - [Cancel a subscription](#cancel-a-subscription)
+- [One-click payments](#one-click-payments)
+- [Use the payment modal](#payment-modal)
 
 ### Find a subscription
 
