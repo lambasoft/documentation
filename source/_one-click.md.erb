@@ -104,7 +104,7 @@ is returned.
 var invoice = ProcessOut.Invoice.find('invoice-id');
 
 // Charge the invoice using the token
-invoice.chargeWithToken('token-id');
+var success = invoice.chargeWithToken('token-id');
 ```
 
 ```python
@@ -114,7 +114,7 @@ from processout.invoice import Invoice
 invoice = Invoice.find('invoice-id')
 
 # Charge the invoice using the token
-invoice.chargeWithToken('token-id')
+success = invoice.chargeWithToken('token-id')
 ```
 
 ```php
@@ -123,7 +123,7 @@ invoice.chargeWithToken('token-id')
 $invoice = \ProcessOut\Invoice::find('invoice-id');
 
 // Charge the invoice using the token
-$invoice->chargeWithToken('token-id');
+$success = $invoice->chargeWithToken('token-id');
 ?>
 ```
 
