@@ -55,7 +55,7 @@ html, body {
 }
 
 .tocify-wrapper {
-  @extend %header-font;
+  @extend %menu-font;
   @include transition(left ease-in-out 0.3s);
   overflow-y: auto;
   overflow-x: hidden;
@@ -66,8 +66,6 @@ html, body {
   bottom: 0;
   width: $nav-width;
   background-color: $nav-bg;
-  font-size: 14px;
-  font-weight: 500;
   border-right: 1px solid darken($nav-bg, 3);
 
   // language selector for mobile devices
@@ -157,7 +155,7 @@ html, body {
   }
 
   h1 {
-    font-size: 10px;
+    font-size: 0.8em;
     color: lighten($nav-text, 10);
     text-transform: uppercase;
     padding-left: $nav-padding;
@@ -203,8 +201,6 @@ html, body {
     background-color: $nav-subitem-bg;
     .tocify-item>a {
       padding-left: $nav-padding + $nav-indent;
-      font-size: 13px;
-      font-size: 0.9em;
     }
 
     // for embossed look:
@@ -461,7 +457,7 @@ html, body {
 
     td {
       border-top: 1px solid darken($nav-bg, 3);
-      font-size: 12px;
+      font-size: 0.9em;
     }
 
     tr th:first-child {
@@ -469,10 +465,10 @@ html, body {
     }
 
     tr td:first-child {
-      font-size: 14px;
+      @extend %default-font;
 
       em {
-        font-size: 12px;
+        font-size: 0.9em;
         opacity: 0.8;
       }
     }
@@ -642,6 +638,10 @@ html, body {
 @media (max-width: $phone-width) {
   .dark-box {
     display: none;
+  }
+
+  .content table {
+    width: 100%;
   }
 
   %left-col {
