@@ -35,11 +35,15 @@ customer.setFirstName('John');
 customer.setLastName('Smith');
 
 // Push the customer to ProcessOut
-customer.create();
+customer.create().then(function(customer) {
+    // We may now access its id
+    console.log(customer.getId());
+    // > 64db379a-301f-4db6-859e-a0b342ff0b66
 
-// We may now access its id
-console.log(customer.getId());
-// > 64db379a-301f-4db6-859e-a0b342ff0b66
+}, function(err) {
+    // An error occured
+
+});
 ```
 
 ```python
@@ -88,7 +92,13 @@ public authentication library (such as our iOS framework).
 
 ```javascript
 // Find a customer by its id
-var customer = ProcessOut.Customer.find('customer-id');
+ProcessOut.Customer.find('customer-id').then(function(customer) {
+    // You may now access the fetched customer object
+
+}, function(err) {
+    // Could not be found
+
+});
 ```
 
 ```python
@@ -119,15 +129,25 @@ is returned.
 
 ```javascript
 // Find a customer by its id
-var customer = ProcessOut.Customer.find('customer-id');
+ProcessOut.Customer.find('customer-id').then(function(customer) {
+    // Fill the customer object with new data
+    customer.setEmail('john@smith.com');
+    customer.setFirstName('John');
+    customer.setLastName('Smith');
 
-// Fill the customer object with new data
-customer.setEmail('john@smith.com');
-customer.setFirstName('John');
-customer.setLastName('Smith');
+    // Push the updates to ProcessOut
+    customer.save().then(function(customer) {
+        // Successfully updated
 
-// Push the updates to ProcessOut
-customer.save();
+    }, function (err) {
+        // An error occured
+
+    });
+
+}, function(err) {
+    // Could not be found
+
+});
 ```
 
 ```python
@@ -171,10 +191,20 @@ updated data as well.
 
 ```javascript
 // Find a customer by its id
-var customer = ProcessOut.Customer.find('customer-id');
+ProcessOut.Customer.find('customer-id').then(function(customer) {
+    // Delete the customer
+    customer.delete().then(function(success) {
+        // Successfully deleted
 
-// Delete the customer
-customer.delete();
+    }, function(err) {
+        // An error occured
+
+    });
+
+}, function(err) {
+    // Could not be found
+
+});
 ```
 
 ```python

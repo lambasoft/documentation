@@ -28,11 +28,12 @@ prevent ProcessOut from correctly posting webhooks to your application.
 
 ```javascript
 // Let's assume reqRaw is filled with the raw request content
-// and req is filled with the decoded json data from the request body
+// req is filled with the decoded json data from the request body
+// and headers is filled with the request headers
 
-// We first need to check that the callback is coming from ProcessOut
-var callback = new ProcessOut.Callback();
-if (! callback.validate(reqRaw)) {
+// We first need to check that the webhook is coming from ProcessOut
+var webhook = new ProcessOut.Webhook();
+if (! webhook.validate(reqRaw, headers['ProcessOut-Signature'])) {
     console.log('Bad webhook');
     return;
 }
@@ -59,14 +60,15 @@ default:
 ```
 
 ```python
-from processout.callback import Callback
+from processout.webhook import Webhook
 
 # Let's assume reqRaw is filled with the raw request content
-# and req is filled with the decoded json data from the request body
+# req is filled with the decoded json data from the request body
+# and headers is filled with the request headers
 
 # We first need to check that the webhook is coming from ProcessOut
-callback = Callback()
-if not callback.validate(reqRaw):
+webhook = Webhook()
+if not webhook.validate(reqRaw, headers['ProcessOut-Signature']):
     print ('Bad webhook')
     return
 
@@ -91,9 +93,9 @@ else:
 $reqRaw = file_get_contents('php://input');
 $req    = json_decode($reqRaw, true);
 
-// We first need to check that the callback is coming from ProcessOut
-$callback = new \ProcessOut\Callback();
-if (! $callback->validate($reqRaw))
+// We first need to check that the webhook is coming from ProcessOut
+$webhook = new \ProcessOut\Webhook();
+if (! $webhook->validate($reqRaw, $_SERVER['HTTP_ProcessOut-Signature']))
 {
     echo 'Bad webhook'; exit();
 }

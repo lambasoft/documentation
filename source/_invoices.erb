@@ -38,14 +38,19 @@ invoice.setCurrency('USD');
 // You may set any field listed in table on the right pane
 
 // Push it to ProcessOut
-invoice.create()
+// The ProcessOut NodeJS library uses promises to return objects
+invoice.create().then(function(invoice) {
+    // Print the id of the invoice to be used with the modal
+    console.log(invoice.getId());
+    // > 64db379a-301f-4db6-859e-a0b342ff0b66
+    // or its checkout url
+    console.log(invoice.getUrl());
+    // > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
 
-// Print the id of the invoice to be used with the modal
-console.log(invoice.getId())
-// > 64db379a-301f-4db6-859e-a0b342ff0b66
-// or its checkout url
-console.log(invoice.getUrl())
-// > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+}, function(err) {
+    // An error occured
+
+});
 ```
 
 ```python
@@ -107,14 +112,17 @@ page, or to use our [payment modal](#payment-modal).
 
 ```javascript
 // Find an invoice
-var invoice = ProcessOut.Invoice.find('invoice-id');
+ProcessOut.Invoice.find('invoice-id').then(function(invoice) {
+    // Print the id of the invoice to be used with the modal
+    console.log(invoice.getId());
+    // > 64db379a-301f-4db6-859e-a0b342ff0b66
+    // or its checkout url
+    console.log(invoice.getUrl());
+    // > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+}, function(err) {
+    // An error occured
 
-// Print the id of the invoice to be used with the modal
-console.log(invoice.getId())
-// > 64db379a-301f-4db6-859e-a0b342ff0b66
-// or its checkout url
-console.log(invoice.getUrl())
-// > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+});
 ```
 
 ```python

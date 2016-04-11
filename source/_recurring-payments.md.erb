@@ -49,14 +49,18 @@ recurringInvoice.setRecurringDays(30);
 // You may set any field listed in table on the right pane
 
 // Push it to ProcessOut
-recurringInvoice.create()
+recurringInvoice.create(function(recurringInvoice) {
+    // Print the id of the recurring invoice to be used with the modal
+    console.log(recurringInvoice.getId());
+    // > 64db379a-301f-4db6-859e-a0b342ff0b66
+    // or its checkout url
+    console.log(recurringInvoice.getUrl());
+    // > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
 
-// Print the id of the recurring invoice to be used with the modal
-console.log(recurringInvoice.getId())
-// > 64db379a-301f-4db6-859e-a0b342ff0b66
-// or its checkout url
-console.log(recurringInvoice.getUrl())
-// > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+}, function(err) {
+    // An error occured
+
+});
 ```
 
 ```python
@@ -124,7 +128,13 @@ to keep your customer on your website instead of redirecting it to our checkout 
 
 ```javascript
 // Find a recurring invoice from its id
-var recurringInvoice = ProcessOut.RecurringInvoice.find('recurring-invoice-id');
+ProcessOut.RecurringInvoice.find('recurring-invoice-id').then(function(recurringInvoice) {
+    // You may now access the fetched recurringInvoice
+
+}, function(err) {
+    // An error occured
+
+});
 ```
 
 ```python
@@ -156,9 +166,19 @@ is returned.
 
 ```javascript
 // Find a recurring invoice from its id
-var recurringInvoice = ProcessOut.RecurringInvoice.find('recurring-invoice-id');
-// Ending the recurring invoice with a reason
-var success = recurringInvoice.end('Reason goes here');
+ProcessOut.RecurringInvoice.find('recurring-invoice-id').then(function(recurringInvoice) {
+    // Ending the recurring invoice with a reason
+    recurringInvoice.end('Reason goes here').then(function(success) {
+        // Successfully ended
+
+    }, function(err) {
+        // Could not end it
+        
+    });
+}, function(err) {
+    // An error occured
+
+});
 ```
 
 ```python

@@ -20,8 +20,7 @@ when the project gets updated. Such events may also be catched.
 
 ```javascript
 var events = ProcessOut.Event.pull();
-for (var i = 0; i < events.length; i++)
-{
+for (var i = 0; i < events.length; i++) {
     var event = events[i];
     var data  = event.getData();
     // Do stuff on the event with its data
