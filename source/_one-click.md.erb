@@ -53,6 +53,10 @@ echo $customer->getAuthorizationUrl();
 ?>
 ```
 
+```go
+
+```
+
 In order to create a one-click token, it has to be linked to a [customer](#customers).
 
 Creating a token is very simple: the customer has to be redirect to the url
@@ -85,6 +89,10 @@ token = CustomerToken.find('token-id')
 // Find a token
 $token = \ProcessOut\CustomerToken::find('token-id');
 ?>
+```
+
+```go
+
 ```
 
 Finds a token by its `id`.
@@ -127,6 +135,10 @@ $success = $invoice->chargeWithToken('token-id');
 ?>
 ```
 
+```go
+
+```
+
 Tokens can be applied on [invoices](#invoices) in order to automatically charge
 them.
 
@@ -166,6 +178,10 @@ $token = \ProcessOut\CustomerToken::find('token-id');
 // Delete the token
 $token->delete();
 ?>
+```
+
+```go
+
 ```
 
 Deletes a token.

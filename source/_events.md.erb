@@ -65,6 +65,10 @@ foreach($events as $event)
 ?>
 ```
 
+```go
+
+```
+
 Events can be fetched using the API, and behave as a queue
 (first in, first out). This means that you always get the first not-processed
 event. Once an event is marked as processed, it will not be listed by the API
@@ -100,6 +104,10 @@ $event = ProcessOut\Event::find('<event-id>');
 ?>
 ```
 
+```go
+
+```
+
 It also possible to fetch a specific event thanks to its `id`.
 
 #### What's next?
@@ -131,6 +139,10 @@ event.markProcessed()
 // Mark an event as processed once done with it
 $event->markProcessed();
 ?>
+```
+
+```go
+
 ```
 
 Once an event was successfully processed by your application, you'll have to

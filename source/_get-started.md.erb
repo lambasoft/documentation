@@ -15,7 +15,7 @@ pip install processout
 ```
 
 ```go
-go get https://github.com/processout/processout-go
+go get gopkg.in/processout.v1
 ```
 
 Installing and setting up the libraries/modules/packages in your project
@@ -76,6 +76,10 @@ processout.setProjectSecret('<project-key>');
 ProcessOut.ProcessOut.setDefault(processout);
 ```
 
+```go
+
+```
+
 > Make sure to replace `<project-id>` and `<project-key>` with your details.
 
 To use ProcessOut's API, you will need to authenticate yourself using your API keys.
@@ -123,6 +127,10 @@ $processout = new \ProcessOut\ProcessOut($projectId, $projectSecret);
 ?>
 ```
 
+```go
+
+```
+
 > When deploying to production, you should verify that your webhooks are
 > not coming from the sandbox
 
@@ -153,6 +161,10 @@ if($data['sandbox'] && !$sandbox)
     exit();
 }
 ?>
+```
+
+```go
+
 ```
 
 When developing your application, you might need to troubleshoot

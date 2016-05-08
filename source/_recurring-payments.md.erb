@@ -113,6 +113,10 @@ echo $recurringInvoice->getUrl();
 ?>
 ```
 
+```go
+
+```
+
 Create a recurring invoice.
 The field `recurring_days` must be set to the number of days you wish your
 recurring period to last.
@@ -152,6 +156,10 @@ recurringInvoice = RecurringInvoice.find('recurring-invoice-id')
 // Find a recurring invoice from its id
 $recurringInvoice = \ProcessOut\RecurringInvoice::find('recurring-invoice-id');
 ?>
+```
+
+```go
+
 ```
 
 Find a subscription by its `id`.
@@ -200,6 +208,10 @@ $recurringInvoice = \ProcessOut\RecurringInvoice::find('recurring-invoice-id');
 // Ending the recurring invoice with a reason
 $success = $recurringInvoice.end('Reason goes here');
 ?>
+```
+
+```go
+
 ```
 
 Once a subscription is created, you might want to stop or cancel it. ProcessOut
