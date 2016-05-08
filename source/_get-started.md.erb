@@ -16,6 +16,8 @@ pip install processout
 
 ```go
 go get gopkg.in/processout.v1
+
+// The godoc can be found at https://godoc.org/gopkg.in/processout.v1
 ```
 
 Installing and setting up the libraries/modules/packages in your project
@@ -77,7 +79,13 @@ ProcessOut.ProcessOut.setDefault(processout);
 ```
 
 ```go
+// Package import
+import "gopkg.in/processout.v1"
 
+// Instantiate ProcessOut (in a method)
+p := processout.New("<project-id>", "<project-key>")
+
+// Do things with our new p variable
 ```
 
 > Make sure to replace `<project-id>` and `<project-key>` with your details.
@@ -128,7 +136,15 @@ $processout = new \ProcessOut\ProcessOut($projectId, $projectSecret);
 ```
 
 ```go
+projectID := "<project-id>"
+projectSecret := "<project-key>"
 
+// Enable the sandbox
+if sandbox {
+	projectID = "sandbox-" + projectID
+}
+
+p := processout.New(projectID, projectSecret)
 ```
 
 > When deploying to production, you should verify that your webhooks are
@@ -161,10 +177,6 @@ if($data['sandbox'] && !$sandbox)
     exit();
 }
 ?>
-```
-
-```go
-
 ```
 
 When developing your application, you might need to troubleshoot

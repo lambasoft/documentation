@@ -114,7 +114,27 @@ echo $recurringInvoice->getUrl();
 ```
 
 ```go
+// Define a new recurring invoice
+riv := &processout.RecurringInvoice{
+	Name:          "Amazing item",
+	Price:         "4.99",
+	Currency:      "USD",
+	RecurringDays: 30,             // one month
 
+	// Set anything you want that isn't read-only
+}
+// Create it on ProcessOut. You will need the ID of a Customer
+// that you have previously created.
+riv, err := p.RecurringInvoices.Create(riv, customerID)
+
+// Print the ID of the recurring invoice to be used with the
+// modal
+fmt.Println(riv.ID)
+// > 64db379a-301f-4db6-859e-a0b342ff0b66
+
+// or its checkout url
+fmt.Println(riv.URL)
+// > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
 ```
 
 Create a recurring invoice.
@@ -159,7 +179,10 @@ $recurringInvoice = \ProcessOut\RecurringInvoice::find('recurring-invoice-id');
 ```
 
 ```go
+// Find a recurring invoice from its ID
+riv, err := p.RecurringInvoices.Find("recurring-invoice-id")
 
+// Do things with riv!
 ```
 
 Find a subscription by its `id`.
@@ -211,7 +234,11 @@ $success = $recurringInvoice.end('Reason goes here');
 ```
 
 ```go
+// Find a recurring invoice from its ID
+riv, err := p.RecurringInvoices.Find("recurring-invoice-id")
 
+// End it
+err = p.RecurringInvoices.End(riv, "Reason goes here")
 ```
 
 Once a subscription is created, you might want to stop or cancel it. ProcessOut

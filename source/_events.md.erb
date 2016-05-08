@@ -66,7 +66,17 @@ foreach($events as $event)
 ```
 
 ```go
+events, err := p.Events.Pull()
+for _, ev := range events {
+	data := ev.Data
 
+	// Process the data of the event
+
+	// Once the event is fully treated, you can mark it as
+	// processed so that it will not be returned by
+	// Events.Pull() anymore
+	err = p.Events.MarkProcessed(ev)
+}
 ```
 
 Events can be fetched using the API, and behave as a queue
@@ -105,7 +115,8 @@ $event = ProcessOut\Event::find('<event-id>');
 ```
 
 ```go
-
+// Find an unprocessed event with its ID
+ev, err := p.Events.Find("event-id")
 ```
 
 It also possible to fetch a specific event thanks to its `id`.
@@ -142,7 +153,8 @@ $event->markProcessed();
 ```
 
 ```go
-
+// Mark an event as processed
+err := p.Events.MarkProcessed(ev)
 ```
 
 Once an event was successfully processed by your application, you'll have to

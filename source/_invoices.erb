@@ -97,7 +97,17 @@ echo $invoice->getUrl();
 ```
 
 ```go
+iv, err := p.Invoices.Create(&processout.Invoice{
+	Name:     "Amazing item",
+	Price:    "4.99",
+	Currency: "USD",
+})
 
+// Print the ID of the invoice to be used with the modal
+fmt.Println(iv.ID)
+
+// Print the checkout URL
+fmt.Println(iv.URL)
 ```
 
 It is possible to dynamically create one-off payment invoices.
@@ -158,7 +168,10 @@ echo $invoice->getUrl();
 ```
 
 ```go
+iv, err := p.Invoices.Find("invoice-id")
 
+// Print the checkout URL
+fmt.Println(iv.URL)
 ```
 
 It is also possible to find an invoice using its `id`.

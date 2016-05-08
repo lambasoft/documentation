@@ -83,7 +83,15 @@ echo $customer->getId();
 ```
 
 ```go
+// Create a new customer
+c, err := p.Customers.Create(&processout.Customer{
+	FirstName: "John",
+	LastName: "Smith",
+	Email: "john@smith.com",
+})
 
+// We may now use it
+fmt.Println(c.ID)
 ```
 
 Creates a new customer.
@@ -120,7 +128,12 @@ $customer = \ProcessOut\Customer::find('customer-id');
 ```
 
 ```go
+// Use a previously stored customer ID to get its complete
+// details
+c, err := p.Customers.Find("customer-id")
 
+// Print the customer's name
+fmt.Println(c.FirstName, c.LastName)
 ```
 
 Finds a customer by its `id`.
@@ -189,7 +202,16 @@ $customer->save();
 ```
 
 ```go
+// Find a customer by its ID
+c, err := p.Customers.Find("customer-id")
 
+// Change some fields of the customer
+c.FirstName = "John"
+c.LastName = "Smith"
+c.Email = "john@smith.com"
+
+// Save the changes to ProcessOut
+err = p.Customers.Save(c)
 ```
 
 Updates a customer.
@@ -240,7 +262,11 @@ $customer->delete();
 ```
 
 ```go
+// Find a customer by its ID
+c, err := p.Customers.Find("customer-id")
 
+// Delete the customer
+err = p.Customers.Delete(c)
 ```
 
 Deletes a customer.

@@ -98,7 +98,19 @@ echo $authorization->getUrl();
 ```
 
 ```go
+// Create an authorization
+auth, err := p.Authorizations.Create(&processout.Authorization{
+	Name: "Amazing authorization",
+	Currency: "USD",
+})
 
+// Print the ID of the authorization to be used with the modal
+fmt.Println(auth.ID)
+// > 64db379a-301f-4db6-859e-a0b342ff0b66
+
+// Print the authorization URL
+fmt.Println(auth.URL)
+// > https://checkout.processout.com/authorization/64db379a-301f-4db6-859e-a0b342ff0b66
 ```
 
 Once the customer authorized the merchant to perform one-click payments,
@@ -153,7 +165,8 @@ $token = \ProcessOut\CustomerToken::find('token-id');
 ```
 
 ```go
-
+// Find a token
+tk, err := p.CustomerTokens.Find("token-id")
 ```
 
 Finds a token by its `id`.
@@ -197,7 +210,9 @@ $success = $invoice->chargeWithToken('token-id');
 ```
 
 ```go
+iv, err := p.Invoices.Find("invoice-id")
 
+err = p.Invoices.ChargeWithToken(iv, "token-id")
 ```
 
 Tokens can be applied on [invoices](#invoices) in order to automatically charge
@@ -242,7 +257,13 @@ $token->delete();
 ```
 
 ```go
+// Find a token
+tk, err := p.CustomerTokens.Find("token-id")
 
+// TODO
+
+// Delete the token
+err = p.CustomerTokens.Delete(tk)
 ```
 
 Deletes a token.

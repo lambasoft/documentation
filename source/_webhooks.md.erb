@@ -122,7 +122,67 @@ default:
 ```
 
 ```go
+// Webhook is the definition of a ProcessOut webhook
+type Webhook struct {
+    Name        string                  `json:"name"`
+    Sandbox     bool                    `json:"sandbox"`
+    Invoice     *processout.Invoice     `json:"invoice"`
+    Transaction *processout.Transaction `json:"transaction"`
+    Customer    *processout.Customer    `json:"customer"`
+}
 
+func handleProcessOutWebhooks(w http.ResponseWriter,
+	r *http.Request) {
+
+	defer r.Body.Close()
+	reqRaw, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(err)
+	}
+
+	signature := r.Header.Get("HTTP_ProcessOut-Signature")
+
+	// Check the webhook signature
+	err = p.Webhooks.Validate(reqRaw, signature)
+	if err != nil {
+		// Signature check failed; webhook is not authenticated
+		w.WriteHeader(http.StatusForbidden)
+		return
+	}
+
+	// Decode the webhook
+	webhook := &Webhook{}
+	err = json.Unmarshal(reqRaw, &webhook)
+	if err != nil {
+		// Invalid webhook data
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	// Check that the webhook does not come from the sandbox
+	// (disable this in development and staging)
+	if webhook.Sandbox {
+		w.WriteHeader(http.StatusForbidden)
+		return
+	}
+
+	// Everything is okay, process the webhook
+	switch webhook.Name {
+	case "invoice.transaction.completed":
+		// Successful transaction
+
+	case "invoice.transaction.pending":
+		// Transaction still needs some time to be processed
+
+	// ...
+
+	default:
+		// Return an HTTP OK response so that unsuported
+		// webhooks do not get sent again
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+}
 ```
 
 Now that your webhook is correctly set up, we need to make sure it is correctly
