@@ -19,16 +19,22 @@ when the project gets updated. Such events may also be catched.
 ### Polling events
 
 ```javascript
-var events = ProcessOut.Event.pull();
-for (var i = 0; i < events.length; i++) {
-    var event = events[i];
-    var data  = event.getData();
-    // Do stuff on the event with its data
+ProcessOut.Event.pull().then(function(events) {
+    for (var i = 0; i < events.length; i++) {
+        var event = events[i];
+        var data  = event.getData();
+        // Do stuff on the event with its data
 
-    // Once you're done with the event, you may mark it
-    // as processed so that pull() won't return it anymore.
-    event.markProcessed();
-}
+        // Once you're done with the event, you may mark it
+        // as processed so that pull() won't return it anymore.
+        event.markProcessed();
+    }
+
+}, function(err) {
+    // An error occured
+
+});
+
 ```
 
 ```python
@@ -73,7 +79,13 @@ from ProcessOut to synchronously fetch new events
 
 ```javascript
 // Find a specific not-processed event by its id
-var event = ProcessOut.Event.find('<event-id>');
+ProcessOut.Event.find('<event-id>').then(function(event) {
+    // We may now access the event
+
+}, function(err) {
+    // An error occured
+
+});
 ```
 
 ```python
@@ -100,7 +112,13 @@ It also possible to fetch a specific event thanks to its `id`.
 
 ```javascript
 // Mark an event as processed once done with it
-event.markProcessed();
+event.markProcessed().then(function(success) {
+    // Success
+
+}, function(err) {
+    // An error occured
+
+});
 ```
 
 ```python
