@@ -75,8 +75,8 @@ recurringInvoice.currency = 'USD'
 recurringInvoice.recurringDays = 30
 # You may set any field listed in table on the right pane
 
-# Push it to ProcessOut
-recurringInvoice.create()
+# Push it to ProcessOut. Create returns a new recurring invoice instance
+recurringInvoice = recurringInvoice.create()
 
 # Print the id of the recurring invoice to be used with the modal
 print(recurringInvoice.id)
@@ -98,8 +98,8 @@ $recurringInvoice
     ->setRecurringDays(30);
 // You may set any field listed in table on the right pane
 
-// Push it to ProcessOut
-$recurringInvoice->create();
+// Push it to ProcessOut. Create returns a new recurring invoice instance
+$recurringInvoice = $recurringInvoice->create();
 
 // Print the id of the recurring invoice to be used with the modal
 echo $recurringInvoice->getId();
@@ -173,7 +173,7 @@ ProcessOut.RecurringInvoice.find('recurring-invoice-id').then(function(recurring
 
     }, function(err) {
         // Could not end it
-        
+
     });
 }, function(err) {
     // An error occured

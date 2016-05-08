@@ -63,8 +63,8 @@ invoice.price    = 4.99
 invoice.currency = 'USD'
 # You may set any field listed in table on the right pane
 
-# Push it to ProcessOut
-invoice.create()
+# Push it to ProcessOut. Create returns a new invoice instance
+invoice = invoice.create()
 
 # Print the id of the invoice to be used with the modal
 print(invoice.id)
@@ -84,8 +84,8 @@ $invoice
     ->setCurrency('USD');
 // You may set any field listed in table on the right pane
 
-// Push it to ProcessOut
-$invoice->create();
+// Push it to ProcessOut. Create returns a new invoice instance
+$invoice = $invoice->create();
 
 // Print the id of the invoice to be used with the modal
 echo $invoice->getId();

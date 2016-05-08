@@ -56,8 +56,8 @@ customer.email = 'john@smith.com';
 customer.firstName = 'John';
 customer.lastName = 'Smith';
 
-# Push the customer to ProcessOut
-customer.create()
+# Push the customer to ProcessOut. Create returns a new customer instance
+customer = customer.create()
 
 # We may now access its id
 print(customer.id)
@@ -73,8 +73,8 @@ $customer->setEmail('john@smith.com');
 $customer->setFirstName('John');
 $customer->setLastName('Smith');
 
-// Push the customer to ProcessOut
-$customer->create();
+// Push the customer to ProcessOut. Create returns a new customer instance
+$customer = $customer->create();
 
 // We may now access its id
 echo $customer->getId();
