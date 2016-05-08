@@ -90,7 +90,7 @@ else:
 
 ```php
 <?php
-$reqRaw = file_get_contents('php://input');
+$reqRaw = trim(file_get_contents('php://input'));
 $req    = json_decode($reqRaw, true);
 
 // We first need to check that the webhook is coming from ProcessOut
