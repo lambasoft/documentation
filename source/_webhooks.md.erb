@@ -33,7 +33,7 @@ prevent ProcessOut from correctly posting webhooks to your application.
 
 // We first need to check that the webhook is coming from ProcessOut
 var webhook = new ProcessOut.Webhook();
-if (! webhook.validate(reqRaw, headers['ProcessOut-Signature'])) {
+if (! webhook.validate(reqRaw, headers['PROCESSOUT-SIGNATURE'])) {
     console.log('Bad webhook');
     return;
 }
@@ -68,7 +68,7 @@ from processout.webhook import Webhook
 
 # We first need to check that the webhook is coming from ProcessOut
 webhook = Webhook()
-if not webhook.validate(reqRaw, headers['ProcessOut-Signature']):
+if not webhook.validate(reqRaw, headers['PROCESSOUT-SIGNATURE']):
     print ('Bad webhook')
     return
 
@@ -95,7 +95,7 @@ $req    = json_decode($reqRaw, true);
 
 // We first need to check that the webhook is coming from ProcessOut
 $webhook = new \ProcessOut\Webhook();
-if (! $webhook->validate($reqRaw, $_SERVER['HTTP_ProcessOut-Signature']))
+if (! $webhook->validate($reqRaw, $_SERVER['HTTP_PROCESSOUT-SIGNATURE']))
 {
     echo 'Bad webhook'; exit();
 }
@@ -140,7 +140,7 @@ func handleProcessOutWebhooks(w http.ResponseWriter,
 		panic(err)
 	}
 
-	signature := r.Header.Get("HTTP_ProcessOut-Signature")
+	signature := r.Header.Get("HTTP_PROCESSOUT-SIGNATURE")
 
 	// Check the webhook signature
 	err = p.Webhooks.Validate(reqRaw, signature)
