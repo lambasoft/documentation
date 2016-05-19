@@ -6,12 +6,12 @@
 npm install processout
 ```
 
-```php
-composer require processout/processout-php
-```
-
 ```python
 pip install processout
+```
+
+```php
+composer require processout/processout-php
 ```
 
 ```go
@@ -37,21 +37,6 @@ The API version is automatically set in the libraries so you don't need to worry
 
 ### Authentication
 
-```php
-<?php
-// Load dependencies
-require 'vendor/autoload.php';
-
-// Instantiate ProcessOut
-$processout = new \ProcessOut\ProcessOut();
-$processout->setProjectId('<project-id>');
-$processout->setProjectSecret('<project-key>');
-
-// Set this project as the default one for the current request
-\ProcessOut\ProcessOut::setDefault($processout);
-?>
-```
-
 ```python
 # Load dependencies
 from processout.processout import ProcessOut
@@ -76,6 +61,21 @@ processout.setProjectSecret('<project-key>');
 
 // Set this project as the default one for the current request
 ProcessOut.ProcessOut.setDefault(processout);
+```
+
+```php
+<?php
+// Load dependencies
+require 'vendor/autoload.php';
+
+// Instantiate ProcessOut
+$processout = new \ProcessOut\ProcessOut();
+$processout->setProjectId('<project-id>');
+$processout->setProjectSecret('<project-key>');
+
+// Set this project as the default one for the current request
+\ProcessOut\ProcessOut::setDefault($processout);
+?>
 ```
 
 ```go
@@ -108,7 +108,9 @@ if(sandbox) {
     projectId = 'sandbox-' + projectId
 }
 
-var processout = new ProcessOut.ProcessOut(projectId, projectSecret)
+var processout = new ProcessOut.ProcessOut()
+processout.setProjectId(projectId);
+processout.setProjectSecret(projectSecret);
 ```
 
 ```python
@@ -119,7 +121,9 @@ projectSecret = '<project-key>'
 if sandbox:
     projectId = 'sandbox-' + projectId
 
-processout = ProcessOut(projectId, projectSecret)
+processout = ProcessOut()
+processout.projectId     = projectId
+processout.projectSecret = projectSecret
 ```
 
 ```php
@@ -132,6 +136,8 @@ if($sandbox)
     $projectId = 'sandbox-' . $projectId;
 
 $processout = new \ProcessOut\ProcessOut($projectId, $projectSecret);
+$processout->setProjectId($projectId);
+$processout->setProjectSecret($projectSecret);
 ?>
 ```
 
