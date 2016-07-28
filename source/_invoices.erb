@@ -33,7 +33,7 @@ Invoices are the best way to perform simple, quick, **one-off payments**.
 // Create a new invoice
 var invoice = new ProcessOut.Invoice();
 invoice.setName('Amazing item');
-invoice.setPrice(4.99);
+invoice.setPrice('4.99');
 invoice.setCurrency('USD');
 // You may set any field listed in table on the right pane
 
@@ -59,7 +59,7 @@ from processout.invoice import Invoice
 # Create a new invoice
 invoice          = Invoice()
 invoice.name     = 'Amazing item'
-invoice.price    = 4.99
+invoice.price    = '4.99'
 invoice.currency = 'USD'
 # You may set any field listed in table on the right pane
 
@@ -80,7 +80,7 @@ print(invoice.url)
 $invoice = new \ProcessOut\Invoice();
 $invoice
     ->setName('Amazing item')
-    ->setPrice(4.99)
+    ->setPrice('4.99')
     ->setCurrency('USD');
 // You may set any field listed in table on the right pane
 

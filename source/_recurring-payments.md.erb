@@ -42,7 +42,7 @@ would better suit your needs.
 // Create a new recurring invoice
 var recurringInvoice      = new ProcessOut.RecurringInvoice();
 recurringInvoice.setName('Amazing item');
-recurringInvoice.setPrice(4.99);
+recurringInvoice.setPrice('4.99');
 recurringInvoice.setCurrency('USD');
 // Set the recurring period to a month
 recurringInvoice.setRecurringDays(30);
@@ -70,7 +70,7 @@ from processout.recurringinvoice import RecurringInvoice
 # Create a new recurring invoice object
 recurringInvoice          = RecurringInvoice()
 recurringInvoice.name     = 'Amazing item'
-recurringInvoice.price    = 4.99
+recurringInvoice.price    = '4.99'
 recurringInvoice.currency = 'USD'
 # Set the recurring period to a month
 recurringInvoice.recurringDays = 30
@@ -94,7 +94,7 @@ print(recurringInvoice.url)
 $recurringInvoice = new \ProcessOut\RecurringInvoice();
 $recurringInvoice
     ->setName('Amazing item')
-    ->setPrice(4.99)
+    ->setPrice('4.99')
     ->setCurrency('USD')
     // Set the recurring period to a month
     ->setRecurringDays(30);
