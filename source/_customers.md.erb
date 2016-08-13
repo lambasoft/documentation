@@ -8,11 +8,6 @@ or their `shipping/billing address`.
 |||
 --:|:--
 **id**<br />*string*<br />Read-only |
-**authorization_url**<br />*string*<br />Read-only | `url` to the ProcessOut checkout page
-**authorization_return_url**<br />*string* | `url` used to redirect the customer once an authorization is placed
-**authorization_cancel_url**<br />*string* | `url` used to redirect the customer when an authorization is canceled |ProcessOut cancelation landing page
-**pin**<br />*string*<br />Required if previously set | PIN code the customer will need in order to update its information or pay using one of its stored tokens on a public application.
-**has_ping**<br />*boolean*<br /> | `true` if the field `pin` was previously set
 **email**<br />*string* | Customer's email
 **first_name**<br />*string* |
 **last_name**<br />*string* |
@@ -52,9 +47,9 @@ from processout.customer import Customer
 # Create a new customer object
 customer = Customer()
 # Fill the customer object with data
-customer.email = 'john@smith.com';
-customer.firstName = 'John';
-customer.lastName = 'Smith';
+customer.email = 'john@smith.com'
+customer.firstName = 'John'
+customer.lastName = 'Smith'
 
 # Push the customer to ProcessOut. Create returns a new customer instance
 customer = customer.create()
@@ -95,10 +90,6 @@ fmt.Println(c.ID)
 ```
 
 Creates a new customer.
-
-The `pin` field must be set by the customer when storing a new
-[authorization token](#authorization-token) if you later use one of our
-public authentication library (such as our iOS framework).
 
 ### Find a customer
 
@@ -178,9 +169,9 @@ from processout.customer import Customer
 customer = Customer.find('customer-id')
 
 # Fill the customer object with new data
-customer.email     = 'john@smith.com';
-customer.firstName = 'John';
-customer.lastName  = 'Smith';
+customer.email     = 'john@smith.com'
+customer.firstName = 'John'
+customer.lastName  = 'Smith'
 
 # Push the updates to ProcessOut
 customer.save()
@@ -220,6 +211,11 @@ This request accepts mostly the same arguments as the creation request.
 
 If the update is successful, the current object instance is filled with its
 updated data as well.
+
+##### Parameters
+|||
+--:|:--
+**id**<br />*string* | ID of the customer
 
 ### Delete a customer
 
@@ -273,3 +269,8 @@ Deletes a customer.
 
 Once a customer is deleted, all data associated with it will be deleted as well.
 **This can't be undone.**
+
+##### Parameters
+|||
+--:|:--
+**id**<br />*string* | ID of the customer

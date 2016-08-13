@@ -13,20 +13,26 @@ when the project gets updated. Such events may also be catched.
 **id**<br />*string*<br />Read-only |
 **name**<br />*string*<br />Read-only | Name of the event corresponding to the action
 **data**<br />*json object*<br />Read-only | Data linked to the event
-**date**<br />*timestamp*<br />Read-only |
+**fired_at**<br />*timestamp*<br />Read-only |
 **sandbox**<br />*boolean*<br />Read-only |
 
 ### Polling events
 
 ```javascript
-ProcessOut.Event.pull().then(function(events) {
+ProcessOut.Event.all().then(function(events) {
     for (var i = 0; i < events.length; i++) {
         var event = events[i];
+
+        // If the event was already processed
+        if (event.getProcessed()) {
+            continue;
+        }
+
         var data  = event.getData();
         // Do stuff on the event with its data
 
         // Once you're done with the event, you may mark it
-        // as processed so that pull() won't return it anymore.
+        // as processed
         event.markProcessed();
     }
 
@@ -40,26 +46,34 @@ ProcessOut.Event.pull().then(function(events) {
 ```python
 from processout.event import Event
 
-events = Event.pull()
+events = Event.all()
 for event in events:
+    # If the event was already processed
+    if event.processed:
+        continue
+
     var data = event.data
     # Do stuff on the event with its data
 
     # Once you're done with the event, you may mark it
-    # as processed so that pull() won't return it anymore.
+    # as processed
     event.markProcessed()
 ```
 
 ```php
 <?php
-$events = ProcessOut\Event::pull();
+$events = ProcessOut\Event::all();
 foreach($events as $event)
 {
+    // If the event was already processed
+    if ($event->getProcessed())
+        continue;
+
     $data = $event->getData();
     // Do stuff on the event with its data
 
     // Once you're done with the event, you may mark it
-    // as processed so that pull() won't return it anymore.
+    // as processed
     $event->markProcessed();
 }
 ?>
@@ -73,20 +87,12 @@ for _, ev := range events {
 	// Process the data of the event
 
 	// Once the event is fully treated, you can mark it as
-	// processed so that it will not be returned by
-	// Events.Pull() anymore
+	// processed
 	err = p.Events.MarkProcessed(ev)
 }
 ```
 
-Events can be fetched using the API, and behave as a queue
-(first in, first out). This means that you always get the first not-processed
-event. Once an event is marked as processed, it will not be listed by the API
-anymore. Simply fetching an event from ProcessOut will **not** mark an event
-as processed, it needs to be marked as so explicitely.
-
-One could imagine setting up a background worker fetching events
-from ProcessOut to synchronously fetch new events
+Fetch all the events.
 
 
 ### Find an event

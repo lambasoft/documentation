@@ -144,6 +144,11 @@ recurring period to last.
 Once the recurring payment is created, you may use our [payment modal](#payment-modal)
 to keep your customer on your website instead of redirecting it to our checkout page.
 
+##### Parameters
+|||
+--:|:--
+**id**<br />*string* | ID of the customer
+
 #### What's next?
 
 - [Find a subscription](#find-a-subscription)
@@ -221,7 +226,7 @@ from processout.recurringinvoice import RecurringInvoice
 # Find a recurring invoice from its id
 recurringInvoice = RecurringInvoice.find('recurring-invoice-id')
 # Ending the recurring invoice with a reason
-success = recurringInvoice.end('Reason goes here');
+success = recurringInvoice.end('Reason goes here')
 ```
 
 ```php

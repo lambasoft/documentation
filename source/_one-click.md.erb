@@ -42,7 +42,7 @@ authorization.setCurrency('USD');
 
 // Push it to ProcessOut
 // The ProcessOut NodeJS library uses promises to return objects
-authorization.create().then(function(authorization) {
+authorization.create('customer-id').then(function(authorization) {
     // Print the id of the invoice to be used with the modal
     console.log(authorization.getId());
     // > 64db379a-301f-4db6-859e-a0b342ff0b66
@@ -65,8 +65,9 @@ authorization.name     = 'Amazing authorization'
 authorization.currency = 'USD'
 # You may set any field listed in table on the right pane
 
-# Push it to ProcessOut. Create returns a new authorization instance
-authorization = authorization.create()
+# Push it to ProcessOut. Create returns a new authorization instance for the
+# given customer ID
+authorization = authorization.create('customer-id')
 
 # Print the id of the authorization to be used with the modal
 print(authorization.id)
@@ -85,8 +86,9 @@ $authorization
     ->setCurrency('USD');
 // You may set any field listed in table on the right pane
 
-// Push it to ProcessOut. Create returns a new authorization instance
-$authorization = $authorization->create();
+// Push it to ProcessOut. Create returns a new authorization instance for the
+// given customerID
+$authorization = $authorization->create('customer-id');
 
 // Print the id of the authorization to be used with the modal
 echo $authorization->getId();
@@ -121,6 +123,11 @@ The usage of the created token will be the same across every gateway. ProcessOut
 entirely *abstracts* its usage so it's easier for you to charge your customers
 using different payment gateways.
 
+##### Parameters
+|||
+--:|:--
+**id**<br />*string* | ID of the customer
+
 #### What's next?
 
 - [Receive the token through webhooks](#webhooks)
@@ -140,33 +147,33 @@ be done in the same way, no matter what payment gateway is used in the backgroun
 **name**<br />*string* | Name given to the token
 **customer**<br />*[Customer](#customers)*<br />Read-only |
 **gateway**<br />*string*<br />Read-only | Payment gateway to which the token is linked
-**recurring**<br />*boolean*<br />Read-only | Defines if the token is assigned to a recurring invoice. If it is, it may not be used for one-click payments.
+**is_recurring_invoice**<br />*boolean*<br />Read-only | Defines if the token is assigned to a recurring invoice. If it is, it may not be used for one-click payments.
 
 
 ### Find a token
 
 ```javascript
 // Find a token
-var token = ProcessOut.CustomerToken.find('token-id');
+var token = ProcessOut.Token.find('token-id');
 ```
 
 ```python
-from processout.customertoken import CustomerToken
+from processout.token import Token
 
 # Find a token
-token = CustomerToken.find('token-id')
+token = Token.find('token-id')
 ```
 
 ```php
 <?php
 // Find a token
-$token = \ProcessOut\CustomerToken::find('token-id');
+$token = \ProcessOut\Token::find('token-id');
 ?>
 ```
 
 ```go
 // Find a token
-tk, err := p.CustomerTokens.Find("token-id")
+tk, err := p.Tokens.Find("token-id")
 ```
 
 Finds a token by its `id`.
@@ -186,7 +193,7 @@ is returned.
 var invoice = ProcessOut.Invoice.find('invoice-id');
 
 // Charge the invoice using the token
-var success = invoice.chargeWithToken('token-id');
+var success = invoice.charge('token-id');
 ```
 
 ```python
@@ -196,7 +203,7 @@ from processout.invoice import Invoice
 invoice = Invoice.find('invoice-id')
 
 # Charge the invoice using the token
-success = invoice.chargeWithToken('token-id')
+success = invoice.charge('token-id')
 ```
 
 ```php
@@ -205,7 +212,7 @@ success = invoice.chargeWithToken('token-id')
 $invoice = \ProcessOut\Invoice::find('invoice-id');
 
 // Charge the invoice using the token
-$success = $invoice->chargeWithToken('token-id');
+$success = $invoice->charge('token-id');
 ?>
 ```
 
@@ -230,7 +237,7 @@ will be created.
 
 ```javascript
 // Find a token
-var token = ProcessOut.CustomerToken.find('token-id');
+var token = ProcessOut.Token.find('token-id');
 
 // Delete the token
 token.delete();
@@ -240,7 +247,7 @@ token.delete();
 from processout.customertoken import CustomerToken
 
 # Find a token
-token = CustomerToken.find('token-id')
+token = Token.find('token-id')
 
 # Delete the token
 token.delete()
@@ -249,7 +256,7 @@ token.delete()
 ```php
 <?php
 // Find a token
-$token = \ProcessOut\CustomerToken::find('token-id');
+$token = \ProcessOut\Token::find('token-id');
 
 // Delete the token
 $token->delete();
