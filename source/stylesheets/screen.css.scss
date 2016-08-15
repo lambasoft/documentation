@@ -690,3 +690,11 @@ html, body {
     margin-top: $main-padding;
   }
 }
+
+table tbody {
+    display: table;
+    width: 100%;
+}
+
+
+@import 'helpers';

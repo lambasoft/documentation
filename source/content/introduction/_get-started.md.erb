@@ -1,0 +1,94 @@
+## Get started
+
+### Libraries
+
+```javascript
+npm install processout
+```
+
+```python
+pip install processout
+```
+
+```php
+composer require processout/processout-php
+```
+
+```go
+go get gopkg.in/processout.v1
+
+// The godoc can be found at https://godoc.org/gopkg.in/processout.v1
+```
+
+Installing and setting up the libraries/modules/packages in your project is most
+of the time really easy, and only consists of running a couple of commands and/or
+dropping in some files.
+
+Please refer to the code on the right to install the library in your preferred
+language.
+
+You may also want to simply run a `git clone` command or download an archive containg
+the library, and manage the dependencies yourself.
+
+You can find all our repositories on the [ProcessOut Github](https://github.com/processout).
+
+### Setting up
+
+```python
+# Load dependencies
+from processout.processout import ProcessOut
+
+# Instantiate ProcessOut
+processout = ProcessOut()
+processout.projectId     = '<project-id>'
+processout.projectSecret = '<project-key>'
+
+# Set this project as the default one for the current request
+ProcessOut.setDefault(processout)
+```
+
+```javascript
+// Load package
+var ProcessOut = require('processout');
+
+// Instantiate ProcessOut
+var processout = new ProcessOut.ProcessOut();
+processout.setProjectId('<project-id>');
+processout.setProjectSecret('<project-key>');
+
+// Set this project as the default one for the current request
+ProcessOut.ProcessOut.setDefault(processout);
+```
+
+```php
+<?php
+// Load dependencies
+require 'vendor/autoload.php';
+
+// Instantiate ProcessOut
+$processout = new \ProcessOut\ProcessOut();
+$processout->setProjectId('<project-id>');
+$processout->setProjectSecret('<project-key>');
+
+// Set this project as the default one for the current request
+\ProcessOut\ProcessOut::setDefault($processout);
+```
+
+```go
+// Package import
+import "gopkg.in/processout.v1"
+
+// Instantiate ProcessOut (in a method)
+p := processout.New("<project-id>", "<project-key>")
+
+// Do things with our new p variable
+```
+
+> Make sure to replace `<project-id>` and `<project-key>` with your details.
+
+To use ProcessOut's API, you will need to authenticate yourself using your API keys.
+Your API keys are composed of your `project-id` and `project-secret`. To get
+these keys, you will need to have created a new project on your dashboard.
+
+Once the authentication is done, a `ProcessOut` object should be returned,
+representing your ProcessOut project.

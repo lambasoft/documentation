@@ -13,31 +13,41 @@ search: true
 Introduction
 ============
 
-<%= partial "introduction" %>
+<%= partial "content/introduction/documentation" %>
 
-<%= partial "get-started" %>
+<%= partial "content/introduction/get-started" %>
 
-Payments
+<%= partial "content/introduction/testing" %>
+
+<%= partial "content/introduction/error-handling" %>
+
+<%= partial "content/introduction/support" %>
+
+Accept Payments
 ============
 
-<%= partial "invoices" %>
+<%= partial "content/accept-payments/invoices" %>
 
-<%= partial "recurring-payments" %>
+<%= partial "content/accept-payments/customers" %>
 
-<%= partial "customers" %>
+<%= partial "content/accept-payments/one-click" %>
 
-<%= partial "one-click" %>
+<%= partial "content/accept-payments/transactions" %>
 
-<%= partial "modal" %>
-
-Notifications
+Subscriptions
 ============
 
-<%= partial "events" %>
+<%= partial "content/subscriptions/subscriptions" %>
 
-<%= partial "webhooks" %>
+<%= partial "content/subscriptions/customers" %>
 
-Exceptions
+<%= partial "content/subscriptions/recurring-invoice" %>
+
+<%= partial "content/subscriptions/cancel" %>
+
+Webhooks
 ============
 
-<%= partial "errors" %>
+<%= partial "content/webhooks/events" %>
+
+<%= partial "content/webhooks/webhooks" %>

@@ -1,0 +1,90 @@
+## Customers
+
+Before creating a recurring invoice, you must before create a customer to which
+the recurring invoice will be applied.
+
+### Create a customer
+
+```javascript
+// Create a new customer object
+var customer = new ProcessOut.Customer();
+// Fill the customer object with data
+customer.setEmail('john@smith.com');
+customer.setFirstName('John');
+customer.setLastName('Smith');
+
+// Push the customer to ProcessOut
+customer.create().then(function(customer) {
+    // We may now access its id
+    console.log(customer.getId());
+    // > 64db379a-301f-4db6-859e-a0b342ff0b66
+
+}, function(err) {
+    // An error occured
+
+});
+```
+
+```python
+from processout.customer import Customer
+
+# Create a new customer object
+customer = Customer()
+# Fill the customer object with data
+customer.email = 'john@smith.com'
+customer.firstName = 'John'
+customer.lastName = 'Smith'
+
+# Push the customer to ProcessOut. Create returns a new customer instance
+customer = customer.create()
+
+# We may now access its id
+print(customer.id)
+# > 64db379a-301f-4db6-859e-a0b342ff0b66
+```
+
+```php
+<?php
+// Create a new customer object
+$customer = new \ProcessOut\Customer();
+// Fill the customer object with data
+$customer->setEmail('john@smith.com');
+$customer->setFirstName('John');
+$customer->setLastName('Smith');
+
+// Push the customer to ProcessOut. Create returns a new customer instance
+$customer = $customer->create();
+
+// We may now access its id
+echo $customer->getId();
+// > 64db379a-301f-4db6-859e-a0b342ff0b66
+```
+
+```go
+// Create a new customer
+c, err := p.Customers.Create(&processout.Customer{
+	FirstName: "John",
+	LastName: "Smith",
+	Email: "john@smith.com",
+})
+
+// We may now use it
+fmt.Println(c.ID)
+```
+
+Create a new customer.
+
+##### Attributes
+|||
+--:|:--
+**id**<br />*string*<br />Read-only |
+**email**<br />*string* | Customer's email
+**first_name**<br />*string* |
+**last_name**<br />*string* |
+**address1**<br />*string* |
+**address2**<br />*string* |
+**city**<br />*string* |
+**state**<br />*string* |
+**zip**<br />*string* |
+**country_code**<br />*string* | Customer's address country code (ex: `US`, `FR`)
+**sandbox**<br />*boolean*<br />Read-only |

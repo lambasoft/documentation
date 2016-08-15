@@ -1,0 +1,162 @@
+## Recurring invoices
+
+### Create a recurring invoice
+
+```javascript
+// Create a new recurring invoice
+var recurringInvoice      = new ProcessOut.RecurringInvoice();
+recurringInvoice.setName('Amazing item');
+recurringInvoice.setPrice('4.99');
+recurringInvoice.setCurrency('USD');
+// Set the recurring period to a month
+recurringInvoice.setRecurringDays(30);
+// You may set any field listed in table on the right pane
+
+// Push it to ProcessOut. You will need the customer ID of a previously
+// generated customer
+recurringInvoice.create('<customer-id>').then(function(recurringInvoice) {
+    // recurringInvoice is our newly created recurring invoice resource
+
+}, function(err) {
+    // An error occured
+
+});
+```
+
+```python
+from processout.recurringinvoice import RecurringInvoice
+
+# Create a new recurring invoice object
+recurringInvoice          = RecurringInvoice()
+recurringInvoice.name     = 'Amazing item'
+recurringInvoice.price    = '4.99'
+recurringInvoice.currency = 'USD'
+# Set the recurring period to a month
+recurringInvoice.recurringDays = 30
+# You may set any field listed in table on the right pane
+
+# Push it to ProcessOut. Create returns a new recurring invoice instance
+# You will need the customer ID of a previously generated customer
+recurringInvoice = recurringInvoice.create('<customer-id>')
+```
+
+```php
+<?php
+// Create a new recurring invoice
+$recurringInvoice = new \ProcessOut\RecurringInvoice();
+$recurringInvoice
+    ->setName('Amazing item')
+    ->setPrice('4.99')
+    ->setCurrency('USD')
+    // Set the recurring period to a month
+    ->setRecurringDays(30);
+// You may set any field listed in table on the right pane
+
+// Push it to ProcessOut. Create returns a new recurring invoice instance
+// You will need the customer ID of a previously generated customer
+$recurringInvoice = $recurringInvoice->create('<customer-id>');
+```
+
+```go
+// Define a new recurring invoice
+riv := &processout.RecurringInvoice{
+	Name:          "Amazing item",
+	Price:         "4.99",
+	Currency:      "USD",
+	RecurringDays: 30,             // one month
+
+	// Set anything you want that isn't read-only
+}
+// Create it on ProcessOut. You will need the ID of a Customer
+// that you have previously created.
+riv, err := p.RecurringInvoices.Create(riv, customerID)
+```
+
+> Replace `<customer-id>` with the customer ID.
+
+Create a recurring invoice.
+The field `recurring_days` must be set to the number of days you wish your
+recurring period to last.
+
+##### Attributes
+|||
+--:|:--
+**id**<br />*string*<br />Read-only |
+**url**<br />*string*<br />Read-only | `url` to the ProcessOut checkout page
+**customer**<br />*[Customer](#customers)*<br />Read-only |
+**name**<br />*string*<br />Required | Name of the recurring invoice/item to sell
+**price**<br />*string*<br />Required | Price to be paid every `x` days
+**taxes**<br />*string* | Taxes applied on top of the `price`
+**shipping**<br />*string* | Shipping fees applied on top of the `price`
+**currency**<br />*string*<br />Required | Currency of the recurring invoice, in the ISO 4217 format (ex: `USD`)
+**recurring_days**<br />*integer*<br />Required | Number of days for the recurring period
+**trial_days**<br />*integer* | Number of days for the trial period, before which the customer won't pay. Defaults to `0`
+**return_url**<br />*string* | `url` used to redirect the customer once the payment is placed
+**cancel_url**<br />*string* | `url` used to redirect the customer when the payment is canceled |ProcessOut cancelation landing page
+**ended**<br />*boolean* |
+**ended_reason**<br />*boolean* | If `ended` is true, represents the reason why the recurring invoice was ended
+**custom**<br />*string* | Custom data passed in the [webhooks](#webhooks) (ex: id of the customer in your database)
+**sandbox**<br />*boolean*<br />Read-only |
+
+### Authorization flows
+
+```javascript
+console.log(recurringInvoice.getUrl());
+// > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+
+console.log(recurringInvoice.getId());
+// > 64db379a-301f-4db6-859e-a0b342ff0b66
+```
+
+```python
+print(recurringInvoice.url)
+# > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+
+print(recurringInvoice.id)
+# > 64db379a-301f-4db6-859e-a0b342ff0b66
+```
+
+```php
+<?php
+echo $recurringInvoice->getUrl();
+// > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+
+echo $recurringInvoice->getId();
+// > 64db379a-301f-4db6-859e-a0b342ff0b66
+```
+
+```go
+fmt.Println(iv.URL)
+// > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+
+fmt.Println(iv.ID)
+// > 64db379a-301f-4db6-859e-a0b342ff0b66
+```
+
+Now that we created a recurring invoice, we'll need to make the customer able
+to interact with it in order to proceed with the authorization of the recurring
+billing.
+
+When you create a recurring invoice, we'll return two things: the recurring
+invoice `url`, to which you can redirect your customer to complete the authorization,
+and the recurring invoice `id`, which can be used with ProcessOut.js on the
+modal.
+
+### Authorization modal
+
+```html
+<a class="processout-modal-button"
+    href="https://checkout.processout.com/<recurring-invoice-id>">
+        Test modal
+</a>
+<script src="https://cdn.processout.com/modal-min.js"></script>
+```
+
+> Replace `<recurring-invoice-id>` with the recurring invoice ID you just created.
+
+The modal essentially consists of a window showing up above your website so
+your customers never leave your environment.
+
+When placed on an `a` HTML element with the class `processout-modal-button`,
+the modal will be automatically triggered when the customer clicks on the link.
+You may use any other class on the link to style it your way.

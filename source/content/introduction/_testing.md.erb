@@ -1,0 +1,42 @@
+## Testing
+
+```javascript
+var processout = new ProcessOut.ProcessOut()
+// Prefix project ID with `test-`
+processout.setProjectId('test-<project-id>');
+processout.setProjectSecret('<project-key>');
+```
+
+```python
+processout = ProcessOut()
+# Prefix project ID with `test-`
+processout.projectId = 'test-<project-id>'
+processout.projectSecret = '<project-key>'
+```
+
+```php
+<?php
+$processout = new \ProcessOut\ProcessOut();
+// Prefix project ID with `test-`
+$processout->setProjectId('test-<project-id>');
+$processout->setProjectSecret('<project-key>');
+```
+
+```go
+// Prefix project ID with `test-`
+projectID := "test-<project-id>"
+projectSecret := "<project-key>"
+
+p := processout.New(projectID, projectSecret)
+```
+
+When developing your application, you might need to troubleshoot
+problems which may occur in your ProcessOut implementation.
+
+The ProcessOut **testing environment** lets you interact with the ProcessOut API
+without having to go through the checkout processes on the different available
+gateways. This is especially useful when first implementing payments to your
+online website.
+
+Keep in mind that resources created in the testing and live environments are not
+shared.

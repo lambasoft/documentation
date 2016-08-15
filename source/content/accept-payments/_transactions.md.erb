@@ -1,0 +1,34 @@
+## Payment notifications
+
+### Transactions
+
+Transactions are *read-only* objects linked to their corresponding [invoice](#invoices),
+representing the actual payment that occured on an invoice.
+
+ProcessOut will automatically generate and/or update Transation resources
+depending on the status of the payment. This resource is also the main one
+that'll be sent to you through [Events and Webhooks](#webhooks) to notify you of a new payment.
+
+##### Attributes
+|||
+--:|:--
+**id**<br />*string*<br />Read-only |
+**status**<br />*string*<br />Read-only | [Status](#statuses) of the transaction
+**processout_fee**<br />*string*<br />Read-only | Fee taken by ProcessOut to handle the transaction
+**gateway**<br />*map/dictionary*<br />Read-only | Contains information related to the transaction's gateway: `name`, `payment_id`, `fee` and `fee_currency`
+
+As seen in the transaction's attributes, it also contains a `status`, representing
+the latest known status of the transaction. This status is automatically updated
+by ProcessOut when the payment gateway pushes an update.
+
+##### Statuses
+|||
+--:|:--
+**waiting** | No payment has been placed yet
+**pending** | The payment is pending confirmation by the payment gateway
+**completed** | The payment was sucessfully completed
+**failed** | The payment has been placed, but failed
+**disputed** | The payment was previously completed but the customer filled a dispute
+**solved** | The previous dispute has been resolved in your favor
+**reversed** | The previous dispute has been resolved in your customer’s favor
+**refunded** | You refunded the transaction
