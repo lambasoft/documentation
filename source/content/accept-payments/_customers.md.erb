@@ -95,20 +95,20 @@ Create a new customer.
 ```javascript
 // invoice is an invoice we already fetched/created
 // The customer is returned
-var customer = invoice.setCustomer('<customer-id>');
+var customer = invoice.assignCustomer('<customer-id>');
 ```
 
 ```python
 # invoice is an invoice we already fetched/created
 # The customer is returned
-customer = invoice.setCustomer('<customer-id>')
+customer = invoice.assignCustomer('<customer-id>')
 ```
 
 ```php
 <?php
 // $invoice is an invoice we already fetched/created
 // The customer is returned
-$customer = $invoice->setCustomer('<customer-id>');
+$customer = $invoice->assignCustomer('<customer-id>');
 ```
 
 ```go
