@@ -9,7 +9,9 @@ recurringInvoice.setName('Amazing item');
 recurringInvoice.setPrice('4.99');
 recurringInvoice.setCurrency('USD');
 // Set the recurring period to a month
-recurringInvoice.setRecurringDays(30);
+recurringInvoice.setInterval("1m");
+// If we wanted to do an interval of a month and two weeks + 3 days, we could do:
+// recurringInvoice.setInverval("1m2w3d");
 // You may set any field listed in table on the right pane
 
 // Push it to ProcessOut. You will need the customer ID of a previously
@@ -32,7 +34,9 @@ recurringInvoice.name     = 'Amazing item'
 recurringInvoice.price    = '4.99'
 recurringInvoice.currency = 'USD'
 # Set the recurring period to a month
-recurringInvoice.recurringDays = 30
+recurringInvoice.interval = "1m"
+# If we wanted to do an interval of a month and two weeks + 3 days, we could do:
+# recurringInvoice.interval = "1m2w3d"
 # You may set any field listed in table on the right pane
 
 # Push it to ProcessOut. Create returns a new recurring invoice instance
@@ -49,7 +53,10 @@ $recurringInvoice
     ->setPrice('4.99')
     ->setCurrency('USD')
     // Set the recurring period to a month
-    ->setRecurringDays(30);
+    ->setInterval("1m");
+    // If we wanted to do an interval of a month and two weeks + 3 days, we
+    // could do:
+    // ->setInverval("1m2w3d");
 // You may set any field listed in table on the right pane
 
 // Push it to ProcessOut. Create returns a new recurring invoice instance
@@ -75,8 +82,14 @@ riv, err := p.RecurringInvoices.Create(riv, customerID)
 > Replace `<customer-id>` with the customer ID.
 
 Create a recurring invoice.
-The field `recurring_days` must be set to the number of days you wish your
-recurring period to last.
+The field `interval` must be set. To make it easy to define precise subscription
+intervals, `interval` is a signed sequence of decimal numbers, such as "1m",
+"2w" or "1m15d". Valid time units are "d" for days, "w" for weeks, "m" for months
+and "y" for years. `interval` must represent a positive number of days.
+
+The field `trial_period` has the same signature and works the same way, but can
+represent a trial period of zero days.
+
 
 ##### Attributes
 |||
@@ -89,8 +102,8 @@ recurring period to last.
 **taxes**<br />*string* | Taxes applied on top of the `price`
 **shipping**<br />*string* | Shipping fees applied on top of the `price`
 **currency**<br />*string*<br />Required | Currency of the recurring invoice, in the ISO 4217 format (ex: `USD`)
-**recurring_days**<br />*integer*<br />Required | Number of days for the recurring period
-**trial_days**<br />*integer* | Number of days for the trial period, before which the customer won't pay. Defaults to `0`
+**interval**<br />*string*<br />Required | Number of days for the recurring period
+**trial_period**<br />*string* | Number of days for the trial period, before which the customer won't pay. Defaults to `0d`
 **return_url**<br />*string* | `url` used to redirect the customer once the payment is placed
 **cancel_url**<br />*string* | `url` used to redirect the customer when the payment is canceled |ProcessOut cancelation landing page
 **ended**<br />*boolean* |
