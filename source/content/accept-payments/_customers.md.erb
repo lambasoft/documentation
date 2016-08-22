@@ -65,8 +65,8 @@ echo $customer->getId();
 // Create a new customer
 c, err := p.Customers.Create(&processout.Customer{
 	FirstName: "John",
-	LastName: "Smith",
-	Email: "john@smith.com",
+	LastName:  "Smith",
+	Email:     "john@smith.com",
 })
 
 // We may now use it
