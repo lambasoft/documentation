@@ -62,7 +62,11 @@ $authorizationReq = $authorizationReq->create('<customer-id>');
 ```
 
 ```go
-// TODO
+// Create a new authorization request for the given customer ID
+auth, err := p.AuthorizationRequests(&processout.AuthorizationRequest{
+    Name:     "Amazing authorization request",
+    Currency: "USD",
+}, "<customer-id>")
 ```
 
 > Replace `<customer-id>` with the customer ID.
@@ -113,7 +117,11 @@ echo $authorizationReq->getId();
 ```
 
 ```go
-// TODO
+fmt.Println(auth.URL)
+// > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+
+fmt.Println(auth.ID)
+// > 64db379a-301f-4db6-859e-a0b342ff0b66
 ```
 
 Now that we created an authorization request, we'll need to make the customer able to
@@ -162,7 +170,8 @@ $success = $invoice->charge('<customer-token-id>');
 ```
 
 ```go
-// TODO
+// iv is an invoice we already fetched/created
+err := p.Invoices.Charge(iv, "<customer-token-id>")
 ```
 
 > Replace `<customer-token-id>` with the customer token ID.

@@ -67,10 +67,13 @@ $recurringInvoice = $recurringInvoice->create('<customer-id>');
 ```go
 // Define a new recurring invoice
 riv := &processout.RecurringInvoice{
-	Name:          "Amazing item",
-	Price:         "4.99",
-	Currency:      "USD",
-	RecurringDays: 30,             // one month
+	Name:     "Amazing item",
+	Price:    "4.99",
+	Currency: "USD",
+	Interval: "1m",
+    // If we wanted to do an interval of a month and two weeks + 3 days, we
+    // could do:
+    // Interval: "1m2w3d",
 
 	// Set anything you want that isn't read-only
 }

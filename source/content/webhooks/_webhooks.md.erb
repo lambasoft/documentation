@@ -85,8 +85,8 @@ default:
 ```
 
 ```go
-// Webhook is the definition of a ProcessOut webhook
-type Webhook struct {
+// ProcessOutWebhook is the definition of a ProcessOut webhook
+type ProcessOutWebhook struct {
     Name        string                  `json:"name"`
     Sandbox     bool                    `json:"sandbox"`
     Invoice     *processout.Invoice     `json:"invoice"`
@@ -104,7 +104,7 @@ func handleProcessOutWebhooks(w http.ResponseWriter,
 	}
 
 	// Decode the webhook
-	webhook := &Webhook{}
+	webhook := &ProcessOutWebhook{}
 	err = json.Unmarshal(reqRaw, &webhook)
 	if err != nil {
 		// Invalid webhook data

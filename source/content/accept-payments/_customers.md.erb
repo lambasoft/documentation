@@ -112,7 +112,9 @@ $customer = $invoice->assignCustomer('<customer-id>');
 ```
 
 ```go
-// TODO
+// iv is an invoice we already fetched/created
+// The customer is returned
+c, err := p.Invoices.AssignCustomer(iv, "<customer-id>")
 ```
 
 > Replace `<customer-id>` with the customer ID.
