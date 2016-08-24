@@ -30,7 +30,7 @@ prevent ProcessOut from correctly posting webhooks to your application.
 
 ```javascript
 // req is filled with the decoded json data from the request body
-ProcessOut.Event.find('<event-id>').then(function(event) {
+ProcessOut.Event.find(req['event_id']).then(function(event) {
     // We may now access the event
     var data = event.getData();
 
