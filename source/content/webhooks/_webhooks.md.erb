@@ -2,12 +2,11 @@
 
 ## Webhooks
 
-Processing [events](#events) can also be done through webhooks (also called
+Processing [events](#events) can be done through webhooks (also called
 callbacks or Instant Payment Notification: IPN). It is essentially a web
-request made to your web application, posting the data related to the event.
+request made to your web application, notifying you of the new event.
 Webhooks can be used to automatically deliver an item upon successful
-payment, for instance, without the need for an application running in the
-background.
+payment for example.
 
 However, as many payment gateways can be used at the same time, ProcessOut
 provides webhooks containing unified, normalized and easy to use data, as well
@@ -19,7 +18,8 @@ In order to start receiving webhooks, you must add your `notify_url`s in your
 [ProcessOut dashboard](https://dashboard.processout.com).
 
 You should also note that *we will always `POST` a json encoded body request*
-to your application. Therefore, you should accept POST requests with a json body.
+to your application. Therefore, you should accept POST requests with a json
+encoded body.
 
 Furthermore, you should *remove all CSRF protection* on your endpoints receiving
 webhooks. Most frameworks and CMS activate it by default, which could
@@ -30,30 +30,42 @@ prevent ProcessOut from correctly posting webhooks to your application.
 
 ```javascript
 // req is filled with the decoded json data from the request body
-// and headers is filled with the request headers
-switch (req['name']) {
-case 'invoice.transaction.completed':
-    // Transaction successful
-    break;
-case 'invoice.transaction.pending':
-    // Transaction still needs some time to be processed
-    break;
-// ...
-default:
-    console.log('Unknown webhook action');
-    return;
-}
+ProcessOut.Event.find('<event-id>').then(function(event) {
+    // We may now access the event
+    var data = event.getData();
+
+    switch (data['name']) {
+    case 'invoice.transaction.completed':
+        // Transaction successful
+        break;
+    case 'invoice.transaction.pending':
+        // Transaction still needs some time to be processed
+        break;
+    // ...
+    default:
+        console.log('Unknown webhook action');
+        return;
+    }
+
+}, function(err) {
+    // An error occured, most likely the event was coming from an
+    // untrusted source
+
+});
 ```
 
 ```python
-from processout.webhook import Webhook
+from processout.event import Event
 
 # req is filled with the decoded json data from the request body
-if req['name'] == 'invoice.transaction.completed':
+event = Event.find(req['event_id'])
+data  = event.data
+
+if data['name'] == 'invoice.transaction.completed':
     # Transaction successful
     pass
 
-elif req['name'] == 'invoice.transaction.pending':
+elif data['name'] == 'invoice.transaction.pending':
     # Transaction still needs some time to be processed
     pass
 
@@ -69,7 +81,10 @@ else:
 $reqRaw = trim(file_get_contents('php://input'));
 $req    = json_decode($reqRaw, true);
 
-switch($req['name'])
+$event = ProcessOut\Event::find($req['event_id']);
+$data  = $event->getData();
+
+switch($data['name'])
 {
 case 'invoice.transaction.completed':
     // Transaction successful
@@ -85,13 +100,18 @@ default:
 ```
 
 ```go
-// ProcessOutWebhook is the definition of a ProcessOut webhook
-type ProcessOutWebhook struct {
+// EventData is the definition of a ProcessOut Event data
+type EventData struct {
     Name        string                  `json:"name"`
     Sandbox     bool                    `json:"sandbox"`
     Invoice     *processout.Invoice     `json:"invoice"`
     Transaction *processout.Transaction `json:"transaction"`
     Customer    *processout.Customer    `json:"customer"`
+}
+
+// ProcessOutWebhook is the definition of a ProcessOut webhook
+type ProcessOutWebhook struct {
+    EventID string `json:"event_id"`
 }
 
 func handleProcessOutWebhooks(w http.ResponseWriter,
@@ -105,15 +125,19 @@ func handleProcessOutWebhooks(w http.ResponseWriter,
 
 	// Decode the webhook
 	webhook := &ProcessOutWebhook{}
-	err = json.Unmarshal(reqRaw, &webhook)
-	if err != nil {
-		// Invalid webhook data
+	json.Unmarshal(reqRaw, &webhook)
+
+    // Fetching the associated event
+    event, err := p.Events.Find(webhook.EventID)
+    if err != nil {
+        // Webhook not found, most likely coming from an
+        // insecure source
 		w.WriteHeader(http.StatusBadRequest)
 		return
-	}
+    }
 
-	// Everything is okay, process the webhook
-	switch webhook.Name {
+    e, _ := event.(EventData)
+	switch e.Name {
 	case "invoice.transaction.completed":
 		// Successful transaction
 
@@ -131,12 +155,7 @@ func handleProcessOutWebhooks(w http.ResponseWriter,
 }
 ```
 
-Now that your webhook is correctly set up, we need to make sure it is correctly
-processed and authenticated by your application.
-
-You should also make sure that when deployed on your production environment,
-you do not accept sandbox webhooks anymore.
-
-Once correctly processed by your application, you should always return a
-`status 200 response`. If you don't, ProcessOut will try to send the webhook
-again, waiting an increasing amount of time between each tries.
+The webhooks your web application receives only contain the ID of the event,
+which can then be [fetched](#find-an-event) through the ProcessOut API.
+If the event was correctly found, the actual data of the `Event` object can be
+processed.

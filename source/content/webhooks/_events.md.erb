@@ -1,15 +1,16 @@
 ## Events
 
-When a transaction receives an update (such as when its state changes from
-pending to completed, or if the transaction gets reversed), ProcessOut creates
-an event which can be fetched and processed by your application.
+When a resource's state changes, ProcessOut will create an `Event` object which can
+be programmatically fetched. This can be used to notify your application
+when a transaction gets completed, or when a subscription iterates to its next
+period, but can also have many other possible applications.
 
-ProcessOut may also fire events not directly related to a transaction, such as
-when the project gets updated. Such events may also be catched.
+You can find all the events we currently fire [here](#events-data).
 
-For each event a [webhook](#webhooks) will also be sent to the `notify URLs`
-that you set in your dashboard, under the `Events` tab. The webhook body is
-the event data.
+It is also important to note that events are extremely powerful when they're
+coupled with [webhooks](#webhooks). As soon as an event is created, we'll send
+a request to your web application to notify you of this new event so it can
+fetched and processed.
 
 ##### Attributes
 |||
