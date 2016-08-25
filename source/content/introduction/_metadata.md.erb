@@ -1,0 +1,11 @@
+## Metadata
+
+It is possible to add context to the main ProcessOut resources (such as [invoices](#invoices),
+[customers](#customers) or [subscriptions](#subscriptions)). Such context can range
+from the country of the customer to some internal ID you have on your side to track
+the order.
+
+Some keywords in the metadata are reserved for specific uses:
+
+- *taxes_amount* is zero or positive number representing the taxes included in the `amount`
+- *shipping_amount* is a zero or positive number representing the shipping costs included in the `amount`

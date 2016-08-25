@@ -6,7 +6,7 @@
 // Create a new recurring invoice
 var recurringInvoice      = new ProcessOut.RecurringInvoice();
 recurringInvoice.setName('Amazing item');
-recurringInvoice.setPrice('4.99');
+recurringInvoice.setAmount('4.99');
 recurringInvoice.setCurrency('USD');
 // Set the recurring period to a month
 recurringInvoice.setInterval("1m");
@@ -32,7 +32,7 @@ from processout.recurringinvoice import RecurringInvoice
 # Create a new recurring invoice object
 recurringInvoice          = RecurringInvoice()
 recurringInvoice.name     = 'Amazing item'
-recurringInvoice.price    = '4.99'
+recurringInvoice.amount   = '4.99'
 recurringInvoice.currency = 'USD'
 # Set the recurring period to a month
 recurringInvoice.interval = "1m"
@@ -52,7 +52,7 @@ recurringInvoice = recurringInvoice.create('<customer-id>')
 $recurringInvoice = new \ProcessOut\RecurringInvoice();
 $recurringInvoice
     ->setName('Amazing item')
-    ->setPrice('4.99')
+    ->setAmount('4.99')
     ->setCurrency('USD')
     // Set the recurring period to a month
     ->setInterval("1m");
@@ -70,7 +70,7 @@ $recurringInvoice = $recurringInvoice->create('<customer-id>');
 // Define a new recurring invoice
 riv := &processout.RecurringInvoice{
 	Name:     "Amazing item",
-	Price:    "4.99",
+	Amount:   "4.99",
 	Currency: "USD",
 	Interval: "1m",
     // If we wanted to do an interval of a month and two weeks + 3 days,
@@ -103,17 +103,15 @@ represent a trial period of zero days.
 **url**<br />*string*<br />Read-only | `url` to the ProcessOut checkout page
 **customer**<br />*[Customer](#customers)*<br />Read-only |
 **name**<br />*string*<br />Required | Name of the recurring invoice/item to sell
-**price**<br />*string*<br />Required | Price to be paid every `x` days
-**taxes**<br />*string* | Taxes applied on top of the `price`
-**shipping**<br />*string* | Shipping fees applied on top of the `price`
+**amount**<br />*string*<br />Required | Amount to be paid at every iteration of the subscription
 **currency**<br />*string*<br />Required | Currency of the recurring invoice, in the ISO 4217 format (ex: `USD`)
 **interval**<br />*string*<br />Required | Number of days for the recurring period
 **trial_period**<br />*string* | Number of days for the trial period, before which the customer won't pay. Defaults to `0d`
+**metadata**<br />[Metadata](#metadata)<br />*dictionary* | Context related to the recurring invoice, key-value pair (string => string)
 **return_url**<br />*string* | `url` used to redirect the customer once the payment is placed
 **cancel_url**<br />*string* | `url` used to redirect the customer when the payment is canceled |ProcessOut cancelation landing page
 **ended**<br />*boolean* |
 **ended_reason**<br />*boolean* | If `ended` is true, represents the reason why the recurring invoice was ended
-**custom**<br />*string* | Custom data passed in the [webhooks](#webhooks) (ex: id of the customer in your database)
 **sandbox**<br />*boolean*<br />Read-only |
 
 ### Authorization flows

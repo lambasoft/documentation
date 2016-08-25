@@ -8,7 +8,7 @@
 // Create a new invoice
 var invoice = new ProcessOut.Invoice();
 invoice.setName('Amazing item');
-invoice.setPrice('4.99');
+invoice.setAmount('4.99');
 invoice.setCurrency('USD');
 // You may set any field listed in table on the right pane
 
@@ -29,7 +29,7 @@ from processout.invoice import Invoice
 # Create a new invoice
 invoice          = Invoice()
 invoice.name     = 'Amazing item'
-invoice.price    = '4.99'
+invoice.amount   = '4.99'
 invoice.currency = 'USD'
 # You may set any field listed in table on the right pane
 
@@ -43,7 +43,7 @@ invoice = invoice.create()
 $invoice = new \ProcessOut\Invoice();
 $invoice
     ->setName('Amazing item')
-    ->setPrice('4.99')
+    ->setAmount('4.99')
     ->setCurrency('USD');
 // You may set any field listed in table on the right pane
 
@@ -54,7 +54,7 @@ $invoice = $invoice->create();
 ```go
 iv, err := p.Invoices.Create(&processout.Invoice{
 	Name:     "Amazing item",
-	Price:    "4.99",
+	Amount:   "4.99",
 	Currency: "USD",
 })
 ```
@@ -63,7 +63,7 @@ Invoices is the core resource for a merchant who wants to accept payments online
 using the ProcessOut API.
 
 Creating an invoice for your customers can be done on your server's backend.
-Simply create an Invoice resource with a `name`, `price` and `currency`.
+Simply create an Invoice resource with a `name`, `amount` and `currency`.
 
 Once the invoice is created, the customer may proceed to checkout through
 our available [payment flows](#payment-flows).
@@ -75,14 +75,11 @@ our available [payment flows](#payment-flows).
 **url**<br />*string*<br />Read-only | `URL` to the ProcessOut checkout page
 **customer**<br />*[Customer](#customers)*<br />Read-only |
 **name**<br />*string*<br />Required | Name of the invoice/item to sell
-**price**<br />*string*<br />Required | Price to be paid
-**taxes**<br />*string* | Taxes applied to the invoice on top of the `price`
-**shipping**<br />*string* | Shipping fees applied on top of the `price`
-**total**<br />*string*<br />Read-only | Total amount of the invoice, computed by ProcessOut
+**amount**<br />*string*<br />Required | Amount to be paid
 **currency**<br />*string*<br />Required | Currency of the invoice, in the ISO 4217 format (ex: `USD`)
 **return_url**<br />*string* | `URL` used to redirect the customer once the payment is placed
 **cancel_url**<br />*string* | `URL` used to redirect the customer when the payment is canceled |ProcessOut cancelation landing page
-**custom**<br />*string* | Custom data passed in the [webhooks](#webhooks) (ex: id of the customer in your database)
+**metadata**<br />[Metadata](#metadata)<br />*dictionary* | Context related to the invoice, key-value pair (string => string)
 **sandbox**<br />*boolean*<br />Read-only |
 
 ### Payment flows
