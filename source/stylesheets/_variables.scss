@@ -20,9 +20,9 @@ under the License.
 ////////////////////////////////////////////////////////////////////////////////
 // Use these settings to help adjust the appearance of Slate
 
-$primary-color: #5b4388;
-$secondary-color: #9059BD;
-$tertiary-color: #9b59b6;
+$primary-color: #3a0055;
+$secondary-color: #5abe96;
+$tertiary-color: $primary-color;
 
 
 // BACKGROUND COLORS
@@ -36,7 +36,7 @@ $nav-subitem-bg: $nav-bg;
 $nav-active-bg: $nav-bg;
 $lang-select-border: #000;
 $lang-select-bg: #2c3e50;
-$lang-select-active-bg: $primary-color; // feel free to change this to blue or something
+$lang-select-active-bg: $secondary-color; // feel free to change this to blue or something
 $lang-select-pressed-bg: #2c3e50; // color of language tab bg when mouse is pressed
 $aside-notice-bg: #8fbcd4;
 $aside-warning-bg: #c97a7e;
@@ -74,20 +74,20 @@ $phone-width: $tablet-width - $nav-width; // min width before reverting to mobil
 // FONTS
 ////////////////////
 %default-font {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Sero Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 15px;
 }
 
 %header-font {
-  font-family: "Lato" ,"Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Sero Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 15px;
   font-weight: 300;
 }
 
 %menu-font {
-  font-family: "Lato" ,"Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Sero Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 300;
 }
 
 %code-font {
