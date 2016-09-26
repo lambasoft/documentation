@@ -7,7 +7,11 @@ representing the actual payment that occured on an invoice.
 
 ProcessOut will automatically generate and/or update Transation resources
 depending on the status of the payment. This resource is also the main one
-that'll be sent to you through [Events and Webhooks](#webhooks) to notify you of a new payment.
+that'll be sent to you through [Events and Webhooks](#webhooks) to notify you 
+of a new payment.
+
+Any metadata specified on an invoice will also be available in th metadata of
+this invoice's transaction for easy reference.
 
 ##### Attributes
 |||
@@ -16,6 +20,7 @@ that'll be sent to you through [Events and Webhooks](#webhooks) to notify you of
 **status**<br />*string*<br />Read-only | [Status](#statuses) of the transaction
 **processout_fee**<br />*string*<br />Read-only | Fee taken by ProcessOut to handle the transaction
 **gateway**<br />*map/dictionary*<br />Read-only | Contains information related to the transaction's gateway: `name`, `payment_id`, `fee` and `fee_currency`
+**metadata**<br />[Metadata](#metadata)<br />*dictionary* | Context related to the transaction's invoice, key-value pair (string => string)
 
 As seen in the transaction's attributes, it also contains a `status`, representing
 the latest known status of the transaction. This status is automatically updated

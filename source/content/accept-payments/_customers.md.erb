@@ -4,6 +4,22 @@ Although it is possible to create [invoices](#invoices) without assigning it
 to any `Customer` resource, it might come in handy when you want to better
 track your sales and get additional data regarding your customers.
 
+##### Attributes
+|||
+--:|:--
+**id**<br />*string*<br />Read-only |
+**email**<br />*string* | Customer's email
+**first_name**<br />*string* |
+**last_name**<br />*string* |
+**address1**<br />*string* |
+**address2**<br />*string* |
+**city**<br />*string* |
+**state**<br />*string* |
+**zip**<br />*string* |
+**country_code**<br />*string* | Customer's address country code (ex: `US`, `FR`)
+**metadata**<br />[Metadata](#metadata)<br />*dictionary* | Context related to the customer, key-value pair (string => string)
+**sandbox**<br />*boolean*<br />Read-only |
+
 ### Create a customer
 
 ```javascript
@@ -75,21 +91,14 @@ fmt.Println(c.ID)
 
 Create a new customer.
 
-##### Attributes
-|||
---:|:--
-**id**<br />*string*<br />Read-only |
-**email**<br />*string* | Customer's email
-**first_name**<br />*string* |
-**last_name**<br />*string* |
-**address1**<br />*string* |
-**address2**<br />*string* |
-**city**<br />*string* |
-**state**<br />*string* |
-**zip**<br />*string* |
-**country_code**<br />*string* | Customer's address country code (ex: `US`, `FR`)
-**metadata**<br />[Metadata](#metadata)<br />*dictionary* | Context related to the customer, key-value pair (string => string)
-**sandbox**<br />*boolean*<br />Read-only |
+Once the customer is created, ProcessOut will return its resource `ID`.
+Storing this information on your backend may be useful if you want to
+easily find which ProcessOut Customer belongs to which of your internal
+users.
+
+It is also possible to store metadata in your ProcessOut customers. Said
+metadata could be anything, from the ID of the user in your systems to the
+country of the customer.
 
 ### Assign to invoice
 

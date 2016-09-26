@@ -1,0 +1,71 @@
+## Hosted payment pages
+
+<span class="processout">ProcessOut</span> provides a convenient way for
+businesses to start accepting payments right away, without the need to set up
+any kind of payment page on their website. The whole payment page is optimized
+and regularly updated by us to make sure that your customers get the best
+experience possible.
+
+Hosted payment pages handle the whole checkout flow, from the customer's input
+to the capture of the payment, and notifies the merchant of the new payment.
+There is no other action needed by the merchant to accept payments.
+
+If you'd like more control over the checkout flow, <span class="processout">ProcessOut</span>
+also provides a way to completely customize the user experience thanks to
+[processout.js](github.com/processout/processout.js) and its API.
+
+### Redirect customer
+
+```html
+<a href="<invoice-id>">Pay now!</a>
+```
+
+> Replace `<invoice-id>` with the invoice ID.
+
+To start using the <span class="processout">ProcessOut</span> payment page,
+simply redirect your customer to the `url` returned when creating a payment.
+The customer will be prompted with the available payment methods, and redirected
+to your website (specified in the `return_url` when creating the invoice) upon
+payment.
+
+### Payment modal
+
+```html
+<a class="processout-modal-button"
+    href="https://checkout.processout.com/<invoice-id>">
+        Test modal
+</a>
+<script src="https://js.processout.com/processout.js"></script>
+```
+
+> Replace `<invoice-id>` with the invoice ID.
+
+In addition to payment pages, <span class="processout">ProcessOut</span> also
+provides a way to directly embed the payment page on your website so your
+customer never leaves your environment. This can be done using
+[ProcessOut.js](github.com/processout/processout.js).
+The payment modal will be shown top of your website when the customer clicks
+on the payment button, and the modal will hide itself automatically upon
+purchase, after notifying the customer the payment was successful.
+
+Please keep in mind that if the customer chooses to pay using an alternative
+payment, he will be redirected outside of your website, and returned back to
+the `return_url` provided when creating the invoice once the payment is placed.
+
+##### What's next
+<div class="table">
+    <div class="table-tr text1-1em">
+        <div class="table-td" width="50%">
+            <a href="#accept-payments-category">Handle webhooks &rsaquo;</a>
+            <p>
+                Get notified when a payment or an update occurs.
+            </p>
+        </div>
+        <div class="table-td">
+            <a href="#subscriptions-category">Custom flow &rsaquo;</a>
+            <p>
+                Build your payment page with your own branding.
+            </p>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,9 @@
 @charset "utf-8";
+@import 'normalize';
+@import 'compass';
+@import 'variables';
+@import 'syntax';
+@import 'icon-font';
 
 .text-center {
     text-align: center;
@@ -12,12 +17,37 @@
     font-size: 1.1em;
 }
 
-table {
-    .title {
+.table {
+    display: table;
+    margin-right: $examples-width;
+    padding: 0 $main-padding;
+    @extend %left-col;
+
+    clear: none!important;
+
+    .table-tr {
+        display: table-row;
+
+        .table-td {
+            display: table-cell;
+            text-align: left;
+            vertical-align: top;
+            padding: 15px;
+
+            &:first-child {
+                padding-left: 0;
+            }
+            &:last-child {
+                padding-right: 0;
+            }
+        }
+    }
+
+    a {
         font-size: 1.1em;
     }
 
-    .content {
+    p {
         line-height: 1.3em;
         margin-top: 5px;
         font-size: 0.9em;
@@ -35,4 +65,16 @@ table {
     margin-bottom: 21px;
     margin-top: 2em;
     border-top: 1px solid rgba(221, 221, 221, 0.8);
+}
+
+.processout {
+    font-weight: 900;
+
+    a {
+        text-decoration: none;
+    }
+}
+
+.highlighted {
+    color: $secondary-color;
 }

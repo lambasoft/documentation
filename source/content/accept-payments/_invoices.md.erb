@@ -2,6 +2,23 @@
 
 ## Invoices
 
+An invoice is the core resource for a merchant who wants to accept payments online
+using the ProcessOut API. To start using invoices, [let's create one](#create-an-invoice).
+
+##### Attributes
+|||
+--:|:--
+**id**<br />*string*<br />Read-only |
+**url**<br />*string*<br />Read-only | `URL` to the ProcessOut checkout page
+**customer**<br />*[Customer](#customers)*<br />Read-only |
+**name**<br />*string*<br /><span class="highlighted">Required</span> | Name of the invoice/item to sell
+**amount**<br />*string*<br /><span class="highlighted">Required</span> | Amount to be paid
+**currency**<br />*string*<br /><span class="highlighted">Required</span> | Currency of the invoice, in the ISO 4217 format (ex: `USD`)
+**return_url**<br />*string* | `URL` used to redirect the customer once the payment is placed
+**cancel_url**<br />*string* | `URL` used to redirect the customer when the payment is canceled |ProcessOut cancelation landing page
+**metadata**<br />[Metadata](#metadata)<br />*dictionary* | Context related to the invoice, key-value pair (string => string)
+**sandbox**<br />*boolean*<br />Read-only |
+
 ### Create an invoice
 
 ```javascript
@@ -59,86 +76,28 @@ iv, err := p.Invoices.Create(&processout.Invoice{
 })
 ```
 
-Invoices is the core resource for a merchant who wants to accept payments online
-using the ProcessOut API.
-
 Creating an invoice for your customers can be done on your server's backend.
 Simply create an Invoice resource with a `name`, `amount` and `currency`.
 
-Once the invoice is created, the customer may proceed to checkout through
-our available [payment flows](#payment-flows).
+Now that you have created an invoice, your customers can interact with it to
+pay you using below's available payment options. Before doing so, you might
+also want to store more information regarding your customer. This can be done
+using our [Customer object](#customers).
 
-##### Attributes
-|||
---:|:--
-**id**<br />*string*<br />Read-only |
-**url**<br />*string*<br />Read-only | `URL` to the ProcessOut checkout page
-**customer**<br />*[Customer](#customers)*<br />Read-only |
-**name**<br />*string*<br />Required | Name of the invoice/item to sell
-**amount**<br />*string*<br />Required | Amount to be paid
-**currency**<br />*string*<br />Required | Currency of the invoice, in the ISO 4217 format (ex: `USD`)
-**return_url**<br />*string* | `URL` used to redirect the customer once the payment is placed
-**cancel_url**<br />*string* | `URL` used to redirect the customer when the payment is canceled |ProcessOut cancelation landing page
-**metadata**<br />[Metadata](#metadata)<br />*dictionary* | Context related to the invoice, key-value pair (string => string)
-**sandbox**<br />*boolean*<br />Read-only |
-
-### Payment flows
-
-```javascript
-console.log(invoice.getUrl());
-// > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
-
-console.log(invoice.getId());
-// > 64db379a-301f-4db6-859e-a0b342ff0b66
-```
-
-```python
-print(invoice.url)
-# > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
-
-print(invoice.id)
-# > 64db379a-301f-4db6-859e-a0b342ff0b66
-```
-
-```php
-<?php
-echo $invoice->getUrl();
-// > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
-
-echo $invoice->getId();
-// > 64db379a-301f-4db6-859e-a0b342ff0b66
-```
-
-```go
-fmt.Println(iv.URL)
-// > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
-
-fmt.Println(iv.ID)
-// > 64db379a-301f-4db6-859e-a0b342ff0b66
-```
-
-Now that we created an invoice, we'll need to make the customer able to interact
-with it in order to proceed with the payment.
-
-When you create an invoice, we'll return two things: the invoice `url`, to which
-you can redirect your customer to complete the checkout, and the invoice `id`, which
-can be used with ProcessOut.js on the [modal](#payment-modal).
-
-### Payment modal
-
-```html
-<a class="processout-modal-button"
-    href="https://checkout.processout.com/<invoice-id>">
-        Test modal
-</a>
-<script src="https://cdn.processout.com/modal-min.js"></script>
-```
-
-> Replace `<invoice-id>` with the invoice ID you just created.
-
-The modal essentially consists of a window showing up above your website so
-your customers never leave your environment.
-
-When placed on an `a` HTML element with the class `processout-modal-button`,
-the modal will be automatically triggered when the customer clicks on the link.
-You may use any other class on the link to style it your way.
+##### What's next
+<div class="table">
+    <div class="table-tr text1-1em">
+        <div class="table-td" width="50%">
+            <a href="#hosted-payment-pages">Hosted payment page &rsaquo;</a>
+            <p class="content">
+                Accept payments online with your gateways.
+            </p>
+        </div>
+        <div class="table-td">
+            <a href="#subscriptions-category">ProcessOut.js &amp; API &rsaquo;</a>
+            <p>
+                Manage recurring billing for your busines.
+            </p>
+        </div>
+    </div>
+</div>
