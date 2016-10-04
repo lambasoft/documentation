@@ -30,13 +30,33 @@ projectSecret := "<project-key>"
 p := processout.New(projectID, projectSecret)
 ```
 
-When developing your application, you might need to troubleshoot
-problems which may occur in your ProcessOut implementation.
+It is useful to be able to go through the whole payment process without
+involving any real payment while implementing ProcessOut.
 
 The ProcessOut **testing environment** lets you interact with the ProcessOut API
 without having to go through the checkout processes on the different available
 gateways. This is especially useful when first implementing payments to your
 online website.
 
-Keep in mind that resources created in the testing and live environments are not
-shared.
+The testing and production environments are kept entirely separated. Resources 
+created under the test environment may not be accessed in production, and
+production resources may not be used for test purposes.
+
+##### Test cards
+
+The checkout flow you'll experience when implementing ProcessOut will be the
+exact same as you'd get in production, except no real payment will be made.
+
+In order to properly test edge cases, we provide you with the following test
+cards that can be used the payment modal or within ProcessOut.js when
+tokenizing a card. 
+
+Each of those cards have a different behaviour so you can
+test different scenarios. Any other card will fail.
+
+|||
+--:|:--
+<div style="white-space: nowrap;">4242 4242 4242 4242<div>10/18 — CVC: 200 | Successful payment
+<div style="white-space: nowrap;">4242 4242 4242 4242<div>10/18 — CVC: 500 | The credit card will be denied
+<div style="white-space: nowrap;">4242 4242 4242 4242<div>10/18 — CVC: 600 | The authorization on the card will be successful, but any capture will fail
+<div style="white-space: nowrap;">4242 4242 4242 4242<div>10/18 — CVC: 666 | The payment will be successful, but a chargeback will be initiated as soon as the payment makes it through
