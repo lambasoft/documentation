@@ -69,14 +69,14 @@ or its associated [transaction](#transactions) occurs.
 ##### Events
 |||
 --:|:--
-invoice.transaction.waiting | No payment has been placed yet <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
-invoice.transaction.pending | The payment is pending confirmation by the payment gateway <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
-invoice.transaction.completed | The payment was sucessfully completed <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
-invoice.transaction.failed | The payment has been placed, but failed <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
-invoice.transaction.disputed | The payment was previously completed but the customer filled a dispute <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
-invoice.transaction.solved | The previous dispute has been resolved in your favor <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
-invoice.transaction.reversed | The previous dispute has been resolved in your customer's favor <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
-invoice.transaction.refunded | You refunded the transaction <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
+invoice.waiting | No payment has been placed yet <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
+invoice.pending | The payment is pending confirmation by the payment gateway <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
+invoice.completed | The payment was sucessfully completed <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
+invoice.failed | The payment has been placed, but failed <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
+invoice.disputed | The payment was previously completed but the customer filled a dispute <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
+invoice.solved | The previous dispute has been resolved in your favor <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
+invoice.reversed | The previous dispute has been resolved in your customer's favor <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
+invoice.refunded | You refunded the transaction <br />*Describes:* [invoice](#invoices), [transaction](#transactions), [customer](#customers)
 
 ### Subscription events
 
@@ -90,9 +90,10 @@ completed, and its corresponding event will also be sent.
 ##### Events
 |||
 --:|:--
-customer.recurring-invoice.started | The subscription started <br />*Describes:* [recurring-invoice](#subcriptions), [customer](#customers)
-customer.recurring-invoice.iterated | The customer paid for the current iteration of its subscription <br />*Describes:* [recurring-invoice](#subscriptions), [customer](#customers)
-customer.recurring-invoice.ended | The customer's subscription ended <br />*Note:* It might have ended because the payment gateway refused your customer's payment (ex: when the credit card expired) <br />*Describes:* [recurring-invoice](#subscriptions), [customer](#customers)
+subscription.started | The subscription started <br />*Describes:* [recurring-invoice](#subcriptions), [customer](#customers)
+subscription.iterated | The customer paid for the current iteration of its subscription <br />*Describes:* [recurring-invoice](#subscriptions), [customer](#customers)
+subscription.payment_failed | The payment of the current subscription period failed <br />*Describes:* [recurring-invoice](#subscriptions), [customer](#customers)
+subscription.ended | The customer's subscription ended <br />*Note:* It might have ended because the payment gateway refused your customer's payment (ex: when the credit card expired) <br />*Describes:* [recurring-invoice](#subscriptions), [customer](#customers)
 
 ### One-click token events
 
