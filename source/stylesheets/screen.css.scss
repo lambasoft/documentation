@@ -41,6 +41,12 @@ html, body {
 // TABLE OF CONTENTS
 ////////////////////////////////////////////////////////////////////////////////
 
+#toc {
+  height: 100%;
+  overflow: scroll;
+  overflow-y: hidden;
+}
+
 #toc > ul > li > a > span {
   float: right;
   background-color: #2484FF;
@@ -54,11 +60,14 @@ html, body {
   );
 }
 
+#searchinput {
+  margin-left: 25px;
+  margin-top: 5px;
+}
+
 .tocify-wrapper {
   @extend %menu-font;
   @include transition(left ease-in-out 0.3s);
-  overflow-y: auto;
-  overflow-x: hidden;
   position: fixed;
   z-index: 30;
   top: 0;
@@ -67,6 +76,10 @@ html, body {
   width: $nav-width;
   background-color: $nav-bg;
   border-right: 1px solid darken($nav-bg, 3);
+
+  h1:first-child {
+    margin-top: 25px;
+  }
 
   // language selector for mobile devices
   .lang-selector {
@@ -81,7 +94,6 @@ html, body {
   &>a {
     display: block;
     line-height: 67px;
-    vertical-align: middle;
     border-bottom: 1px solid darken($nav-bg, 3);
     margin-bottom: 15px;
 
