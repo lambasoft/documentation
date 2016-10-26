@@ -42,10 +42,11 @@ html, body {
 ////////////////////////////////////////////////////////////////////////////////
 
 #toc {
-  height: 100%;
+  height: auto;
   overflow: auto;
   position: relative;
   z-index: 12;
+  height: calc(100% - 140px);
 }
 
 #toc > ul > li > a > span {
