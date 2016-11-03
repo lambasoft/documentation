@@ -1,24 +1,24 @@
-## Recurring invoices
+## Subscriptions
 
-### Create a recurring invoice
+### Create a subscription
 
 ```javascript
-// Create a new recurring invoice
-var recurringInvoice      = new ProcessOut.RecurringInvoice();
-recurringInvoice.setName('Amazing item');
-recurringInvoice.setAmount('4.99');
-recurringInvoice.setCurrency('USD');
+// Create a new subscription
+var subscription = new ProcessOut.Subscription();
+subscription.setName('Amazing item');
+subscription.setAmount('4.99');
+subscription.setCurrency('USD');
 // Set the recurring period to a month
-recurringInvoice.setInterval("1m");
+subscription.setInterval("1m");
 // If we wanted to do an interval of a month and two weeks + 3 days,
 // we could do:
-// recurringInvoice.setInverval("1m2w3d");
+// subscription.setInverval("1m2w3d");
 // You may set any field listed in table on the right pane
 
 // Push it to ProcessOut. You will need the customer ID of a previously
 // generated customer
-recurringInvoice.create('<customer-id>').then(function(recurringInvoice) {
-    // recurringInvoice is our newly created recurring invoice resource
+subscription.create('<customer-id>').then(function(subscription) {
+    // subscription is our newly created subscription resource
 
 }, function(err) {
     // An error occured
@@ -27,30 +27,30 @@ recurringInvoice.create('<customer-id>').then(function(recurringInvoice) {
 ```
 
 ```python
-from processout.recurringinvoice import RecurringInvoice
+from processout.subscription import Subscription
 
-# Create a new recurring invoice object
-recurringInvoice          = RecurringInvoice()
-recurringInvoice.name     = 'Amazing item'
-recurringInvoice.amount   = '4.99'
-recurringInvoice.currency = 'USD'
+# Create a new subscription object
+subscription          = Subscription()
+subscription.name     = 'Amazing item'
+subscription.amount   = '4.99'
+subscription.currency = 'USD'
 # Set the recurring period to a month
-recurringInvoice.interval = "1m"
+subscription.interval = "1m"
 # If we wanted to do an interval of a month and two weeks + 3 days,
 # we could do:
-# recurringInvoice.interval = "1m2w3d"
+# subscription.interval = "1m2w3d"
 # You may set any field listed in table on the right pane
 
-# Push it to ProcessOut. Create returns a new recurring invoice instance
+# Push it to ProcessOut. Create returns a new subscription instance
 # You will need the customer ID of a previously generated customer
-recurringInvoice = recurringInvoice.create('<customer-id>')
+subscription = subscription.create('<customer-id>')
 ```
 
 ```php
 <?php
-// Create a new recurring invoice
-$recurringInvoice = new \ProcessOut\RecurringInvoice();
-$recurringInvoice
+// Create a new subscription
+$subscription = new \ProcessOut\Subscription();
+$subscription
     ->setName('Amazing item')
     ->setAmount('4.99')
     ->setCurrency('USD')
@@ -61,14 +61,14 @@ $recurringInvoice
     // ->setInverval("1m2w3d");
 // You may set any field listed in table on the right pane
 
-// Push it to ProcessOut. Create returns a new recurring invoice instance
+// Push it to ProcessOut. Create returns a new subscription instance
 // You will need the customer ID of a previously generated customer
-$recurringInvoice = $recurringInvoice->create('<customer-id>');
+$subscription = $subscription->create('<customer-id>');
 ```
 
 ```go
-// Define a new recurring invoice
-riv := &processout.RecurringInvoice{
+// Define a new subscription
+sub := &processout.Subscription{
 	Name:     "Amazing item",
 	Amount:   "4.99",
 	Currency: "USD",
@@ -81,12 +81,12 @@ riv := &processout.RecurringInvoice{
 }
 // Create it on ProcessOut. You will need the ID of a Customer
 // that you have previously created.
-riv, err := p.RecurringInvoices.Create(riv, customerID)
+sub, err := p.RecurringInvoices.Create(sub, customerID)
 ```
 
 > Replace `<customer-id>` with the customer ID.
 
-Create a recurring invoice.
+Create a subscription.
 The field `interval` must be set. To make it easy to define precise subscription
 intervals, `interval` is a signed sequence of decimal numbers, such as "1m",
 "2w" or "1m15d". Valid time units are "d" for days, "w" for weeks, "m" for months
@@ -102,73 +102,74 @@ represent a trial period of zero days.
 **id**<br />*string*<br />Read-only |
 **url**<br />*string*<br />Read-only | `url` to the ProcessOut checkout page
 **customer**<br />*[Customer](#customers)*<br />Read-only |
-**name**<br />*string*<br />Required | Name of the recurring invoice/item to sell
+**plan**<br />*[Plan](#plans)*<br />Read-only | Plan, if one was used when creating the subscription
+**name**<br />*string*<br />Required | Name of the subscription
 **amount**<br />*string*<br />Required | Amount to be paid at every iteration of the subscription
-**currency**<br />*string*<br />Required | Currency of the recurring invoice, in the ISO 4217 format (ex: `USD`)
+**currency**<br />*string*<br />Required | Currency of the subscription, in the ISO 4217 format (ex: `USD`)
 **interval**<br />*string*<br />Required | Number of days for the recurring period
-**trial_period**<br />*string* | Number of days for the trial period, before which the customer won't pay. Defaults to `0d`
+**trial_end_at**<br />*string* | Number of days for the trial period, before which the customer won't pay. Defaults to `0d`
 **metadata**<br />[Metadata](#metadata)<br />*dictionary* | Context related to the recurring invoice, key-value pair (string => string)
 **return_url**<br />*string* | `url` used to redirect the customer once the payment is placed
 **cancel_url**<br />*string* | `url` used to redirect the customer when the payment is canceled |ProcessOut cancelation landing page
-**ended**<br />*boolean* |
-**ended_reason**<br />*boolean* | If `ended` is true, represents the reason why the recurring invoice was ended
+**canceled**<br />*boolean* |
+**cancellation_reason**<br />*boolean* | If `canceled` is true, represents the reason why the recurring invoice was canceled
 **sandbox**<br />*boolean*<br />Read-only |
 
 ### Authorization flows
 
 ```javascript
-console.log(recurringInvoice.getUrl());
+console.log(subscription.getUrl());
 // > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
 
-console.log(recurringInvoice.getId());
+console.log(subscription.getId());
 // > 64db379a-301f-4db6-859e-a0b342ff0b66
 ```
 
 ```python
-print(recurringInvoice.url)
+print(subscription.url)
 # > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
 
-print(recurringInvoice.id)
+print(subscription.id)
 # > 64db379a-301f-4db6-859e-a0b342ff0b66
 ```
 
 ```php
 <?php
-echo $recurringInvoice->getUrl();
+echo $subscription->getUrl();
 // > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
 
-echo $recurringInvoice->getId();
+echo $subscription->getId();
 // > 64db379a-301f-4db6-859e-a0b342ff0b66
 ```
 
 ```go
-fmt.Println(iv.URL)
+fmt.Println(sub.URL)
 // > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
 
-fmt.Println(iv.ID)
+fmt.Println(sub.ID)
 // > 64db379a-301f-4db6-859e-a0b342ff0b66
 ```
 
-Now that we created a recurring invoice, we'll need to make the customer able
+Now that we created a subscription, we'll need to make the customer able
 to interact with it in order to proceed with the authorization of the recurring
 billing.
 
-When you create a recurring invoice, we'll return two things: the recurring
-invoice `url`, to which you can redirect your customer to complete the authorization,
-and the recurring invoice `id`, which can be used with ProcessOut.js on the
+When you create a subscription, we'll return two things: the subscription
+`url`, to which you can redirect your customer to activate the subscription,
+and the subscription `id`, which can be used with ProcessOut.js on the
 modal.
 
 ### Authorization modal
 
 ```html
 <a class="processout-modal-button"
-    href="https://checkout.processout.com/<recurring-invoice-id>">
+    href="https://checkout.processout.com/<subscription-id>">
         Test modal
 </a>
 <script src="https://js.processout.com/modal.js"></script>
 ```
 
-> Replace `<recurring-invoice-id>` with the recurring invoice ID you just created.
+> Replace `<subscription-id>` with the subscription ID you just created.
 
 The modal essentially consists of a window showing up above your website so
 your customers never leave your environment.
