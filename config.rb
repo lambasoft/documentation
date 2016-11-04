@@ -45,6 +45,8 @@ end
 # Activate the syntax highlighter
 activate :syntax
 
+page "/refs/*", :layout => "layout-refs"
+
 # This is needed for Github pages, since they're hosted on a subdomain
 activate :relative_assets
 set :relative_links, true

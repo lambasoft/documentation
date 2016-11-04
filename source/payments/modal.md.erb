@@ -1,0 +1,79 @@
+## Payment modal
+
+The easiest way to start accepting payments using the ProcessOut platform is
+to use the ProcessOut embedded [payment modal &nearr;](github.com/processout/processout.js).
+
+The modal will take care of handling the entire payment flow of your customer. It
+is an easy and effective way to get paid for products or services you sell.
+
+To get started, let's create an [`Invoice` &nearr;](#):
+
+```sh
+curl https://api.processout.com/invoices \
+    -u projectID:projectSecret \
+    -d name="Awesome invoice" \
+    -d amount=9.99 \
+    -d currency=USD 
+```
+
+This newly created invoice will give us an `url`, which we can use to redirect
+the customer to the checkout page. 
+
+```html
+<a href="<generated-link-goes-here>">Pay now!</a>
+```
+
+Once the payment goes through, you'll
+receive an email notifying you of the payment. You may also use our [`Webhooks` &nearr;](#)
+to programmatically execute actions when you get paid. 
+
+<div class="spacer"></div>
+
+#### Embed the modal in your website
+
+Redirecting customers to a new payment page often means a total change of payment
+context, which can significantly reduce your conversion rates. For this reason,
+ProcessOut lets merchants use the payment modal directly on their websites so
+that your customers never change context.
+
+To automatically embed the modal in your website, only 2 lines are needed:
+
+```html
+<a href="<generated-link-goes-here>" class="processout-modal-button">Pay now!</a>
+<script src="https://js.processout.com/processout.js"></script>
+```
+
+Notice the `processout-modal-button`: it is used by [`ProcessOut.js` &nearr;](#)
+to deduct which link should be converted to a modal.
+
+#### Advanced modal use case
+
+While automatically converting links to embed the modal is very handy, it can
+be quite limited in some use-cases. It is possible to control the flow of the
+modal and manually trigger its loading/appearance using some Javascript.
+
+```javascript
+var processOut = new ProcessOut.ProcessOut("project-id");
+
+processOut.newModal('https://checkout.processout.com/resource-id',
+function(modal) {
+  // The modal is now ready, we may show it to the customer
+  modal.show();
+
+  // callbacks may also be passed to show():
+  modal.show(function(modal) {
+    // On Shown
+  }, function(modal) {
+    // On hidden
+  }, function(error) {
+    // Error
+  })
+
+  // ...
+  // For some reason, we want to hide the modal from the customer
+  modal.hide();
+
+}, function(err) {
+
+});
+```

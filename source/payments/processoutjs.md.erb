@@ -1,0 +1,42 @@
+## Your own payment forms
+
+While the ProcessOut payment modal is a great way to start, it isn't that
+customizable. `ProcessOut.js` lets you entirely control the payment flow
+on your own pages and removes any ProcessOut branding- effectively making
+ProcessOut invisible to your end-user. `ProcessOut.js` is available and free
+for every ProcessOut user.
+
+#### Common payment flow
+
+A common payment flow is composed of the following steps:
+
+* The customer enters its credit card information on the merchant's website
+* ProcessOut.js creates a secure token from the card and returns it to the merchant's script
+* The merchant sends the token back to its backend and captures the payment
+
+Behind the scenes, ProcessOut will encrypt the credit card information, send it to the ProcessOut vault to tokenize it, and return the created token to the merchant. This effectively makes the merchant escape from the PCI-DSS nightmare.
+
+#### Setting up
+
+First, you need to include ProcessOut.js. It should always be loaded from our
+CDN. Please note that ProcessOut.js has no dependency, meaning it can work
+without jQuery.
+
+```html
+<script src="https://js.processout.com/processout.js"></script>
+```
+
+Let's now set up a payment form.
+
+```html
+<form action="/your-capture-endpoint" method="POST">
+  <input type="text" size="20" class="processout-cc">
+  <input type="text" size="2" class="processout-exp-month">
+  <input type="text" size="2" class="processout-exp-year">
+  
+  <input type="text" size="4" class="processout-cvc">
+
+  <input type="hidden" name="token">
+  <input type="submit" class="submit" value="Submit Payment">
+</form>
+```

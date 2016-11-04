@@ -1,0 +1,125 @@
+<%#
+Copyright 2008-2013 Concur Technologies, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may
+not use this file except in compliance with the License. You may obtain
+a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations
+under the License.
+%>
+<% language_tabs = current_page.data.language_tabs %>
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link rel="shortcut icon" href="/favicon.png">
+        <link href="https://www.processout.com/css/sero.css" rel="stylesheet" type="text/css" />
+        <title><%= current_page.data.title || "API Documentation" %></title>
+
+        <link rel="stylesheet" type="text/css" href="//cdn.rawgit.com/konpa/devicon/89f2f44ba07ea3fff7e561c2142813b278c2d6c6/devicon.min.css">
+        <%= stylesheet_link_tag :screen, media: :screen %>
+        <%= stylesheet_link_tag :print, media: :print %>
+        <%= javascript_include_tag  "jquery.min" %>
+        <% if current_page.data.search %>
+        <%= javascript_include_tag  "all" %>
+        <% else %>
+        <%= javascript_include_tag  "all_nosearch" %>
+        <% end %>
+
+        <% if language_tabs %>
+        <script>
+            $(function() {
+                setupLanguages(<%= language_tabs.map{ |lang| lang.is_a?(Hash) ? lang.keys.first : lang }.to_json %>);
+            });
+        </script>
+        <% end %>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
+    </head>
+
+    <body class="<%= page_classes %>">
+        <div>
+            <a href="#" id="nav-button">
+                <span>
+                    NAV
+                    <%= image_tag('navbar.png') %>
+                </span>
+            </a>
+            <div class="tocify-wrapper">
+                <a href="https://www.processout.com" class="main-logo">
+                    ProcessOut <span>refs</span>
+                </a>
+                <% if language_tabs %>
+                    <div class="lang-selector">
+                        <% language_tabs.each do |lang| %>
+                            <% if lang.is_a? Hash %>
+                            <a href="#" data-language-name="<%= lang.keys.first %>"><%= lang.values.first %></a>
+                            <% else %>
+                            <a href="#" data-language-name="<%= lang %>"><%= lang %></a>
+                            <% end %>
+                        <% end %>
+                    </div>
+                <% end %>
+                <div class="algolia-container">
+                    <input type="text" id="searchinput" placeholder="Search" style="padding: 5px;" />
+                </div>
+                <div id="toc" style="padding-bottom: 15px;">
+                </div>
+                <% if current_page.data.toc_footers %>
+                    <ul class="toc-footer">
+                        <% current_page.data.toc_footers.each do |footer| %>
+                            <li><%= footer %></li>
+                        <% end %>
+                    </ul>
+                <% end %>
+            </div>
+            <div class="page-wrapper">
+                <div class="dark-box"></div>
+                <div class="content">
+                    <%= yield %>
+                    <% current_page.data.includes && current_page.data.includes.each do |include| %>
+                        <%= partial "includes/#{include}" %>
+                    <% end %>
+                </div>
+                <div class="dark-box">
+                    <% if language_tabs %>
+                        <div class="lang-selector">
+                            <% language_tabs.each do |lang| %>
+                                <% if lang == 'php' %>
+                                <a href="#" data-language-name="<%= lang %>" style="line-height: 62px; vertical-align: 62px; font-size: 3em;"><i class="devicon-php-plain"></i></a>
+                                <% elsif lang == 'python' %>
+                                <a href="#" data-language-name="<%= lang %>" style="line-height: 62px; vertical-align: 62px; font-size: 2.5em;"><i class="devicon-python-plain-wordmark"></i></a>
+                                <% elsif lang == 'go' %>
+                                <a href="#" data-language-name="<%= lang %>" style="line-height: 62px; vertical-align: 62px; font-size: 2.5em;"><i class="devicon-go-plain"></i></a>
+                                <% elsif lang == 'node.js' %>
+                                <a href="#" data-language-name="<%= lang %>" style="line-height: 62px; vertical-align: 62px; font-size: 4em;"><i class="devicon-nodejs-plain-wordmark"></i></a>
+                                <% elsif lang.is_a? Hash %>
+                                <a href="#" data-language-name="<%= lang.keys.first %>"><%= lang.values.first %></a>
+                                <% else %>
+                                <a href="#" data-language-name="<%= lang %>"><%= lang %></a>
+                                <% end %>
+                            <% end %>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+        <script type="text/javascript"> docsearch({
+        apiKey: '3ca8960647dd9f8a01c2f72d241af023',
+        indexName: 'processout',
+        inputSelector: '#searchinput',
+        debug: false // Set debug to true if you want to inspect the dropdown
+        });
+        </script>
+    </body>
+</html>
