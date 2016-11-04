@@ -1,0 +1,65 @@
+## Save a token to capture future payments
+
+While most e-commerce businesses handle one-off payments, you might need to
+ask for a customer's card and capture payments on it in the future (one, but
+also several if needed). This is done by tokenizing the card token created
+by [`ProcessOut.js` &nearr;](#).
+
+<hr>
+
+#### Getting started
+
+Because tokens are specifically linked to one of your customers, you must first
+create a [`Customer` &nearr;](#) resource.
+
+<div class="spacer"></div>
+
+#### Creating a customer
+
+You can create any number of customer you may need. A customer object may be
+entirely empty, but we strongly advise you to fill the object with as much
+data as you have. This can help doing searches on your dashboard, but it also
+greatly helps us when smart routing transactions related to this customer
+and decreases fraud risks. 
+
+The ID of the newly created customer should also be stored in your application
+or database so you can use it later.
+
+```sh
+curl https://api.processout.com/customers \
+    -u projectID:projectSecret \
+    -d first_name=John \
+    -d last_name=Smith \
+    -d currency=USD
+```
+
+**Note**: While the currency field is also optionnal, it will be automatically
+set to the currency of the first invoice your customer will pay. It is also
+immutable.
+
+<div class="spacer"></div>
+
+#### Creating a customer token
+
+Now that we have a customer object to work with, we can create tokens that'll
+belong to it. Customer tokens can be created from the ones returned by
+[`ProcessOut.js` &nearr;](#) and can be used any number of time. 
+
+```sh
+curl https://api.processout.com/customers/cust_WtaVdUjAGpOlbLiYWYXBR67whr91Rlks \
+    -u projectID:projectSecret \
+    -d source=card_ZGJ8EnCPfcr298O1wD6u9McfnZQucIv1
+```
+
+<div class="spacer"></div>
+
+#### Capturing a payment for a customer
+
+After having created a customer token, it is possible to capture any invoice
+matching the currency of the customer at any point in time, using the ID
+of the customer as the source:
+
+```sh
+curl https://api.processout.com/invoices/iv_lEZFFcQg5WwpKcolBrlzioeeFnnuPmyE/capture \
+    -d source=cust_WtaVdUjAGpOlbLiYWYXBR67whr91Rlks
+```
