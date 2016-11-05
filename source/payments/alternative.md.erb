@@ -1,0 +1,170 @@
+## Handle alternative payment methods
+
+On top of helping you accept payments using credit cards, ProcessOut also
+lets you accept payments through alternative payment methods, such as 
+[PayPal](https://paypal.com) or [cryptocurrencies with coinpayments](https://coinpayments.com).
+
+<hr>
+
+#### Native to the payment modal
+
+Before getting into the white-label integration, it is important to note that the
+[ProcessOut modal &nearr;](#) comes with the alternative payment methods right from
+the start, without any additional work needed. The modal is a perfect fit if it
+fits your needs. 
+
+#### Alternative payment methods flow
+
+Because of their nature, most alternative payment methods are `asynchronous`. This
+means that you normally wouldn't be able to synchronously tell the customer if its
+payment correctly made it through until you receive a confirmation from the
+payment method webhooks (such as from the *PayPal IPN*). This is mainly due
+to the fact that a redirection is usually required.
+
+ProcessOut tries to bridge that gap by letting merchants keep control of their
+customer flow, **even after a redirection**. The customer is transparently
+redirected to the payment method's payment page in a new window, and once the
+the payment is completed, the alternative payment method's window is closed
+and the original merchant payment page is notified of the payment via Javascript. 
+
+#### Fetching the available alternative payment methods
+
+Before showing the payment methods to the customer, they need to be fetched
+from your ProcessOut configuration. This lets you dynamically enable and disable
+payment options without having to update any of your code.
+
+In order to fetch your ProcessOut gateways configuration, we'll also need to
+create an invoice, as some of the gateways will need some information before
+the payment actually takes place.
+
+<%= partial "lg-selector" %>
+
+```go
+client := processout.New("proj_vPDoaE0dHoPtsek8SqbwTpgeTN1toazN", 
+    "key-YGrDVFw4VjtAbudi5iErsMbBiHakIPpd")
+
+// Let's create an invoice
+iv, err := p.Invoices.Create(&processout.Invoice{
+	Name:     "Amazing item",
+	Amount:   "4.99",
+	Currency: "USD",
+}, processout.Options{
+	Expand: []string{"project"},
+})
+if err != nil {
+    panic(err)
+}
+
+// And now fetch the project available gateways for one-off payments
+gateways, erri := p.Projects.GatewayConfigurations(iv.Project, 
+    processout.Options{
+        Expand:         []string{"gateway"},
+        Filter:         "tags: redirection flows: one-off",
+        DisableLogging: true,
+    })
+```
+
+#### Displaying alternative methods payment links
+
+The `gateways` variable fetched in the previous steps now contains all the
+available alternative payment gateways that were configured and activated
+on your project. We also created a new [`Invoice` &nearr;](#) that we'll
+use to redirect the customer to the payment page.
+
+A payment link for an alternative payment gateway is as follows:
+
+```html
+<form action="/your-capture-endpoint" method="POST" id="payment-form">
+  <!-- Loop through all your gateway configurations and display the link
+       below.
+       ProcessOut-checkout-domain/:invoice_id/redirect/:gateway_configuration_id -->
+  <a href="https://checkout.processout.com/iv_tIWEiBcrXIFHzJeXcZzqyp8EpY0xwmuT/redirect/gway_conf_vMFNzz1GnWYRUJWFgUhn4HajCYmJiMsi"
+    class="alternative-payment-link">
+
+    Pay now!
+  </a>
+</form>
+```
+
+**Note**: The links are put in a form so that we can later post the `token`
+representing the payment back to the merchant's backend.
+
+#### Hooking ProcessOut.js on the payment links
+
+We could technically stop there and simply redirect the customer to the checkout
+pages, but the merchant would lose control over its customer checkout flow.
+ProcessOut.js lets you control the redirection from your payment page so you can
+cancel the payment at any time, and be notified synchronously of a new payment.
+
+```html
+<script src="https://js.processout.com/processout.js"></script>
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function() {
+    var client = new ProcessOut.ProcessOut("proj_vPDoaE0dHoPtsek8SqbwTpgeTN1toazN");
+    // Let's hook every link:
+    var formElement = document.getElementById("payment-form");
+    var links = formElement.querySelectorAll(".alternative-payment-link");
+    for(var i = 0; i < links.length; i++) {
+      links[i].addEventListener("click", processoutRedirectHandler);
+    }
+  });
+</script>
+```
+
+**Note**: Remember to replace the project ID in the example with your own. When testing,
+prepend your project ID with `test-` like so: `test-proj_vPDoaE0dHoPtsek8SqbwTpgeTN1toazN`.
+
+We also still have to add the handler, which we'll do just now:
+
+#### Handle the redirection
+
+When a customer will click on the alternative gateway link, the `processoutRedirectHandler`
+function will be called. Let's define it:
+
+```javascript
+function processoutRedirectHandler(el, e) {
+  // Prevent from doing the default redirection
+  e.preventDefault();
+
+  var action = client.handleAction(el.getAttribute("href"), 
+    function(token) {
+      // The payment customer completed the gateway payment flow,
+      // we can send the token back to our backend to finish its
+      // capture
+      var field   = document.createElement("input");
+      field.type  = "hidden";
+      field.name  = "token";
+      field.value = token;
+      formElement.submit();
+    }, function(err) {
+      // An error occured during checkout. This could just be the
+      // customer that canceled the payment, or an error with
+      // the payment gateway.
+      alert(err);
+    });
+
+  return false;
+}
+```
+
+#### Handle the capture on the server
+
+`ProcessOut.js` sent the `token` back to our server so we need to finish
+its capture. We'll need both the `token` and the `invoice ID` we created
+earlier and used to redirect the customer.
+
+The code to capture the token returned by `ProcessOut.js` during an alternative
+gateway checkout is **identical** to the capture of a card token.
+
+```sh
+curl https://api.processout.com/invoices/iv_tIWEiBcrXIFHzJeXcZzqyp8EpY0xwmuT/capture \
+    -d source="gway_req_V2UncmUgaGlyaW5nIQ=="
+```
+
+**Note**: The gateway request token sent by `ProcessOut.js` is actually only
+an abstraction of the request done by the customer on the gateway. The content
+of the token is therefore directly encoded inside it, in base64.
+
+The capture should return a transaction if it was successful. It is strongly
+advised to check its `captured` attribute to make sure the payment made it fully
+through.

@@ -11,6 +11,8 @@ is an easy and effective way to get paid for products or services you sell.
 
 To get started, let's create an [`Invoice` &nearr;](#):
 
+<%= partial "lg-selector" %>
+
 ```sh
 curl https://api.processout.com/invoices \
     -u projectID:projectSecret \
@@ -54,6 +56,8 @@ to deduct which link should be converted to a modal.
 While automatically converting links to embed the modal is very handy, it can
 be quite limited in some use-cases. It is possible to control the flow of the
 modal and manually trigger its loading/appearance using some Javascript.
+
+<%= partial "lg-selector" %>
 
 ```javascript
 var processOut = new ProcessOut.ProcessOut("project-id");

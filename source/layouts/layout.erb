@@ -10,7 +10,7 @@
         <link href="//www.processout.com/css/app.css" rel="stylesheet" type="text/css" />
         <link href="//www.processout.com/css/sero.css" rel="stylesheet" type="text/css" />
 
-        <%= stylesheet_link_tag :highlighting, media: :highlighting %>
+        <%= stylesheet_link_tag :highlighting %>
         
         <%= javascript_include_tag  "jquery.min" %>
 
@@ -55,6 +55,44 @@
             }
             .main-content .content pre {
                 margin-bottom: 1rem;
+                background: rgba(236, 240, 241, 0.7);
+                padding: 1.5em;
+                box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 3px 8px 0 rgba(0, 0, 0, 0.1);
+            }
+            .main-content .content a code {
+                color: #5abe96;
+                background: none; border: none;
+                box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 1px 8px 0 rgba(0, 0, 0, 0.1);
+            }
+            .main-content .content a code:hover {
+                color: #5abe96;
+                background: none; border: none;
+                box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 3px 8px 0 rgba(0, 0, 0, 0.1);
+            }
+            .main-content .content code {
+                background: none; border: none;
+                font-weight: 600;
+            }
+            .main-content .content pre code {
+                background: none; border: none;
+                font-weight: 500;
+            }
+            .main-content .language-selector {
+                margin-bottom: 0.25em;
+            }
+            .main-content .language-selector a {
+                padding-right: 1em;
+                color: #1abc9c;
+                opacity: 0.6;
+            }
+            .main-content .language-selector a.selected, .main-content .language-selector a:hover {
+                font-weight: 600;
+            }
+
+            .main-content .footer {
+                opacity: 0.75;
+                padding: 0;
+                margin-top: 5em;
             }
 
             .margin-top {
@@ -98,7 +136,7 @@
                             <li><a href="#">Failed and pending captures</a></li> 
                         </ul>
                         <ul class="no-bullet">
-                            <li><a href="#">Alternatives payment methods</a></li>
+                            <li><%= link_to 'Alternative payment methods', '/payments/alternative.html' %></li>
                         </ul>
 
                         <h6>Subscriptions</h6>
@@ -125,6 +163,11 @@
                     </div>
                     <div class="medium-9 columns content">
                         <%= yield %>
+
+                        <div class="footer">
+                            <hr>
+                            For any question, please feel free to message us at hi@processout.com. We're always happy to help!
+                        </div>
                     </div>
                 </div>
             </div>
