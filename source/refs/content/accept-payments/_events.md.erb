@@ -1,5 +1,88 @@
 ## Events
 
+> Below is an example of the content of the `data` field of an event.
+
+```json
+{  
+    "name":"invoice.completed",
+    "sandbox":false,
+    "invoice":{  
+        "id":"proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4",
+        "project":{  
+            "id":"proj_wk9E5C94dOuIcDCe0stqjTJgHmczHaKp",
+            "name":"App Group LIMITED",
+            "email":"sales@appgrouplimited.com",
+            "default_currency":"USD",
+            "created_at":"2016-05-06T20:45:45Z"
+        },
+        "subscription":null,
+        "customer":{  
+            "id":"cust_74qLxAbCpEYOxiBBwXTPKTP4QgTstude",
+            "balance":"0",
+            "currency":"USD",
+            "email":"john@gmail.com",
+            "first_name":"",
+            "last_name":"",
+            "address1":"",
+            "address2":"",
+            "city":"",
+            "state":"",
+            "zip":"",
+            "country_code":"",
+            "metadata":{},
+            "sandbox":false,
+            "created_at":"2016-11-05T13:05:47.963398Z",
+            "transactions_count":1,
+            "subscriptions_count":0,
+            "mrr_local":0,
+            "total_revenues_local":22.99
+        },
+        "transaction":{  
+            "id":"tr_G5HiwMqKmrO8RDGlR8x6zfeDAssZnl8Q",
+            "name":"T-Shirt Size M",
+            "currency":"USD",
+            "buyer":{  
+                "name":"",
+                "email":"",
+                "address":"",
+                "phone":""
+            },
+            "metadata":{},
+            "processout_fee":"0",
+            "sandbox":false,
+            "created_at":"2016-11-05T13:05:27.236141Z",
+            "amount":"22.99",
+            "amount_local":"22.99",
+            "authorized_amount":"22.99",
+            "authorized_amount_local":"22.99",
+            "captured_amount":"22.99",
+            "captured_amount_local":"22.99",
+            "available_amount":"22.99",
+            "available_amount_local":"22.99",
+            "refunded_amount":"0",
+            "refunded_amount_local":"0",
+            "status":"completed",
+            "gateway_fee":"2.4",
+            "gateway_fee_local":"2.4",
+            "gateway_name":"paypalexpresscheckout",
+            "authorized":true,
+            "captured":true
+        },
+        "name":"T-Shirt Size M",
+        "price":"22.99",
+        "total":"22.99",
+        "currency":"USD",
+        "request_email":true,
+        "request_shipping":false,
+        "return_url":"https://sales.appgrouplimited.com",
+        "cancel_url":null,
+        "sandbox":false,
+        "url":"https://checkout.processout.com/iv_...",
+        "created_at":"2016-11-05T13:05:27.136003Z"
+    }
+}
+```
+
 When a resource's state changes, ProcessOut will create an `Event` object which can
 be programmatically fetched. This can be used to notify your application
 when a transaction gets completed, or when a subscription iterates to its next
@@ -11,6 +94,12 @@ It is also important to note that events are extremely powerful when they're
 coupled with [webhooks](#webhooks). As soon as an event is created, we'll send
 a request to your web application to notify you of this new event so it can
 fetched and processed.
+
+**You may find on the right pane an example of what the content of the `data` field
+might look like.** The data is basically composed of the object the event describes
+at the top level, and this object has its first level resources expanded (when
+available). If you wish to access deeper resources, you will need to fetch those
+from the API.
 
 ##### Attributes
 |||
@@ -38,7 +127,7 @@ ProcessOut.Event.find("ev_T3wg9169RyGLnf1BIgTjLhrolEZU1DSb").then(
 
 ```python
 <%= partial "header-python" %>
-event = Event.find("ev_T3wg9169RyGLnf1BIgTjLhrolEZU1DSb")
+event = processout.Event.find("ev_T3wg9169RyGLnf1BIgTjLhrolEZU1DSb")
 ```
 
 ```php
@@ -48,7 +137,7 @@ $event = ProcessOut\Event::find("ev_T3wg9169RyGLnf1BIgTjLhrolEZU1DSb");
 
 ```go
 <%= partial "header-go" %>
-ev, err := p.Events.Find("ev_T3wg9169RyGLnf1BIgTjLhrolEZU1DSb")
+ev, err := client.Events.Find("ev_T3wg9169RyGLnf1BIgTjLhrolEZU1DSb")
 ```
 
 Fetch an event by its ID. An error is thrown when the event could not be found.

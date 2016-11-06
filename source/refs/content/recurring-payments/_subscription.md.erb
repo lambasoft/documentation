@@ -1,100 +1,6 @@
 ## Subscriptions
 
-### Create a subscription
-
-```javascript
-// Create a new subscription
-var subscription = new ProcessOut.Subscription();
-subscription.setName('Amazing item');
-subscription.setAmount('4.99');
-subscription.setCurrency('USD');
-// Set the recurring period to a month
-subscription.setInterval("1m");
-// If we wanted to do an interval of a month and two weeks + 3 days,
-// we could do:
-// subscription.setInverval("1m2w3d");
-// You may set any field listed in table on the right pane
-
-// Push it to ProcessOut. You will need the customer ID of a previously
-// generated customer
-subscription.create('<customer-id>').then(function(subscription) {
-    // subscription is our newly created subscription resource
-
-}, function(err) {
-    // An error occured
-
-});
-```
-
-```python
-from processout.subscription import Subscription
-
-# Create a new subscription object
-subscription          = Subscription()
-subscription.name     = 'Amazing item'
-subscription.amount   = '4.99'
-subscription.currency = 'USD'
-# Set the recurring period to a month
-subscription.interval = "1m"
-# If we wanted to do an interval of a month and two weeks + 3 days,
-# we could do:
-# subscription.interval = "1m2w3d"
-# You may set any field listed in table on the right pane
-
-# Push it to ProcessOut. Create returns a new subscription instance
-# You will need the customer ID of a previously generated customer
-subscription = subscription.create('<customer-id>')
-```
-
-```php
-<?php
-// Create a new subscription
-$subscription = new \ProcessOut\Subscription();
-$subscription
-    ->setName('Amazing item')
-    ->setAmount('4.99')
-    ->setCurrency('USD')
-    // Set the recurring period to a month
-    ->setInterval("1m");
-    // If we wanted to do an interval of a month and two weeks + 3 days,
-    // we could do:
-    // ->setInverval("1m2w3d");
-// You may set any field listed in table on the right pane
-
-// Push it to ProcessOut. Create returns a new subscription instance
-// You will need the customer ID of a previously generated customer
-$subscription = $subscription->create('<customer-id>');
-```
-
-```go
-// Define a new subscription
-sub := &processout.Subscription{
-	Name:     "Amazing item",
-	Amount:   "4.99",
-	Currency: "USD",
-	Interval: "1m",
-    // If we wanted to do an interval of a month and two weeks + 3 days,
-    // we could do:
-    // Interval: "1m2w3d",
-
-	// Set anything you want that isn't read-only
-}
-// Create it on ProcessOut. You will need the ID of a Customer
-// that you have previously created.
-sub, err := p.RecurringInvoices.Create(sub, customerID)
-```
-
-> Replace `<customer-id>` with the customer ID.
-
-Create a subscription.
-The field `interval` must be set. To make it easy to define precise subscription
-intervals, `interval` is a signed sequence of decimal numbers, such as "1m",
-"2w" or "1m15d". Valid time units are "d" for days, "w" for weeks, "m" for months
-and "y" for years. `interval` must represent a positive number of days.
-
-The field `trial_period` has the same signature and works the same way, but can
-represent a trial period of zero days.
-
+Subscriptions are objects representing your customers' subscriptions.
 
 ##### Attributes
 |||
@@ -103,11 +9,12 @@ represent a trial period of zero days.
 **url**<br />*string*<br />Read-only | `url` to the ProcessOut checkout page
 **customer**<br />*[Customer](#customers)*<br />Read-only |
 **plan**<br />*[Plan](#plans)*<br />Read-only | Plan, if one was used when creating the subscription
+**source**<br />*string*<br /> Write-only | The source used to activate the subscription
 **name**<br />*string*<br />Required | Name of the subscription
 **amount**<br />*string*<br />Required | Amount to be paid at every iteration of the subscription
 **currency**<br />*string*<br />Required | Currency of the subscription, in the ISO 4217 format (ex: `USD`)
 **interval**<br />*string*<br />Required | Number of days for the recurring period
-**trial_end_at**<br />*string* | Number of days for the trial period, before which the customer won't pay. Defaults to `0d`
+**trial_end_at**<br />*string* | Date at which the trial of the subscription will end. Defaults to no trial
 **metadata**<br />[Metadata](#metadata)<br />*dictionary* | Context related to the recurring invoice, key-value pair (string => string)
 **return_url**<br />*string* | `url` used to redirect the customer once the payment is placed
 **cancel_url**<br />*string* | `url` used to redirect the customer when the payment is canceled |ProcessOut cancelation landing page
@@ -115,65 +22,233 @@ represent a trial period of zero days.
 **cancellation_reason**<br />*boolean* | If `canceled` is true, represents the reason why the recurring invoice was canceled
 **sandbox**<br />*boolean*<br />Read-only |
 
-### Authorization flows
+
+### Create a subscription
 
 ```javascript
-console.log(subscription.getUrl());
-// > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+<%= partial "header-js" %>
+var subscription = new ProcessOut.Subscription();
+subscription.setName("Amazing item");
+subscription.setAmount("4.99");
+subscription.setCurrency("USD");
+subscription.setInterval("1m");
 
-console.log(subscription.getId());
-// > 64db379a-301f-4db6-859e-a0b342ff0b66
+subscription.create("cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P").then(
+    function(subscription) {
+        // 
+
+    }, function(err) {
+        // An error occured
+
+    });
 ```
 
 ```python
-print(subscription.url)
-# > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+<%= partial "header-python" %>
+subscription          = Subscription()
+subscription.name     = "Amazing item"
+subscription.amount   = "4.99"
+subscription.currency = "USD"
+subscription.interval = "1m"
 
-print(subscription.id)
-# > 64db379a-301f-4db6-859e-a0b342ff0b66
+subscription = subscription.create("cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P")
 ```
 
 ```php
 <?php
-echo $subscription->getUrl();
-// > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+<%= partial "header-php" %>
+$subscription = new \ProcessOut\Subscription();
+$subscription
+    ->setName("Amazing item")
+    ->setAmount("4.99")
+    ->setCurrency("USD")
+    ->setInterval("1m");
 
-echo $subscription->getId();
-// > 64db379a-301f-4db6-859e-a0b342ff0b66
+$subscription = $subscription->create("cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P");
 ```
 
 ```go
-fmt.Println(sub.URL)
-// > https://checkout.processout.com/64db379a-301f-4db6-859e-a0b342ff0b66
+<%= partial "header-go" %>
+sub := &processout.Subscription{
+	Name:     "Amazing item",
+	Amount:   "4.99",
+	Currency: "USD",
+	Interval: "1m",
+}
 
-fmt.Println(sub.ID)
-// > 64db379a-301f-4db6-859e-a0b342ff0b66
+sub, err := client.Subscriptions.Create(sub, "cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P")
 ```
 
-Now that we created a subscription, we'll need to make the customer able
-to interact with it in order to proceed with the authorization of the recurring
-billing.
+To create a subscription for a specific customer, the field `interval` 
+must be set. To make it easy to define precise subscription
+intervals, `interval` is a signed sequence of decimal numbers, such as "1m",
+"2w" or "1m15d". Valid time units are "d" for days, "w" for weeks, "m" for months
+and "y" for years. `interval` must represent a positive number of days.
 
-When you create a subscription, we'll return two things: the subscription
-`url`, to which you can redirect your customer to activate the subscription,
-and the subscription `id`, which can be used with ProcessOut.js on the
-modal.
+The field `trial_end_at` may also be set to a specific date to add a trial to 
+the subscription, during which the customer will not be charged. The trial will 
+end at that specific date automatically.
 
-### Authorization modal
+### Create from a plan
 
-```html
-<a class="processout-modal-button"
-    href="https://checkout.processout.com/<subscription-id>">
-        Test modal
-</a>
-<script src="https://js.processout.com/modal.js"></script>
+```javascript
+<%= partial "header-js" %>
+var subscription = new ProcessOut.Subscription();
+subscription.createFromPlan("cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P",
+    "silver-plan").then(function(subscription) {
+        // 
+
+    }, function(err) {
+        // An error occured
+
+    });
 ```
 
-> Replace `<subscription-id>` with the subscription ID you just created.
+```python
+<%= partial "header-python" %>
+subscription          = Subscription()
+subscription = subscription.createFromPlan(
+    "cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P", "silver-plan")
+```
 
-The modal essentially consists of a window showing up above your website so
-your customers never leave your environment.
+```php
+<?php
+<%= partial "header-php" %>
+$subscription = new \ProcessOut\Subscription();
+$subscription = $subscription->createFromPlan(
+    "cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P", "silver-plan");
+```
 
-When placed on an `a` HTML element with the class `processout-modal-button`,
-the modal will be automatically triggered when the customer clicks on the link.
-You may use any other class on the link to style it your way.
+```go
+<%= partial "header-go" %>
+sub, err := client.Subscriptions.CreateFromPlan(&processout.Subscription{}, 
+    "cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P, "silver-plan")
+```
+
+It is also possible to create a subscription from a plan that you'd have
+created from your [Dashboard](https://dashboard.processout.com) or directly 
+from the API.
+
+### Fetch a subscription
+
+```javascript
+<%= partial "header-js" %>
+ProcessOut.Subscription.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3").then(
+    function(subscription) {
+        // 
+
+    }, function(err) {
+        // An error occured
+
+    });
+```
+
+```python
+<%= partial "header-python" %>
+subscription = Subscription.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
+```
+
+```php
+<%= partial "header-php" %>
+$subscription = \ProcessOut\Subscription::find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3");
+```
+
+```go
+<%= partial "header-go" %>
+sub, err := client.Subscriptions.Find("7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
+```
+
+Fetch a subscription from its ID. Throws an error if the subscription could
+not be found.
+
+### Activate a subscription
+
+```javascript
+<%= partial "header-js" %>
+ProcessOut.Subscription.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3").then(
+    function(subscription) {
+        subscription.applySource("card_C4hZXQTU0aWoYeenHYC0DektYDqf8ocj").then(
+            function(subscription) {
+                // 
+
+            }, function(err) {
+                // An error occured
+            });
+
+    }, function(err) {
+        // An error occured
+
+    });
+```
+
+```python
+<%= partial "header-python" %>
+subscription = Subscription.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
+subscription.applySource("card_C4hZXQTU0aWoYeenHYC0DektYDqf8ocj")
+```
+
+```php
+<%= partial "header-php" %>
+$subscription = \ProcessOut\Subscription::find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3");
+$subscription->applySource("card_C4hZXQTU0aWoYeenHYC0DektYDqf8ocj");
+```
+
+```go
+<%= partial "header-go" %>
+sub, err := client.Subscriptions.Find("7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
+sub, err = client.Subscriptions.ApplySource("card_C4hZXQTU0aWoYeenHYC0DektYDqf8ocj")
+```
+
+Activating a subscription is done by applying a source to the subscription. The
+source can be a `card`, a [Token](#tokens) or a [Gateway Request](#). An error
+is thrown if the source could not be used.
+
+### Cancel a subscription
+
+```javascript
+<%= partial "header-js" %>
+ProcessOut.Subscription.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3").then(
+    function(subscription) {
+        // or cancel("2022-10-02T15:00:00Z", "Cancellation reason")
+        subscription.cancel("Cancellation reason").then(function(subscription) {
+            // 
+
+        }, function(err) {
+            // Could not cancel it
+
+        });
+
+    }, function(err) {
+        // An error occured
+
+    });
+```
+
+```python
+<%= partial "header-python" %>
+subscription = Subscription.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
+subscription.cancel("Cancellation reason")
+# or subscription.cancelAt("2022-10-02T15:00:00Z", "Cancellation reason")
+```
+
+```php
+<%= partial "header-php" %>
+$subscription = \ProcessOut\Subscription::find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3");
+$subscription->cancel("Cancellation reason");
+// or $subscription->cancelAt("2022-10-02T15:00:00Z", "Cancellation reason");
+```
+
+```go
+<%= partial "header-go" %>
+sub, err := client.Subscriptions.Find("7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
+sub, err = client.Subscriptions.Cancel(sub, "Cancellation reason")
+// or sub, err = client.Subscriptions.CancelAt("2022-10-02T15:00:00Z", 
+//      "Cancellation reason")
+```
+
+A subscription can be cancelled immediately or at a certain date. A short reason
+for the cancellation may also be provided. An error is thrown if the cancellation
+couldn't be done.
+
+When doing an immediate cancellation, ProcessOut internally stores a date for the
+cancellation date in the past so that our worker pulls the job as soon as possible.

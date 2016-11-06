@@ -70,6 +70,7 @@ html, body {
 .tocify-wrapper {
   @extend %menu-font;
   @include transition(left ease-in-out 0.3s);
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 1px 0 8px 0 rgba(0, 0, 0, 0.1);
   position: fixed;
   z-index: 30;
   top: 0;
@@ -612,13 +613,14 @@ html, body {
 
   blockquote {
       margin-top: -15px;
+      margin-bottom: 0;
+      padding: 0;
+      background: none;
     &>p {
+      padding: 2em $main-padding!important;
       background-color: $code-annotation-bg;
-      border-radius: 5px;
       padding: $code-annotation-padding;
       color: #ccc;
-      border-top: 1px solid #000;
-      border-bottom: 1px solid #404040;
     }
   }
 }

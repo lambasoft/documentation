@@ -5,6 +5,10 @@ to use the ProcessOut embedded [payment modal &nearr;](github.com/processout/pro
 The modal will take care of handling the entire payment flow of your customer. It
 is an easy and effective way to get paid for products or services you sell.
 
+If you'd rather control the whole checkout experience of your customer, we've also
+created [`ProcessOut.js` &nearr;](/payments/processoutjs.html) that lets you
+do just that.
+
 <hr>
 
 #### Getting started with an invoice
@@ -15,7 +19,7 @@ To get started, let's create an [`Invoice` &nearr;](#):
 <%= partial "lg-selector" %>
 ```sh
 curl https://api.processout.com/invoices \
-    -u projectID:projectSecret \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
     -d name="Awesome invoice" \
     -d amount=9.99 \
     -d currency=USD 
@@ -104,10 +108,8 @@ While automatically converting links to embed the modal is very handy, it can
 be quite limited in some use-cases. It is possible to control the flow of the
 modal and manually trigger its loading/appearance using some Javascript.
 
-<%= partial "lg-selector" %>
-
 ```javascript
-var processOut = new ProcessOut.ProcessOut("project-id");
+var processOut = new ProcessOut.ProcessOut("proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4");
 
 processOut.newModal('https://checkout.processout.com/resource-id',
 function(modal) {

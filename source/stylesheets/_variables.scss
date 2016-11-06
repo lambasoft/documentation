@@ -27,11 +27,11 @@ $tertiary-color: $primary-color;
 
 // BACKGROUND COLORS
 ////////////////////
-$main-bg: #ecf0f1;
+$main-bg: rgba(236, 240, 241, 0.4);
 $nav-bg: darken($main-bg, 3);
 $examples-bg: #34495e;
 $code-bg: #2c3e50;
-$code-annotation-bg: rgba(0, 0, 0, 0.25);
+$code-annotation-bg: $code-bg;
 $nav-subitem-bg: $nav-bg;
 $nav-active-bg: $nav-bg;
 $lang-select-border: #000;

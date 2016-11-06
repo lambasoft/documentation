@@ -1,32 +1,47 @@
-<div id="webhooks-category"></div>
+## Handle status changes and webhooks
 
-## Webhooks
+When using the [`capture` &nearr;](#) endpoint, a [`Transaction` &nearr;](#) is
+is returned if there was no error when processing the payment. However, the
+payment may still be pending, and a few fail-safes should be put in place.
 
-Processing [events](#events) can be done through webhooks (also called
-callbacks or Instant Payment Notification: IPN). It is essentially a web
-request made to your web application, notifying you of the new event.
-Webhooks can be used to automatically deliver an item upon successful
-payment for example.
+<hr>
 
-However, as many payment gateways can be used at the same time, ProcessOut
-provides webhooks containing unified, normalized and easy to use data, as well
-as transaction states corresponding to the triggered event.
+#### Why should I use webhooks
 
-### Pre-requisites
+Transactions can get stuck in an in-between pending & captured states, which
+makes it crucial to set up a way to be notified when the status
+of an invoice and/or transaction gets updated.
 
-In order to start receiving webhooks, you must add your `webhook endpoint`s in your
-[ProcessOut dashboard](https://dashboard.processout.com).
+Most of the time with payments done by credit card, the merchant will know 
+instantly if the payment made it through. However, with most alternative
+payment methods this is not the case, and payments can sometimes take a few 
+minutes to be completely processed. Because of this, it is not possible to
+synchronously tell the customer or the merchant if the payment completely
+made it through: the payment is still pending.
 
-You should also note that *we will always `POST` a json encoded body request*
-to your application. Therefore, you should accept POST requests with a json
-encoded body.
+When a payment is done with a credit card, it is also possible that it was
+successfully processed but that the customer choses to chargeback the payment
+later. Handling webhooks will also make you able to handle this case and
+appropriately update your customer's profile on your business.
 
-Furthermore, you should *remove all CSRF protection* on your endpoints receiving
-webhooks. Most frameworks and CMS activate it by default, which could
-prevent ProcessOut from correctly posting webhooks to your application.
+#### Create a webhook endpoint
 
+First, we'll have to create an endpoint on our online service that accepts
+requests from the Internet. This is the address to which ProcessOut will
+`POST` JSON data to notify you of the new events. Any `CSRF` protection
+should also be removed from this endpoint to ensure to correct processing
+of the webhook.
 
-### Usage
+Handling the webhook data is very simple: ProcessOut will post the ID of the 
+event that was fired, and we'll just have to fetch its data from the ProcessOut's
+API. ProcessOut does not directly send the whole data of the event to ensure
+that the merchants checks the legitimicy of the event by first calling the API.
+
+<div class="language-selector-wrapper">
+<%= partial "lg-selector" %>
+```sh
+# cURL cannot be used to handle webhooks
+```
 
 ```javascript
 <%= partial "header-js" %>
@@ -153,7 +168,16 @@ func handleProcessOutWebhooks(w http.ResponseWriter,
 	}
 }
 ```
+</div>
 
-The webhooks your web application receives only contain the ID of the event,
-which can then be [fetched](#find-an-event) through the ProcessOut API to 
-access the actual data of the event.
+The full list of events can be found in our [`API reference` &nearr;](/refs#invoice-events).
+
+#### Set up webhook endpoints
+
+In order to receive webhooks, you will need to go to your 
+[Dashboard &nearr;](https://dashboard.processout.com) &rsaquo; Events &rsaquo; and add a
+new webhook endpoint. This endpoint will be called by our servers to notify
+yours of the new Event. This endpoint should therefore made accessible for us
+to `POST` JSON data to it.
+
+You should now be ready to handle any event!

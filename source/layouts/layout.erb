@@ -152,6 +152,12 @@
 
                     return false;
                 });
+
+                $(".main-content .content a").click(function() {
+                    window.open($(this).attr("href"));
+
+                    return false;
+                });
             });
         </script>
     </head>
@@ -187,7 +193,7 @@
                         <ul class="no-bullet">
                             <li><%= link_to 'Capture a payment', '/payments/capture-a-payment.html' %></li>
                             <li><%= link_to 'Save token and capture later', '/payments/save-token-and-capture-later.html' %></li>
-                            <li><%= link_to 'Failed and pending payments', '/payments/failed-and-pending-payments.html' %></li>
+                            <li><%= link_to 'Status changes and webhooks', '/payments/handle-status-changes-webhooks.html' %></li>
                         </ul>
                         <ul class="no-bullet">
                             <li><%= link_to 'Alternative payment methods', '/payments/alternative-payment-methods.html' %></li>

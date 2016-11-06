@@ -1,0 +1,67 @@
+## Tokens
+
+Tokens are objects referencing to a customer payment method, and can be used
+to capture payments for your customers programmatically.
+
+Tokens can reference objects such as `cards`, but also tokens native to the
+alternative payment gateways you use. It is therefore possible to create tokens
+for [PayPal](https://paypal.com) for instance.
+
+When activating a subscription, tokens are also automatically created and linked
+to the subscription so that ProcessOut uses it under the hood to automatically
+capture payments as the subscription iterates. Such tokens will be marked with
+a `is_subscription_only` set to `true`, and can only be used on the subscription 
+they were created for.
+
+##### Attributes
+|||
+--:|:--
+**id**<br />*string*<br />Read-only |
+**customer**<br />*[Customer](#customers)*<br />Read-only |
+**source**<br />*string*<br />Write-only | Source used to create the token. Most of the time will be a `card`
+**is_subscription_only**<br />*boolean*<br />Read-only | Whether or not the token was created for a specific subscription
+**metadata**<br />[Metadata](#metadata)<br />*dictionary* | Context related to the customer, key-value pair (string => string)
+**sandbox**<br />*boolean*<br />Read-only |
+
+### Create a token
+
+```javascript
+<%= partial "header-js" %>
+var token = new ProcessOut.Token();
+token.create("cust_C4hZXQTU0aWoYeenHYC0DektYDqf8ocj", 
+    "card_C4hZXQTU0aWoYeenHYC0DektYDqf8ocj").then(function(invoice) {
+    // 
+
+}, function(err) {
+    // An error occured
+
+});
+```
+
+```python
+<%= partial "header-python" %>
+token = processout.Token()
+token = token.create("cust_C4hZXQTU0aWoYeenHYC0DektYDqf8ocj",
+    "card_C4hZXQTU0aWoYeenHYC0DektYDqf8ocj")
+```
+
+```php
+<%= partial "header-php" %>
+$token = new \ProcessOut\Token();
+$token = $token->create("cust_C4hZXQTU0aWoYeenHYC0DektYDqf8ocj",
+    "card_C4hZXQTU0aWoYeenHYC0DektYDqf8ocj");
+```
+
+```go
+<%= partial "header-go" %>
+iv, err := client.Tokens.Create(&processout.Token{}, 
+    "cust_C4hZXQTU0aWoYeenHYC0DektYDqf8ocj",
+    "card_C4hZXQTU0aWoYeenHYC0DektYDqf8ocj")
+```
+
+Creating a customer token can be done by providing a customer ID for which to
+create the token, and a source. The source can be a `card`, but also a 
+[gateway request](#).
+
+The ID of the token that was created should be stored in your application
+so you can [capture payments](#capture-an-invoice) using it later.

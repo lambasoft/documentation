@@ -62,7 +62,7 @@ $invoice = $invoice->create();
 
 ```go
 <%= partial "header-go" %>
-iv, err := p.Invoices.Create(&processout.Invoice{
+iv, err := client.Invoices.Create(&processout.Invoice{
 	Name:     "Amazing item",
 	Amount:   "4.99",
 	Currency: "USD",
@@ -136,6 +136,7 @@ a new invoice.
 
 ```javascript
 <%= partial "header-js" %>
+// The source could also be a token tok_fKK4btSG7wd13ZZaevzhMcuNbpjcu1Zy
 invoice.capture("card_1jSEVrx7oaRta1KEdxoMWbiGkK2MijrZ").then(
     function(transaction) {
         // The invoice was captured and returned a transaction
@@ -147,16 +148,19 @@ invoice.capture("card_1jSEVrx7oaRta1KEdxoMWbiGkK2MijrZ").then(
 
 ```python
 <%= partial "header-python" %>
+# The source could also be a token tok_fKK4btSG7wd13ZZaevzhMcuNbpjcu1Zy
 transaction = invoice.capture("card_1jSEVrx7oaRta1KEdxoMWbiGkK2MijrZ")
 ```
 
 ```php
 <%= partial "header-php" %>
+// The source could also be a token tok_fKK4btSG7wd13ZZaevzhMcuNbpjcu1Zy
 $transaction = $invoice->capture("card_1jSEVrx7oaRta1KEdxoMWbiGkK2MijrZ");
 ```
 
 ```go
 <%= partial "header-go" %>
+// The source could also be a token tok_fKK4btSG7wd13ZZaevzhMcuNbpjcu1Zy
 tr, _ := processout.Invoices.Capture(iv,
     "card_1jSEVrx7oaRta1KEdxoMWbiGkK2MijrZ")
 ```
@@ -170,3 +174,6 @@ Be sure to check the [status](#statuses) field of the [Transaction](#transaction
 to make sure the payment fully made it through. If the payment is not yet
 completed, we will create new [Events](#events) to keep you updated regarding the status
 of the transaction.
+
+Capturing an invoice can be done using a `card`, a [Token](#tokens) or a 
+[Gateway request](#).

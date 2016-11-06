@@ -39,11 +39,72 @@ the payment actually takes place.
 
 <div class="language-selector-wrapper">
 <%= partial "lg-selector" %>
-```go
-client := processout.New("proj_vPDoaE0dHoPtsek8SqbwTpgeTN1toazN", 
-    "key-YGrDVFw4VjtAbudi5iErsMbBiHakIPpd")
+```sh
+# Let's first create an invoice
 
-// Let's create an invoice
+```
+```javascript
+<%= partial "header-js" %>
+// Let's first create an invoice
+var invoice = new ProcessOut.Invoice();
+invoice.setName('Amazing item');
+invoice.setAmount('4.99');
+invoice.setCurrency('USD');
+
+invoice.create({expand: ["project"]}).then(function(invoice) {
+    // And now fetch the project available gateways for one-off payments
+    invoice.getProject().gatewayConfigurations({
+        expand: ["gateway"],
+        filter: "tags: redirection flows: one-off"
+    }).then(function(gateways) {
+        //
+
+    }, function(err) {
+        // Couldn't fetch the project's gateways
+    });
+
+}, function(err) {
+    // An error occured
+
+});
+```
+
+```python
+<%= partial "header-python" %>
+# Let's first create an invoice
+invoice          = processout.Invoice()
+invoice.name     = 'Amazing item'
+invoice.amount   = '4.99'
+invoice.currency = 'USD'
+invoice = invoice.create({expand: ["project"]})
+
+# And now fetch the project's available gateways
+gateways = invoice.project.gatewayConfigurations({
+    expand: ["gateway"],
+    filter: "tags: redirection flows: one-off"
+})
+```
+
+```php
+<%= partial "header-php" %>
+// Let's first create an invoice
+$invoice = new \ProcessOut\Invoice();
+$invoice
+    ->setName('Amazing item')
+    ->setAmount('4.99')
+    ->setCurrency('USD');
+$invoice = $invoice->create(array("expand" => array("project")));
+
+// And now fetch the project's available gateways
+$gateways = $invoice->getProject()->gatewayConfigurations(array(
+    "expand" => array("gateway"),
+    "filter" => "tags: redirection flows: one-off"
+));
+```
+
+```go
+<%= partial "header-go" %>
+// Let's first create an invoice
 iv, err := p.Invoices.Create(&processout.Invoice{
     Name:     "Amazing item",
     Amount:   "4.99",
@@ -58,9 +119,8 @@ if err != nil {
 // And now fetch the project available gateways for one-off payments
 gateways, erri := p.Projects.GatewayConfigurations(iv.Project, 
     processout.Options{
-        Expand:         []string{"gateway"},
-        Filter:         "tags: redirection flows: one-off",
-        DisableLogging: true,
+        Expand: []string{"gateway"},
+        Filter: "tags: redirection flows: one-off",
     })
 ```
 </div>
@@ -161,6 +221,7 @@ gateway checkout is **identical** to the capture of a card token.
 <%= partial "lg-selector" %>
 ```sh
 curl https://api.processout.com/invoices/iv_tIWEiBcrXIFHzJeXcZzqyp8EpY0xwmuT/capture \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
     -d source="gway_req_V2UncmUgaGlyaW5nIQ=="
 ```
 </div>
