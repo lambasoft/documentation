@@ -11,8 +11,8 @@ is an easy and effective way to get paid for products or services you sell.
 
 To get started, let's create an [`Invoice` &nearr;](#):
 
+<div class="language-selector-wrapper">
 <%= partial "lg-selector" %>
-
 ```sh
 curl https://api.processout.com/invoices \
     -u projectID:projectSecret \
@@ -20,6 +20,53 @@ curl https://api.processout.com/invoices \
     -d amount=9.99 \
     -d currency=USD 
 ```
+
+```javascript
+<%= partial "header-js" %>
+var invoice = new ProcessOut.Invoice();
+invoice.setName('Amazing item');
+invoice.setAmount('4.99');
+invoice.setCurrency('USD');
+
+invoice.create().then(function(invoice) {
+    //
+
+}, function(err) {
+    // An error occured
+
+});
+```
+
+```python
+<%= partial "header-python" %>
+invoice          = processout.Invoice()
+invoice.name     = 'Amazing item'
+invoice.amount   = '4.99'
+invoice.currency = 'USD'
+
+invoice = invoice.create()
+```
+
+```php
+<%= partial "header-php" %>
+$invoice = new \ProcessOut\Invoice();
+$invoice
+    ->setName('Amazing item')
+    ->setAmount('4.99')
+    ->setCurrency('USD');
+
+$invoice = $invoice->create();
+```
+
+```go
+<%= partial "header-go" %>
+iv, err := p.Invoices.Create(&processout.Invoice{
+    Name:     "Amazing item",
+    Amount:   "4.99",
+    Currency: "USD",
+})
+```
+</div>
 
 This newly created invoice will give us an `url`, which we can use to redirect
 the customer to the checkout page. 

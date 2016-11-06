@@ -629,24 +629,6 @@ html, body {
 // These are the styles for phones and tablets
 // There are also a couple styles disperesed
 
-@media screen and (min-width: 1600px) {
-  .content {
-    &>h1, &>h2, &>h3, &>h4, &>h5, &>h6, &>p, &>table, &>ul, &>ol, &>aside, &>dl {
-      margin-right: 45%;
-    }
-
-    pre, blockquote {
-      width: 45%;
-    }
-  }
-
-  .page-wrapper {
-    .dark-box {
-      width: 45%;
-    }
-  }
-}
-
 @media (max-width: $tablet-width) {
   .tocify-wrapper {
     left: -$nav-width;

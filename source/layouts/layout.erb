@@ -33,9 +33,6 @@
             .main-content .menu-bar h6:first-child {
                 padding-top: 0; 
             }
-            .main-content .menu-bar ul {
-                margin-bottom: 0.5em;
-            }
             .main-content .menu-bar ul li {
                 margin-bottom: 0.1em;
             }
@@ -52,6 +49,14 @@
             }
             .main-content .content h4 {
                 margin-top: 2em;
+            }
+            .main-content .shadow-background {
+                background: rgba(236, 240, 241, 0.5);
+                box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 5px 8px 0 rgba(0, 0, 0, 0.1);
+                padding: 1em;
+            }
+            .main-content .shadow-background:hover {
+                box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 10px 28px 0 rgba(0, 0, 0, 0.1);
             }
             .main-content .content pre {
                 margin-bottom: 1rem;
@@ -99,6 +104,56 @@
                 margin-top: 2em;
             }
         </style>
+
+        <script>
+            function setCookie(cname, cvalue, exdays) {
+                var d = new Date();
+                d.setTime(d.getTime() + (exdays*24*60*60*1000));
+                var expires = "expires="+d.toUTCString();
+                document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+            }
+
+            function getCookie(cname) {
+                var name = cname + "=";
+                var ca = document.cookie.split(';');
+                for(var i = 0; i < ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
+
+            $(document).ready(function() {
+                if (!getCookie("selected-language")) {
+                    setCookie("selected-language", "python", 7);
+                }
+
+                function refreshSelectors() {
+                    $(".language-selector").each(function() {
+                        $(this).find("a").removeClass("selected");
+                        $(this).find("a[data-language="+getCookie("selected-language")+"]").addClass("selected");
+
+                        $(this).parent(".language-selector-wrapper").find(
+                            ".highlight").parent().addClass("hide");
+                        $(this).parent(".language-selector-wrapper").find(
+                            ".highlight."+getCookie("selected-language")).parent().removeClass("hide");
+                    });
+                };
+                refreshSelectors();
+
+                $(".language-selector a").click(function() {
+                    setCookie("selected-language", $(this).attr("data-language"), 7);
+                    refreshSelectors();
+
+                    return false;
+                });
+            });
+        </script>
     </head>
 
     <body>
@@ -121,22 +176,21 @@
                         <h6>Welcome</h6>
                         <ul class="no-bullet">
                             <li><%= link_to 'Home', '/index.html' %></li> 
-                            <li><%= link_to 'Getting started', '/index.html' %></li> 
-                            <li><%= link_to 'Libraries', '/index.html' %></li> 
+                            <li><%= link_to 'Getting started', '/getting-started.html' %></li>
                         </ul>
 
                         <h6>Accept payments</h6>
                         <ul class="no-bullet">
-                            <li><%= link_to 'Payment modal', '/payments/modal.html' %></li>
+                            <li><%= link_to 'Payment modal', '/payments/payment-modal.html' %></li>
                             <li><%= link_to 'ProcessOut.js', '/payments/processoutjs.html' %></li>
                         </ul>
                         <ul class="no-bullet">
-                            <li><%= link_to 'Capture a payment', '/payments/capture.html' %></li>
-                            <li><%= link_to 'Save token and capture later', '/payments/tokenize.html' %></li>
-                            <li><a href="#">Failed and pending captures</a></li> 
+                            <li><%= link_to 'Capture a payment', '/payments/capture-a-payment.html' %></li>
+                            <li><%= link_to 'Save token and capture later', '/payments/save-token-and-capture-later.html' %></li>
+                            <li><%= link_to 'Failed and pending payments', '/payments/failed-and-pending-payments.html' %></li>
                         </ul>
                         <ul class="no-bullet">
-                            <li><%= link_to 'Alternative payment methods', '/payments/alternative.html' %></li>
+                            <li><%= link_to 'Alternative payment methods', '/payments/alternative-payment-methods.html' %></li>
                         </ul>
 
                         <h6>Subscriptions</h6>
@@ -166,7 +220,7 @@
 
                         <div class="footer">
                             <hr>
-                            For any question, please feel free to message us at hi@processout.com. We're always happy to help!
+                            For any question, please feel free to message us at <a href="mailto:hi@processout.com">hi@processout.com</a>. We're always happy to help!
                         </div>
                     </div>
                 </div>

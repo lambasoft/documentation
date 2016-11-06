@@ -11,6 +11,8 @@ using the ProcessOut API. To start using invoices, [let's create one](#create-an
 **id**<br />*string*<br />Read-only |
 **url**<br />*string*<br />Read-only | `URL` to the ProcessOut checkout page
 **customer**<br />*[Customer](#customers)*<br />Read-only |
+**transaction**<br />*[Transaction](#transactions)*<br />Read-only |
+**subscription**<br />*[Subscription](#subscriptions)*<br />Read-only |
 **name**<br />*string*<br /><span class="highlighted">Required</span> | Name of the invoice/item to sell
 **amount**<br />*string*<br /><span class="highlighted">Required</span> | Amount to be paid
 **currency**<br />*string*<br /><span class="highlighted">Required</span> | Currency of the invoice, in the ISO 4217 format (ex: `USD`)
@@ -22,15 +24,12 @@ using the ProcessOut API. To start using invoices, [let's create one](#create-an
 ### Create an invoice
 
 ```javascript
-// Create a new invoice
+<%= partial "header-js" %>
 var invoice = new ProcessOut.Invoice();
 invoice.setName('Amazing item');
 invoice.setAmount('4.99');
 invoice.setCurrency('USD');
-// You may set any field listed in table on the right pane
 
-// Push it to ProcessOut
-// The ProcessOut NodeJS library uses promises to return objects
 invoice.create().then(function(invoice) {
     // invoice is our newly created resource
 
@@ -41,34 +40,28 @@ invoice.create().then(function(invoice) {
 ```
 
 ```python
-from processout.invoice import Invoice
-
-# Create a new invoice
-invoice          = Invoice()
+<%= partial "header-python" %>
+invoice          = processout.Invoice()
 invoice.name     = 'Amazing item'
 invoice.amount   = '4.99'
 invoice.currency = 'USD'
-# You may set any field listed in table on the right pane
 
-# Push it to ProcessOut. Create returns a new invoice instance
 invoice = invoice.create()
 ```
 
 ```php
-<?php
-// Create a new invoice
+<%= partial "header-php" %>
 $invoice = new \ProcessOut\Invoice();
 $invoice
     ->setName('Amazing item')
     ->setAmount('4.99')
     ->setCurrency('USD');
-// You may set any field listed in table on the right pane
 
-// Push it to ProcessOut. Create returns a new invoice instance
 $invoice = $invoice->create();
 ```
 
 ```go
+<%= partial "header-go" %>
 iv, err := p.Invoices.Create(&processout.Invoice{
 	Name:     "Amazing item",
 	Amount:   "4.99",
@@ -79,25 +72,101 @@ iv, err := p.Invoices.Create(&processout.Invoice{
 Creating an invoice for your customers can be done on your server's backend.
 Simply create an Invoice resource with a `name`, `amount` and `currency`.
 
-Now that you have created an invoice, your customers can interact with it to
-pay you using below's available payment options. Before doing so, you might
-also want to store more information regarding your customer. This can be done
-using our [Customer object](#customers).
+### Fetch an invoice
 
-##### What's next
-<div class="table">
-    <div class="table-tr text1-1em">
-        <div class="table-td" width="50%">
-            <a href="#hosted-payment-pages">Hosted payment page &rsaquo;</a>
-            <p class="content">
-                Accept payments online with your gateways.
-            </p>
-        </div>
-        <div class="table-td">
-            <a href="#subscriptions-category">ProcessOut.js &amp; API &rsaquo;</a>
-            <p>
-                Manage recurring billing for your busines.
-            </p>
-        </div>
-    </div>
-</div>
+```javascript
+<%= partial "header-js" %>
+ProcessOut.Invoice.find("iv_MgeLS2Rr3ZGwjqOvDvYSuWx7ce88luXl").then(
+    function(invoice) {
+        // The invoice was fetched
+
+    }, function(err) {
+        // The invoice could not be found
+    });
+```
+
+```python
+<%= partial "header-python" %>
+invoice = Invoice.find("iv_MgeLS2Rr3ZGwjqOvDvYSuWx7ce88luXl")
+```
+
+```php
+<%= partial "header-php" %>
+$invoice = \ProcessOut\Invoice::find("iv_MgeLS2Rr3ZGwjqOvDvYSuWx7ce88luXl");
+```
+
+```go
+<%= partial "header-go" %>
+iv, err := client.Invoices.Find("iv_MgeLS2Rr3ZGwjqOvDvYSuWx7ce88luXl")
+```
+
+Invoices can be fetched from ProcessOut by using their IDs. If the invoice
+could not be found, an error is thrown.
+
+### Assign a customer
+
+```javascript
+<%= partial "header-js" %>
+invoice.assignCustomer("cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P");
+```
+
+```python
+<%= partial "header-python" %>
+invoice.assignCustomer("cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P")
+```
+
+```php
+<%= partial "header-php" %>
+$invoice->assignCustomer("cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P");
+```
+
+```go
+<%= partial "header-go" %>
+processout.Invoices.AssignCustomer(iv, "cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P")
+```
+
+It is also possible to assign a customer to an invoice that was previously created.
+This can help track orders related to your customers.
+
+A customer's invoice is immutable, meaning that once it is set it cannot be changed.
+If you'd like to link another customer to the invoice, you will need to create
+a new invoice.
+
+### Capture an invoice
+
+```javascript
+<%= partial "header-js" %>
+invoice.capture("card_1jSEVrx7oaRta1KEdxoMWbiGkK2MijrZ").then(
+    function(transaction) {
+        // The invoice was captured and returned a transaction
+
+    }, function(err) {
+        // The invoice could not be captured
+    });
+```
+
+```python
+<%= partial "header-python" %>
+transaction = invoice.capture("card_1jSEVrx7oaRta1KEdxoMWbiGkK2MijrZ")
+```
+
+```php
+<%= partial "header-php" %>
+$transaction = $invoice->capture("card_1jSEVrx7oaRta1KEdxoMWbiGkK2MijrZ");
+```
+
+```go
+<%= partial "header-go" %>
+tr, _ := processout.Invoices.Capture(iv,
+    "card_1jSEVrx7oaRta1KEdxoMWbiGkK2MijrZ")
+```
+
+Capturing an invoice is done by calling `capture` on the invoice and passing
+the `source` to be used to capture the payment in the parameters. If an error
+occured while capturing the payment, an error is thrown. Otherwise, the
+transaction linked to the invoice is updated and returned.
+
+Be sure to check the [status](#statuses) field of the [Transaction](#transactions)
+to make sure the payment fully made it through. If the payment is not yet
+completed, we will create new [Events](#events) to keep you updated regarding the status
+of the transaction.

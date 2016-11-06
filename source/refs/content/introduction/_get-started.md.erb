@@ -34,30 +34,22 @@ You can find all our repositories on the [ProcessOut Github](https://github.com/
 
 ### Setting up
 
-```python
-# Load dependencies
-from processout.processout import ProcessOut
-
-# Instantiate ProcessOut
-processout = ProcessOut()
-processout.projectId     = '<project-id>'
-processout.projectSecret = '<project-key>'
-
-# Set this project as the default one for the current request
-ProcessOut.setDefault(processout)
-```
-
 ```javascript
 // Load package
 var ProcessOut = require('processout');
 
 // Instantiate ProcessOut
-var processout = new ProcessOut.ProcessOut();
-processout.setProjectId('<project-id>');
-processout.setProjectSecret('<project-key>');
+var client = new ProcessOut.ProcessOut(
+    "proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4",
+    "key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd");
+```
 
-// Set this project as the default one for the current request
-ProcessOut.ProcessOut.setDefault(processout);
+```python
+# Load dependencies
+from processout.processout import ProcessOut
+
+# Instantiate ProcessOut
+client = ProcessOut("proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4", "key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd")
 ```
 
 ```php
@@ -66,12 +58,9 @@ ProcessOut.ProcessOut.setDefault(processout);
 require 'vendor/autoload.php';
 
 // Instantiate ProcessOut
-$processout = new \ProcessOut\ProcessOut();
-$processout->setProjectId('<project-id>');
-$processout->setProjectSecret('<project-key>');
-
-// Set this project as the default one for the current request
-\ProcessOut\ProcessOut::setDefault($processout);
+$client = new \ProcessOut\ProcessOut(
+    "proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4",
+    "key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd");
 ```
 
 ```go
@@ -79,12 +68,13 @@ $processout->setProjectSecret('<project-key>');
 import "gopkg.in/processout.v2"
 
 // Instantiate ProcessOut (in a method)
-p := processout.New("<project-id>", "<project-key>")
-
-// Do things with our new p variable
+client := processout.New(
+    "proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4", 
+    "key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd")
 ```
 
-> Make sure to replace `<project-id>` and `<project-key>` with your details.
+> The credentials used in the examples are only examples, and will
+> not work. You must replace them with yours
 
 To use ProcessOut's API, you will need to authenticate yourself using your API keys.
 Your API keys are composed of your `project-id` and `project-secret`. To get

@@ -1,8 +1,8 @@
 ## Customers
 
-Although it is possible to create [invoices](#invoices) without assigning it
-to any `Customer` resource, it might come in handy when you want to better
-track your sales and get additional data regarding your customers.
+Customers contain data related to your customers. You can store their name, email
+and address, but there's also a metadata field that can be used to store 
+additional data if needed.
 
 ##### Attributes
 |||
@@ -23,18 +23,14 @@ track your sales and get additional data regarding your customers.
 ### Create a customer
 
 ```javascript
-// Create a new customer object
+<%= partial "header-js" %>
 var customer = new ProcessOut.Customer();
-// Fill the customer object with data
 customer.setEmail('john@smith.com');
 customer.setFirstName('John');
 customer.setLastName('Smith');
 
-// Push the customer to ProcessOut
 customer.create().then(function(customer) {
-    // We may now access its id
     console.log(customer.getId());
-    // > 64db379a-301f-4db6-859e-a0b342ff0b66
 
 }, function(err) {
     // An error occured
@@ -43,50 +39,35 @@ customer.create().then(function(customer) {
 ```
 
 ```python
-from processout.customer import Customer
-
-# Create a new customer object
-customer = Customer()
-# Fill the customer object with data
+<%= partial "header-python" %>
+customer = processout.Customer()
 customer.email = 'john@smith.com'
 customer.firstName = 'John'
 customer.lastName = 'Smith'
 
-# Push the customer to ProcessOut. Create returns a new customer instance
 customer = customer.create()
-
-# We may now access its id
 print(customer.id)
-# > 64db379a-301f-4db6-859e-a0b342ff0b66
 ```
 
 ```php
-<?php
-// Create a new customer object
+<%= partial "header-php" %>
 $customer = new \ProcessOut\Customer();
-// Fill the customer object with data
 $customer->setEmail('john@smith.com');
 $customer->setFirstName('John');
 $customer->setLastName('Smith');
 
-// Push the customer to ProcessOut. Create returns a new customer instance
 $customer = $customer->create();
-
-// We may now access its id
 echo $customer->getId();
-// > 64db379a-301f-4db6-859e-a0b342ff0b66
 ```
 
 ```go
-// Create a new customer
-c, err := p.Customers.Create(&processout.Customer{
+<%= partial "header-go" %>
+cust, err := client.Customers.Create(&processout.Customer{
 	FirstName: "John",
 	LastName:  "Smith",
 	Email:     "john@smith.com",
 })
-
-// We may now use it
-fmt.Println(c.ID)
+fmt.Println(cust.ID)
 ```
 
 Create a new customer.
@@ -100,35 +81,93 @@ It is also possible to store metadata in your ProcessOut customers. Said
 metadata could be anything, from the ID of the user in your systems to the
 country of the customer.
 
-### Assign to invoice
+### Fetch a customer
 
 ```javascript
-// invoice is an invoice we already fetched/created
-// The customer is returned
-var customer = invoice.assignCustomer('<customer-id>');
+<%= partial "header-js" %>
+ProcessOut.Customer.find("cust_UVYZP5I5741rFHQDEZXGLm777fCZzQAb").then(
+    function(customer) {
+        // Customer was fetched
+    }, function(err) {
+        // An error occured
+    });
 ```
 
 ```python
-# invoice is an invoice we already fetched/created
-# The customer is returned
-customer = invoice.assignCustomer('<customer-id>')
+<%= partial "header-python" %>
+customer = processout.Customer.find("cust_UVYZP5I5741rFHQDEZXGLm777fCZzQAb")
 ```
 
 ```php
-<?php
-// $invoice is an invoice we already fetched/created
-// The customer is returned
-$customer = $invoice->assignCustomer('<customer-id>');
+<%= partial "header-php" %>
+$customer = \ProcessOut\Customer::find("cust_UVYZP5I5741rFHQDEZXGLm777fCZzQAb");
 ```
 
 ```go
-// iv is an invoice we already fetched/created
-// The customer is returned
-c, err := p.Invoices.AssignCustomer(iv, "<customer-id>")
+<%= partial "header-go" %>
+cust, err := client.Customers.Find("cust_UVYZP5I5741rFHQDEZXGLm777fCZzQAb")
 ```
 
-> Replace `<customer-id>` with the customer ID.
+It is possible to fetch a customer by its ID. An error is thrown if the 
+customer could not be found.
 
-The [customer](#customers) can then be assigned to any [invoice](#invoices) (be it none or multiple ones).
-It is also possible to see all the invoices related to the customer in your
-dashboard, or pull those invoices from our API.
+### Update a customer
+
+```javascript
+<%= partial "header-js" %>
+customer.setFirstName("New name");
+customer.save();
+```
+
+```python
+<%= partial "header-python" %>
+customer.firstName = "New name"
+customer.save()
+```
+
+```php
+<%= partial "header-php" %>
+$customer->setFirstName("New name");
+$customer->save();
+```
+
+```go
+<%= partial "header-go" %>
+cust.FirstName = "New name"
+client.Customers.Save(cust)
+```
+
+Update the customer attributes. You must use a previously created or fetched
+customer object in order to guarantee data integrity of the customer object.
+
+### Delete a customer
+
+```javascript
+<%= partial "header-js" %>
+ProcessOut.Customer.find("cust_LvjCcLOVe6iWn2aeCNhNmK7RbbG6K8XF").then(
+    function(customer) {
+        customer.delete();
+    }, function() {});
+```
+
+```python
+<%= partial "header-python" %>
+customer = processout.Customer.find("cust_LvjCcLOVe6iWn2aeCNhNmK7RbbG6K8XF")
+customer.delete()
+```
+
+```php
+<%= partial "header-php" %>
+$customer = \ProcessOut\Customer::find("cust_LvjCcLOVe6iWn2aeCNhNmK7RbbG6K8XF");
+$customer->delete();
+```
+
+```go
+<%= partial "header-go" %>
+client.Customers.Delete(&processout.Customer{
+    ID: "cust_LvjCcLOVe6iWn2aeCNhNmK7RbbG6K8XF",
+})
+```
+
+Deleting a customer is irreversible and cannot be undone. An error is thrown
+if the customer could not be deleted.

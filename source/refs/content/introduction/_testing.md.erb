@@ -1,33 +1,35 @@
 ## Testing
 
 ```javascript
-var processout = new ProcessOut.ProcessOut()
+var ProcessOut = require('processout');
 // Prefix project ID with `test-`
-processout.setProjectId('test-<project-id>');
-processout.setProjectSecret('<project-key>');
+var client = new ProcessOut.ProcessOut(
+    "test-proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4",
+    "key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd");
 ```
 
 ```python
-processout = ProcessOut()
+from processout.processout import ProcessOut
 # Prefix project ID with `test-`
-processout.projectId = 'test-<project-id>'
-processout.projectSecret = '<project-key>'
+client = ProcessOut(
+    "test-proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4", 
+    "key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd")
 ```
 
 ```php
 <?php
-$processout = new \ProcessOut\ProcessOut();
 // Prefix project ID with `test-`
-$processout->setProjectId('test-<project-id>');
-$processout->setProjectSecret('<project-key>');
+$client = new \ProcessOut\ProcessOut(
+    "test-proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4",
+    "key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd");
 ```
 
 ```go
+import "gopkg.in/processout.v2"
 // Prefix project ID with `test-`
-projectID := "test-<project-id>"
-projectSecret := "<project-key>"
-
-p := processout.New(projectID, projectSecret)
+client := processout.New(
+    "test-proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4", 
+    "key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd")
 ```
 
 It is useful to be able to go through the whole payment process without
@@ -56,7 +58,12 @@ test different scenarios. Any other card will fail.
 
 |||
 --:|:--
-<div style="white-space: nowrap;">4242 4242 4242 4242<div>10/18 — CVC: 200 | Successful payment
-<div style="white-space: nowrap;">4242 4242 4242 4242<div>10/18 — CVC: 500 | The credit card will be denied
-<div style="white-space: nowrap;">4242 4242 4242 4242<div>10/18 — CVC: 600 | The authorization on the card will be successful, but any capture will fail
-<div style="white-space: nowrap;">4242 4242 4242 4242<div>10/18 — CVC: 666 | The payment will be successful, but a chargeback will be initiated as soon as the payment makes it through
+<div style="white-space: nowrap; font-family: Consolas;">4242 4242 4242 4242</div> | VISA successful payment
+<div style="white-space: nowrap; font-family: Consolas;">5555 5555 5555 4444</div> | Mastercard successful payment
+<div style="white-space: nowrap; font-family: Consolas;">3782 82246 310005</div>   | American Express successful payment
+<div style="white-space: nowrap; font-family: Consolas;">3012 3456 7890 19</div>   | Diners Club successful payment
+<div style="white-space: nowrap; font-family: Consolas;">3530 1113 3330 0000</div> | JCB successful payment
+<div style="white-space: nowrap; font-family: Consolas;">6011 1111 1111 1117</div> | Discover successful payment
+<div style="white-space: nowrap; font-family: Consolas;">4000 0000 0000 0002</div> | The credit card will be denied
+<div style="white-space: nowrap; font-family: Consolas;">4000 0000 0000 0010</div> | The authorization on the card will be successful, but any capture will fail
+<div style="white-space: nowrap; font-family: Consolas;">4000 0000 0000 0069</div> | The payment will be successful, but a chargeback will be initiated as soon as the payment makes it through

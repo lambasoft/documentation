@@ -14,7 +14,7 @@ as transaction states corresponding to the triggered event.
 
 ### Pre-requisites
 
-In order to start receiving webhooks, you must add your `notify_url`s in your
+In order to start receiving webhooks, you must add your `webhook endpoint`s in your
 [ProcessOut dashboard](https://dashboard.processout.com).
 
 You should also note that *we will always `POST` a json encoded body request*
@@ -156,6 +156,5 @@ func handleProcessOutWebhooks(w http.ResponseWriter,
 ```
 
 The webhooks your web application receives only contain the ID of the event,
-which can then be [fetched](#find-an-event) through the ProcessOut API.
-If the event was correctly found, the actual data of the `Event` object can be
-processed.
+which can then be [fetched](#find-an-event) through the ProcessOut API to 
+access the actual data of the event.

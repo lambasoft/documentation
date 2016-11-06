@@ -1,39 +1,74 @@
-## Payment notifications
-
-### Transactions
+## Transactions
 
 Transactions are *read-only* objects linked to their corresponding [invoice](#invoices),
 representing the actual payment that occured on an invoice.
 
 ProcessOut will automatically generate and/or update Transation resources
-depending on the status of the payment. This resource is also the main one
-that'll be sent to you through [Events and Webhooks](#webhooks) to notify you 
-of a new payment.
+depending on the status of the payment.
 
-Any metadata specified on an invoice will also be available in th metadata of
-this invoice's transaction for easy reference.
+Any metadata specified on an invoice will also be available in the metadata of
+its transaction for easy reference.
 
 ##### Attributes
 |||
 --:|:--
 **id**<br />*string*<br />Read-only |
+**customer**<br />*[Customer](#customers)*<br />Read-only |
+**subscription**<br />*[Subscription](#subscriptions)*<br />Read-only | 
+**name**<br />*string*<br />Read-only | Name of the Transaction
+**authorized_amount**<br />*string*<br />Read-only | Amount that was authorized for the transaction
+**captured_amount**<br />*string*<br />Read-only | Amount that was captured for the transaction
+**currency**<br />*string*<br />Read-only | Currency of the transaction
+**authorized**<br />*boolean*<br />Read-only | Whether or not the transaction was authorized
+**captured**<br />*boolean*<br />Read-only | Whether or not the transaction was captured
 **status**<br />*string*<br />Read-only | [Status](#statuses) of the transaction
 **processout_fee**<br />*string*<br />Read-only | Fee taken by ProcessOut to handle the transaction
-**gateway**<br />*map/dictionary*<br />Read-only | Contains information related to the transaction's gateway: `name`, `payment_id`, `fee` and `fee_currency`
 **metadata**<br />[Metadata](#metadata)<br />*dictionary* | Context related to the transaction's invoice, key-value pair (string => string)
 
 As seen in the transaction's attributes, it also contains a `status`, representing
-the latest known status of the transaction. This status is automatically updated
-by ProcessOut when the payment gateway pushes an update.
+the current status of the transaction. This status is automatically updated
+by ProcessOut when an update occurs on the transaction.
 
 ##### Statuses
 |||
 --:|:--
-**waiting** | No payment has been placed yet
-**pending** | The payment is pending confirmation by the payment gateway
-**completed** | The payment was sucessfully completed
-**failed** | The payment has been placed, but failed
-**disputed** | The payment was previously completed but the customer filled a dispute
-**solved** | The previous dispute has been resolved in your favor
-**reversed** | The previous dispute has been resolved in your customer’s favor
-**refunded** | You refunded the transaction
+<span style="font-family: Consolas;">waiting</span> | No payment has been placed yet
+<span style="font-family: Consolas;">pending</span> | The payment is pending confirmation by the payment gateway
+<span style="font-family: Consolas;">authorized</span> | The payment was authorized but not yet captured
+<span style="font-family: Consolas;">completed</span> | The payment was sucessfully completed
+<span style="font-family: Consolas;">failed</span> | The payment has been placed, but failed
+<span style="font-family: Consolas;">voided</span> | The payment was voided
+<span style="font-family: Consolas;">disputed</span> | The payment was previously completed but the customer filled a dispute
+<span style="font-family: Consolas;">solved</span> | The previous dispute has been resolved in your favor
+<span style="font-family: Consolas;">reversed</span> | The previous dispute has been resolved in your customer’s favor
+<span style="font-family: Consolas;">refunded</span> | You refunded the transaction
+
+### Fetch a transaction
+
+```javascript
+<%= partial "header-js" %>
+ProcessOut.Transaction.find("tr_ItJdKlhfaVn0SUGd9z1i9Jqe0STl4jxC").then(
+    function(transaction) {
+        // Transaction was fetched
+    }, function(err) {
+        // An error occured
+    });
+```
+
+```python
+<%= partial "header-python" %>
+transaction = processout.Transaction.find("tr_ItJdKlhfaVn0SUGd9z1i9Jqe0STl4jxC")
+```
+
+```php
+<%= partial "header-php" %>
+$transaction = \ProcessOut\transaction::find("tr_ItJdKlhfaVn0SUGd9z1i9Jqe0STl4jxC");
+```
+
+```go
+<%= partial "header-go" %>
+tr, err := client.Transactions.Find("tr_ItJdKlhfaVn0SUGd9z1i9Jqe0STl4jxC")
+```
+
+It is possible to fetch a transaction by its ID. An error is thrown if the 
+transaction could not be found.
