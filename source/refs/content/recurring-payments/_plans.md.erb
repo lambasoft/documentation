@@ -5,7 +5,7 @@ Plans can be seen as templates for your [subscriptions](#subscriptions).
 ##### Attributes
 |||
 --:|:--
-**id**<br />*string*<br />Read-only |
+**id**<br />*string*<br />Required | ID of the plan. Must be unique to the project
 **name**<br />*string*<br />Required | Name of the plan
 **amount**<br />*string*<br />Required | Amount to be paid at every iteration of the subscription
 **currency**<br />*string*<br />Required | Currency of the subscription, in the ISO 4217 format (ex: `USD`)
@@ -120,7 +120,7 @@ $plan = \ProcessOut\Plan::find("silver-plan");
 plan, err := client.Plans.Find("silver-plan")
 ```
 
-Fetch a plan from its ID. Throws an error if the subscription could
+Fetch a plan from its ID. Throws an error if the plan could
 not be found.
 
 ### Delete a subscription
@@ -163,7 +163,7 @@ $plan->delete();
 ```go
 <%= partial "header-go" %>
 plan, err := client.Plans.Find("silver-plan")
-plan, err = client.Subscriptions.Delete(plan)
+plan, err = client.Plans.Delete(plan)
 ```
 
 Deletes a plan. An error is thrown if the plan could not be deleted.

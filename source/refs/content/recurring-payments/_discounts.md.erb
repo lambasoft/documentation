@@ -1,0 +1,153 @@
+## Discounts
+
+Discount objects represent discounts applied to your customers' subscriptions.
+
+##### Attributes
+|||
+--:|:--
+**id**<br />*string*<br />Required | ID of the coupon. Must be unique to the project
+**amount**<br />*string*<br />Required | Amount discounted from the subscription
+**expires_at**<br />*string* | Date at which the coupon will automatically expire
+**metadata**<br />[Metadata](#metadata)<br />*dictionary* | Context related to the recurring invoice, key-value pair (string => string)
+**sandbox**<br />*boolean*<br />Read-only |
+
+
+### Apply a discount
+
+```sh
+curl https://api.processout.com/subscriptions/sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3/discounts \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
+    -d amount=5
+```
+
+```javascript
+<%= partial "header-js" %>
+var discount = new ProcessOut.Discount();
+discount.setAmount(5);
+discount.apply("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3").then(
+    function(discount) {
+        // 
+
+    }, function(err) {
+        // An error occured
+    });
+```
+
+```python
+<%= partial "header-python" %>
+discount = processout.Discount()
+discount.amount = 5
+
+discount = discount.apply("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
+```
+
+```php
+<?php
+<%= partial "header-php" %>
+$discount = new \ProcessOut\Discount();
+$discount->setAmount(5);
+
+$discount = $discount->apply("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3");
+```
+
+```go
+<%= partial "header-go" %>
+discount := &processout.Discount{
+    Amount: 5,
+}
+_, err := processout.Discounts.Apply(discount, "sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
+```
+
+Apply a discount for a subscription with the given attributes.
+
+It is also possible to [apply a coupon to a subscription](#apply-a-coupon).
+
+### Fetch a discount
+
+```sh
+curl https://api.processout.com/subscriptions/sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3/discounts/disc_F9NXdvflVDyE3KOz2qxLw0e31eBeLcDq \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd
+```
+
+```javascript
+<%= partial "header-js" %>
+ProcessOut.Discount.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3",
+    "disc_F9NXdvflVDyE3KOz2qxLw0e31eBeLcDq").then(
+        function(discount) {
+            // 
+
+        }, function(err) {
+            // An error occured
+
+        });
+```
+
+```python
+<%= partial "header-python" %>
+discount = processout.Discount.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3",
+    "disc_F9NXdvflVDyE3KOz2qxLw0e31eBeLcDq")
+```
+
+```php
+<%= partial "header-php" %>
+$discount = \ProcessOut\Discount::find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3",
+    "disc_F9NXdvflVDyE3KOz2qxLw0e31eBeLcDq");
+```
+
+```go
+<%= partial "header-go" %>
+discount, err := client.Discounts.Find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3",
+    "disc_F9NXdvflVDyE3KOz2qxLw0e31eBeLcDq")
+```
+
+Fetch a discount from its ID and subscription. Throws an error if the discount could
+not be found.
+
+### Delete a discount
+
+```sh
+curl -X DELETE https://api.processout.com/subscriptions/sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3/discounts/disc_F9NXdvflVDyE3KOz2qxLw0e31eBeLcDq \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd
+```
+
+```javascript
+<%= partial "header-js" %>
+ProcessOut.Discount.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3",
+    "disc_F9NXdvflVDyE3KOz2qxLw0e31eBeLcDq").then(
+        function(discount) {
+            discount.delete().then(function(success) {
+                // 
+
+            }, function(err) {
+                // Could not delete it
+
+            });
+
+        }, function(err) {
+            // An error occured
+
+        });
+```
+
+```python
+<%= partial "header-python" %>
+discount = processout.Discount.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3",
+    "disc_F9NXdvflVDyE3KOz2qxLw0e31eBeLcDq")
+discount.delete()
+```
+
+```php
+<%= partial "header-php" %>
+$discount = \ProcessOut\Discount::find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3",
+    "disc_F9NXdvflVDyE3KOz2qxLw0e31eBeLcDq");
+$discount->delete();
+```
+
+```go
+<%= partial "header-go" %>
+discount, err := client.Discounts.Find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3",
+    "disc_F9NXdvflVDyE3KOz2qxLw0e31eBeLcDq")
+_, err = client.Discounts.Delete(discount)
+```
+
+Deletes a discount. An error is thrown if the discount could not be deleted.
