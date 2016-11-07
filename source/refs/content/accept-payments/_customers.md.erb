@@ -22,6 +22,14 @@ additional data if needed.
 
 ### Create a customer
 
+```sh
+curl https://api.processout.com/customers \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
+    -d email="john@smith.com" \
+    -d first_name="John" \
+    -d last_name="Smith"
+```
+
 ```javascript
 <%= partial "header-js" %>
 var customer = new ProcessOut.Customer();
@@ -83,6 +91,11 @@ country of the customer.
 
 ### Fetch a customer
 
+```sh
+curl https://api.processout.com/customers/cust_UVYZP5I5741rFHQDEZXGLm777fCZzQAb \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd
+```
+
 ```javascript
 <%= partial "header-js" %>
 ProcessOut.Customer.find("cust_UVYZP5I5741rFHQDEZXGLm777fCZzQAb").then(
@@ -113,6 +126,12 @@ customer could not be found.
 
 ### Update a customer
 
+```sh
+curl -X PUT https://api.processout.com/customers/cust_UVYZP5I5741rFHQDEZXGLm777fCZzQAb \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
+    -d first_name="New Name"
+```
+
 ```javascript
 <%= partial "header-js" %>
 customer.setFirstName("New name");
@@ -141,6 +160,11 @@ Update the customer attributes. You must use a previously created or fetched
 customer object in order to guarantee data integrity of the customer object.
 
 ### Delete a customer
+
+```sh
+curl -X DELETE https://api.processout.com/customers/cust_LvjCcLOVe6iWn2aeCNhNmK7RbbG6K8XF \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd
+```
 
 ```javascript
 <%= partial "header-js" %>

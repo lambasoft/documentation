@@ -25,6 +25,15 @@ Subscriptions are objects representing your customers' subscriptions.
 
 ### Create a subscription
 
+```sh
+curl https://api.processout.com/subscriptions \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
+    -d name="Amazing item" \
+    -d amount="4.99" \
+    -d currency=USD \
+    -d interval=1m
+```
+
 ```javascript
 <%= partial "header-js" %>
 var subscription = new ProcessOut.Subscription();
@@ -91,6 +100,12 @@ end at that specific date automatically.
 
 ### Create from a plan
 
+```sh
+curl https://api.processout.com/subscriptions \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
+    -d plan_id="silver-plan"
+```
+
 ```javascript
 <%= partial "header-js" %>
 var subscription = new ProcessOut.Subscription();
@@ -131,6 +146,11 @@ from the API.
 
 ### Fetch a subscription
 
+```sh
+curl https://api.processout.com/subscriptions/sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3 \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd
+```
+
 ```javascript
 <%= partial "header-js" %>
 ProcessOut.Subscription.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3").then(
@@ -162,6 +182,12 @@ Fetch a subscription from its ID. Throws an error if the subscription could
 not be found.
 
 ### Activate a subscription
+
+```sh
+curl -X PUT https://api.processout.com/subscriptions/sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3 \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
+    -d source=card_C4hZXQTU0aWoYeenHYC0DektYDqf8ocj
+```
 
 ```javascript
 <%= partial "header-js" %>
@@ -204,6 +230,12 @@ source can be a `card`, a [Token](#tokens) or a [Gateway Request](#). An error
 is thrown if the source could not be used.
 
 ### Cancel a subscription
+
+```sh
+curl -X DELETE https://api.processout.com/subscriptions/sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3 \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
+    -d cancel_at="2022-10-02T15:00:00Z"
+```
 
 ```javascript
 <%= partial "header-js" %>

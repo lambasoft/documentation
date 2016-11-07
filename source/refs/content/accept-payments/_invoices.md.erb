@@ -23,6 +23,14 @@ using the ProcessOut API. To start using invoices, [let's create one](#create-an
 
 ### Create an invoice
 
+```sh
+curl https://api.processout.com/invoices \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
+    -d name="Amazing item" \
+    -d amount="4.99" \
+    -d currency="USD"
+```
+
 ```javascript
 <%= partial "header-js" %>
 var invoice = new ProcessOut.Invoice();
@@ -74,6 +82,11 @@ Simply create an Invoice resource with a `name`, `amount` and `currency`.
 
 ### Fetch an invoice
 
+```sh
+curl https://api.processout.com/invoices/iv_MgeLS2Rr3ZGwjqOvDvYSuWx7ce88luXl \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd
+```
+
 ```javascript
 <%= partial "header-js" %>
 ProcessOut.Invoice.find("iv_MgeLS2Rr3ZGwjqOvDvYSuWx7ce88luXl").then(
@@ -105,6 +118,12 @@ could not be found, an error is thrown.
 
 ### Assign a customer
 
+```sh
+curl -X PUT https://api.processout.com/invoices/iv_MgeLS2Rr3ZGwjqOvDvYSuWx7ce88luXl \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
+    -d customer_id=cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P
+```
+
 ```javascript
 <%= partial "header-js" %>
 invoice.assignCustomer("cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P");
@@ -133,6 +152,12 @@ If you'd like to link another customer to the invoice, you will need to create
 a new invoice.
 
 ### Capture an invoice
+
+```sh
+curl https://api.processout.com/invoices/iv_MgeLS2Rr3ZGwjqOvDvYSuWx7ce88luXl/capture \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
+    -d source=card_1jSEVrx7oaRta1KEdxoMWbiGkK2MijrZ
+```
 
 ```javascript
 <%= partial "header-js" %>

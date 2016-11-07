@@ -25,6 +25,12 @@ they were created for.
 
 ### Create a token
 
+```sh
+curl https://api.processout.com/customers/cust_C4hZXQTU0aWoYeenHYC0DektYDqf8ocj/tokens \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
+    -d source=card_C4hZXQTU0aWoYeenHYC0DektYDqf8ocj
+```
+
 ```javascript
 <%= partial "header-js" %>
 var token = new ProcessOut.Token();

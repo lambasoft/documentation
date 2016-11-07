@@ -45,6 +45,11 @@ by ProcessOut when an update occurs on the transaction.
 
 ### Fetch a transaction
 
+```sh
+curl https://api.processout.com/transactions/tr_ItJdKlhfaVn0SUGd9z1i9Jqe0STl4jxC \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd
+```
+
 ```javascript
 <%= partial "header-js" %>
 ProcessOut.Transaction.find("tr_ItJdKlhfaVn0SUGd9z1i9Jqe0STl4jxC").then(
