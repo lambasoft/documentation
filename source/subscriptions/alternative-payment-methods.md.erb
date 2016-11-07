@@ -4,9 +4,9 @@ title: Alternative payment methods for payments
 
 ## Handle alternative payment methods
 
-On top of helping you accept payments using credit cards, ProcessOut also
-lets you accept payments through alternative payment methods, such as 
-[PayPal](https://paypal.com) or [cryptocurrencies with coinpayments](https://coinpayments.com).
+On top of helping you get recurring payments, ProcessOut also
+lets you accept subscriptions through alternative payment methods, such as 
+[PayPal](https://paypal.com).
 
 <hr>
 
@@ -19,17 +19,17 @@ fits your needs.
 
 #### Alternative payment methods flow
 
-Because of their nature, most alternative payment methods are `asynchronous`. This
-means that you normally wouldn't be able to synchronously tell the customer if its
-payment correctly made it through until you receive a confirmation from the
-payment method webhooks (such as from the *PayPal IPN*). This is mainly due
-to the fact that a redirection is usually required.
+The alternative payment methods flow for subscriptions is very similar to the one
+for one-off payments, that's been covered in its guides 
+[here &nearr;](/payments/alternative-payment-methods.html).
 
-ProcessOut tries to bridge that gap by letting merchants keep control of their
-customer flow, **even after a redirection**. The customer is transparently
-redirected to the payment method's payment page in a new window, and once the
-the payment is completed, the alternative payment method's window is closed
-and the original merchant payment page is notified of the payment via Javascript. 
+However, it is important to note that subscriptions activated using alternative
+payment methods aren't as flexible as the ones created directly within 
+ProcessOut. For this reason, the following features aren't supported when
+using alternative payment methods:
+
+- Upgrades &amp; downgrades
+- Coupons &amp; discounts
 
 #### Fetch the available alternative payment methods
 
@@ -38,103 +38,89 @@ from your ProcessOut configuration. This lets you dynamically enable and disable
 payment options without having to update any of your code.
 
 In order to fetch your ProcessOut gateways configuration, we'll also need to
-create an invoice, as some of the gateways will need some information before
+create an subscription, as some of the gateways will need some information before
 the payment actually takes place.
 
 <div class="language-selector-wrapper">
 <%= partial "lg-selector" %>
 ```sh
-# Let's first create an invoice
-curl https://api.processout.com/invoices \
+# Let's first create a subscription
+curl https://api.processout.com/subscriptions \
     -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
-    -d name="Awesome invoice" \
-    -d amount=9.99 \
-    -d currency=USD
-
-# And fetch the gateways
-curl https://api.processout.com/projects/proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4/gateway-configurations \
-    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
-    -d expand[]=gateway
-    -d filter="tags: redirection flows: one-off"
+    -d customer_id=cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P \
+    -d plan_id="silver-plan"
 ```
+
 ```javascript
 <%= partial "header-js" %>
-// Let's first create an invoice
-var invoice = new ProcessOut.Invoice();
-invoice.setName('Amazing item');
-invoice.setAmount('4.99');
-invoice.setCurrency('USD');
+// Let's first create an subscription
+var subscription = new ProcessOut.Subscription();
+subscription.createFromPlan("cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P",
+    "silver-plan", {expand: ["project"]}).then(function(subscription) {
+        // And now fetch the project available gateways for subscriptions
+        subscription.getProject().gatewayConfigurations({
+            expand: ["gateway"],
+            filter: "tags: redirection flows: one-off"
+        }).then(function(gateways) {
+            //
 
-invoice.create({expand: ["project"]}).then(function(invoice) {
-    // And now fetch the project available gateways for one-off payments
-    invoice.getProject().gatewayConfigurations({
-        expand: ["gateway"],
-        filter: "tags: redirection flows: one-off"
-    }).then(function(gateways) {
-        //
+        }, function(err) {
+            // Couldn't fetch the project's gateways
+        });
 
     }, function(err) {
-        // Couldn't fetch the project's gateways
+        // An error occured
+
     });
-
-}, function(err) {
-    // An error occured
-
-});
 ```
 
 ```python
 <%= partial "header-python" %>
-# Let's first create an invoice
-invoice          = processout.Invoice()
-invoice.name     = 'Amazing item'
-invoice.amount   = '4.99'
-invoice.currency = 'USD'
-invoice = invoice.create({expand: ["project"]})
+# Let's first create an subscription
+subscription = Subscription()
+subscription = subscription.createFromPlan(
+    "cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P", "silver-plan",
+    {expand:["project"]})
 
 # And now fetch the project's available gateways
-gateways = invoice.project.gatewayConfigurations({
+gateways = subscription.project.gatewayConfigurations({
     expand: ["gateway"],
-    filter: "tags: redirection flows: one-off"
+    filter: "tags: redirection flows: subscription"
 })
 ```
 
 ```php
 <%= partial "header-php" %>
-// Let's first create an invoice
-$invoice = new \ProcessOut\Invoice();
-$invoice
-    ->setName('Amazing item')
-    ->setAmount('4.99')
-    ->setCurrency('USD');
-$invoice = $invoice->create(array("expand" => array("project")));
+// Let's first create an subscription
+$subscription = new \ProcessOut\Subscription();
+$subscription = $subscription->createFromPlan(
+    "cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P", "silver-plan",
+    array("expand" => array("project")));
 
 // And now fetch the project's available gateways
-$gateways = $invoice->getProject()->gatewayConfigurations(array(
+$gateways = $subscription->getProject()->gatewayConfigurations(array(
     "expand" => array("gateway"),
-    "filter" => "tags: redirection flows: one-off"
+    "filter" => "tags: redirection flows: subscription"
 ));
 ```
 
 ```go
 <%= partial "header-go" %>
-// Let's first create an invoice
-iv, err := p.Invoices.Create(&processout.Invoice{
-    Name:     "Amazing item",
-    Amount:   "4.99",
-    Currency: "USD",
-}, processout.Options{
-    Expand: []string{"project"},
-})
+// Let's first create an subscription
+sub, err := client.Subscriptions.CreateFromPlan(&processout.Subscription{}, 
+    "cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P", "silver-plan",
+    processout.Options{
+        Expand: []string{"project"},
+    })
 if err != nil {
     panic(err)
 }
 
 // And now fetch the project available gateways for one-off payments
-gateways, erri := p.Projects.GatewayConfigurations(iv.Project, 
+gateways, erri := p.Projects.GatewayConfigurations(sub.Project, 
     processout.Options{
         Expand: []string{"gateway"},
-        Filter: "tags: redirection flows: one-off",
+        Filter: "tags: redirection flows: subscription",
     })
 ```
 </div>
@@ -156,7 +142,7 @@ A payment link for an alternative payment gateway is as follows:
   <a href="https://checkout.processout.com/iv_tIWEiBcrXIFHzJeXcZzqyp8EpY0xwmuT/redirect/gway_conf_vMFNzz1GnWYRUJWFgUhn4HajCYmJiMsi"
     class="alternative-payment-link">
 
-    Pay now!
+    Activate subscription!
   </a>
 </form>
 ```
@@ -222,47 +208,68 @@ function processoutRedirectHandler(el, e) {
 }
 ```
 
-#### Handle the capture on the server
+#### Handle the subscription activation on the server
 
 `ProcessOut.js` sent the `token` back to our server so we need to finish
-its capture. We'll need both the `token` and the `invoice ID` we created
+its activation. We'll need both the `token` and the `subscription ID` we created
 earlier and used to redirect the customer.
 
-The code to capture the token returned by `ProcessOut.js` during an alternative
-gateway checkout is **identical** to the capture of a card token.
+The code to activate a subscription using a token returned by `ProcessOut.js` 
+during an alternative gateway checkout is **identical** to the activation using 
+a card token.
 
 <div class="language-selector-wrapper">
 <%= partial "lg-selector" %>
 ```sh
-curl https://api.processout.com/invoices/iv_tIWEiBcrXIFHzJeXcZzqyp8EpY0xwmuT/capture \
+curl -X PUT https://api.processout.com/subscriptions/sub_SSpcwpKNSa2WT2pixBRNyOnCrftmJeqR \
     -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
     -d source="gway_req_V2UncmUgaGlyaW5nIQ=="
 ```
 
 ```javascript
 <%= partial "header-js" %>
-invoice.capture("gway_req_V2UncmUgaGlyaW5nIQ==").then(
-    function(transaction) {
-        // 
+ProcessOut.Subscription.find("sub_SSpcwpKNSa2WT2pixBRNyOnCrftmJeqR").then(
+    function(subscription) {
+        subscription.applySource("gway_req_V2UncmUgaGlyaW5nIQ==").then(
+            function(subscription) {
+                // The customer was successfully subscribed to
+                // the subscription
+
+            }, function(err) {
+                // An error occured
+            });
 
     }, function(err) {
-        // The invoice could not be captured
+        // Could not find the subscription
     });
 ```
 
 ```python
 <%= partial "header-python" %>
-transaction = invoice.capture("gway_req_V2UncmUgaGlyaW5nIQ==")
+subscription = processout.Subscription.find("sub_SSpcwpKNSa2WT2pixBRNyOnCrftmJeqR")
+subscription.applySource("gway_req_V2UncmUgaGlyaW5nIQ==")
+
+# The customer is now successfully subscribed to the subscription
 ```
 
 ```php
 <%= partial "header-php" %>
-$transaction = $invoice->capture("gway_req_V2UncmUgaGlyaW5nIQ==");
+$subscription = \ProcessOut\Subscription::find("sub_SSpcwpKNSa2WT2pixBRNyOnCrftmJeqR");
+$subscription->applySource("gway_req_V2UncmUgaGlyaW5nIQ==");
+
+// The customer is now successfully subscribed to the subscription
 ```
 
 ```go
 <%= partial "header-go" %>
-tr, _ := processout.Invoices.Capture(iv, "gway_req_V2UncmUgaGlyaW5nIQ==")
+sub, _ := client.Subscriptions.Find("sub_SSpcwpKNSa2WT2pixBRNyOnCrftmJeqR")
+sub, err = client.Subscriptions.ApplySource(sub, 
+    "gway_req_V2UncmUgaGlyaW5nIQ==")
+if err != nil {
+    panic(err)
+}
+
+// The customer is now successfully subscribed to the subscription
 ```
 </div>
 
@@ -270,9 +277,5 @@ tr, _ := processout.Invoices.Capture(iv, "gway_req_V2UncmUgaGlyaW5nIQ==")
 an abstraction of the request done by the customer on the gateway. The content
 of the token is therefore directly encoded inside it, in base64.
 
-The capture should return a transaction if it was successful. It is strongly
-advised to check its `status` attribute is set to `completed` to make sure the 
-payment made it through. We highly recommand you to set up a way to 
-[receive webhooks &nearr;](/payments/handle-status-changes-webhooks.html) as
-this will make you able to handle updates on payments made using alternative
-payment methods. 
+An error is thrown if the activation couldn't be made using the provided gateway
+request token.

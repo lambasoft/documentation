@@ -1,0 +1,152 @@
+---
+title: Cancel a subscription
+---
+
+## Cancel a customer's subscription
+
+When a customer requests to cancel a subscription, you might want to be able
+to do it programmatically so you don't have to go in your 
+[dashboard](https://dashboard.processout.com) and manually cancel it. ProcessOut
+provides a convenient way to cancel a subscription a give a short reason for this
+cancellation.
+
+<hr>
+
+#### How canceling works internally
+
+The subscription object has a date attribute `cancel_at`. This attribute is used
+by our workers to cancel any subscription that has a `cancel_at` date set in the
+past. This also lets merchants automatically cancel subscriptions in the future.
+
+Once a subscription is scheduled for cancellation and picked up by a worker,
+the worker will set the `canceled_at` field of the subscription to the current
+time, effectively marked the subscription as canceled. A canceled subscription
+becomes immutable, which means that you won't be able to update it in the future,
+or re-activate it. If you want to reactive it, you will need to create a new
+subscription and apply the token you used as a source to activate it the first
+time, if available.
+
+#### Cancel immediately
+
+Cancelling a subscription immediately can be done by calling the subscription
+cancellation endpoint without any `cancel_at` date. The call will set the 
+`cancel_at` field to the current time, and the ProcessOut workers will automatically
+pull the subscription and cancel it.
+
+<div class="language-selector-wrapper">
+<%= partial "lg-selector" %>
+```sh
+curl -X DELETE https://api.processout.com/subscriptions/sub_SSpcwpKNSa2WT2pixBRNyOnCrftmJeqR \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
+    -d reason="Cancellation reason"
+```
+
+```javascript
+<%= partial "header-js" %>
+ProcessOut.Subscription.find("sub_SSpcwpKNSa2WT2pixBRNyOnCrftmJeqR").then(
+    function(subscription) {
+        subscription.cancel("Cancellation reason").then(function(subscription) {
+            // The subscription was successfully marked for cancellation
+
+        }, function(err) {
+            // An error occured
+        });
+
+    }, function(err) {
+        // Could not find the subscription
+    });
+```
+
+```python
+<%= partial "header-python" %>
+subscription = processout.Subscription.find("sub_SSpcwpKNSa2WT2pixBRNyOnCrftmJeqR")
+subscription.cancel("Cancellation reason")
+
+# The subscription was successfully marked for cancellation
+```
+
+```php
+<%= partial "header-php" %>
+$subscription = \ProcessOut\Subscription::find("sub_SSpcwpKNSa2WT2pixBRNyOnCrftmJeqR");
+$subscription->cancel("Cancellation reason");
+
+// The subscription was successfully marked for cancellation
+```
+
+```go
+<%= partial "header-go" %>
+sub, _ := client.Subscriptions.Find("sub_SSpcwpKNSa2WT2pixBRNyOnCrftmJeqR")
+sub, err = client.Subscriptions.Cancel(sub, "Cancellation reason")
+if err != nil {
+    panic(err)
+}
+
+// The subscription was successfully marked for cancellation
+```
+</div>
+
+#### Schedule for cancellation
+
+It is also possible to schedule a subscription for cancellation in the future,
+at a given date. This can be useful if you want to do **installments** for instance,
+where a customer pays a fixed price for certain amount of days (such as $49.00 every
+month for 3 months).
+
+To set up an installment, simply [create and active &nearr;](/subscriptions/get-started.html)
+a subscription and set its `cancel_at` attribute to the desired date. The subscription
+will automatically be canceled at that date.
+
+<div class="language-selector-wrapper">
+<%= partial "lg-selector" %>
+```sh
+curl -X DELETE https://api.processout.com/subscriptions/sub_SSpcwpKNSa2WT2pixBRNyOnCrftmJeqR \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
+    -d cancel_at="2022-10-02T15:00:00Z" \
+    -d reason="Cancellation reason"
+```
+
+```javascript
+<%= partial "header-js" %>
+ProcessOut.Subscription.find("sub_SSpcwpKNSa2WT2pixBRNyOnCrftmJeqR").then(
+    function(subscription) {
+        subscription.cancelAt("2022-10-02T15:00:00Z", 
+            "Cancellation reason").then(function(subscription) {
+                // The subscription was successfully marked for cancellation
+
+            }, function(err) {
+                // An error occured
+            });
+
+    }, function(err) {
+        // Could not find the subscription
+    });
+```
+
+```python
+<%= partial "header-python" %>
+subscription = processout.Subscription.find("sub_SSpcwpKNSa2WT2pixBRNyOnCrftmJeqR")
+subscription.cancelAt("2022-10-02T15:00:00Z", "Cancellation reason")
+
+# The subscription was successfully marked for cancellation
+```
+
+```php
+<%= partial "header-php" %>
+$subscription = \ProcessOut\Subscription::find("sub_SSpcwpKNSa2WT2pixBRNyOnCrftmJeqR");
+$subscription->cancelAt("2022-10-02T15:00:00Z", "Cancellation reason");
+
+// The subscription was successfully marked for cancellation
+```
+
+```go
+<%= partial "header-go" %>
+sub, _ := client.Subscriptions.Find("sub_SSpcwpKNSa2WT2pixBRNyOnCrftmJeqR")
+sub, err = client.Subscriptions.CancelAt(sub, 
+    "2022-10-02T15:00:00Z", "Cancellation reason")
+if err != nil {
+    panic(err)
+}
+
+// The subscription was successfully marked for cancellation
+```
+</div>

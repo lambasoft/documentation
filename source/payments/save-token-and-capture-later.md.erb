@@ -16,8 +16,6 @@ by [`ProcessOut.js` &nearr;](#).
 Because tokens are specifically linked to one of your customers, you must first
 create a [`Customer` &nearr;](#) resource.
 
-<div class="spacer"></div>
-
 #### Creating a customer
 
 You can create any number of customer you may need. A customer object may be
@@ -89,8 +87,6 @@ cust, err := client.Customers.Create(&processout.Customer{
 set to the currency of the first invoice your customer will pay. It is also
 immutable.
 
-<div class="spacer"></div>
-
 #### Creating a customer token
 
 Now that we have a customer object to work with, we can create tokens that'll
@@ -134,8 +130,6 @@ tok, err := client.Tokens.Create(&processout.Token{},
     "cust_WtaVdUjAGpOlbLiYWYXBR67whr91Rlks", "card_ZGJ8EnCPfcr298O1wD6u9McfnZQucIv1")
 ```
 </div>
-
-<div class="spacer"></div>
 
 #### Capturing a payment for a customer
 

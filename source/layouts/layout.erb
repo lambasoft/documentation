@@ -22,6 +22,7 @@
             h6 {
                 text-transform: uppercase;
                 color: #34495e;
+                opacity: 0.5;
             }
 
             .main-content .menu-bar {
@@ -38,6 +39,9 @@
             }
             .main-content .menu-bar ul li a {
                 color: #2c3e50;
+            }
+            .main-content .menu-bar ul li a:hover {
+                font-weight: 700;
             }
 
             .main-content .content {
@@ -155,7 +159,10 @@
 
                 $(".main-content .content a").not(".language-selector a").click(function() {
                     window.open($(this).attr("href"));
-
+                    return false;
+                });
+                $("a.new-window").click(function() {
+                    window.open($(this).attr("href"));
                     return false;
                 });
             });
@@ -201,24 +208,24 @@
 
                         <h6>Subscriptions</h6>
                         <ul class="no-bullet">
-                            <li><a href="#">Getting started</a></li>
                             <li><a href="#">Plans and associated billing cycles</a></li>
-                            <li><a href="#">Subscribe a customer</a></li>
+                            <li><%= link_to 'Subscribe a customer', '/subscriptions/get-started.html' %></li>
+                            <li><%= link_to 'Cancel a subscription', '/subscriptions/cancel-a-subscription.html' %></li>
                         </ul>
                         <ul class="no-bullet">
-                            <li><a href="#">Trials</a></li>
-                            <li><a href="#">Discounts &amp; coupons</a></li>
-                            <li><a href="#">Upgrades &amp; downgrades</a></li>
+                            <li><%= link_to 'Trials', '/subscriptions/trials.html' %></li>
+                            <li><%= link_to 'Coupons &amp; disocunts', '/subscriptions/coupons-and-discounts.html' %></li>
+                            <li><%= link_to 'Upgrades &amp; downgrades', '/subscriptions/upgrades-and-downgrades.html' %></li>
                         </ul>
                         <ul class="no-bullet">
-                            <li><a href="#">Alternatives payment methods</a></li>
+                            <li><%= link_to 'Alternative payment methods', '/subscriptions/alternative-payment-methods.html' %></li>
                         </ul>
 
                         <hr style="margin-top: 2em;">
 
                         <h6>Advanced</h6>
                         <ul class="no-bullet">
-                            <li><%= link_to 'API references &rarr;', '/refs/index.html' %></li>
+                            <li><%= link_to 'API references &rarr;', '/refs/index.html', class: "new-window" %></li>
                         </ul>
                     </div>
                     <div class="medium-9 columns content">

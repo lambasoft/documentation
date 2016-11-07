@@ -106,7 +106,7 @@ subscription.createFromPlan("cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P",
 
 ```python
 <%= partial "header-python" %>
-subscription          = Subscription()
+subscription = Subscription()
 subscription = subscription.createFromPlan(
     "cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P", "silver-plan")
 ```
@@ -122,7 +122,7 @@ $subscription = $subscription->createFromPlan(
 ```go
 <%= partial "header-go" %>
 sub, err := client.Subscriptions.CreateFromPlan(&processout.Subscription{}, 
-    "cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P, "silver-plan")
+    "cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P", "silver-plan")
 ```
 
 It is also possible to create a subscription from a plan that you'd have
