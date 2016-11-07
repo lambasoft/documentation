@@ -1,0 +1,250 @@
+---
+title: Coupons and discounts
+---
+
+## Offer discounts to your customers
+
+Offering coupons and discounts for your customers' discounts is a great way to
+acquire new users by lowering the friction.
+
+<hr>
+
+#### What are coupons and discounts
+
+A coupon can be seen
+as a template for a discount to be applied on a subscription: the coupon
+can be a percentage of the subscription's price, or a fixed amount. A customer
+can also have multiple coupons applied on one of its subscriptions.
+
+A coupon is also composed of several additional attributes that can be used to 
+further control how your coupons are used:
+
+- `iteration_count` is the number of iteration of the subscription the coupon will last.
+For example, a coupon with an `iteration_count` of 3 applied on a monthly subscription
+will last 3 months. If this attribute is set to `0`, the applied discount will
+last forever.
+- `max_redemptions` is the maximum number of times a coupon can be redeemed 
+(ie applied on a subscription) by your customers before expiring.
+- `expires_at` is the date at which the coupon will automatically expire.
+
+It is also important to note that coupons cannot be redeemed more than once
+per subscription, and the amount deduced by the sum of all the discounts
+applied to a subscription cannot be greater than the amount of the subscription.
+
+#### Create a coupon
+
+The easiest way to apply discounts on your customers' subscriptions it to
+create coupon codes that can be redeemed by your customers (or yourself in
+your [Dashboard](https://dashboard.processout.com)).
+
+For reference, let's create one through the API:
+
+<div class="language-selector-wrapper">
+<%= partial "lg-selector" %>
+```sh
+curl https://api.processout.com/coupons \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
+    -d id="25percentoff" \
+    -d percent_off=25 \
+    -d iteration_count=3 \
+    -d expires_at="2022-10-02T15:00:00Z"
+```
+
+```javascript
+<%= partial "header-js" %>
+var coupon = new ProcessOut.Coupon();
+coupon.setId("25percentoff");
+coupon.setPercentOff(25);
+coupon.setIterationCount(3);
+coupon.setExpiresAt("2022-10-02T15:00:00Z");
+coupon.create().then(
+    function(coupon) {
+        // 
+
+    }, function(err) {
+        // The coupon could not be created. Maybe a coupon with this
+        // ID already exists?
+    });
+```
+
+```python
+<%= partial "header-python" %>
+coupon = processout.Coupon()
+coupon.id = "25percentoff"
+coupon.percentOff = 25
+coupon.iterationCount = 3
+coupon.expiresAt = "2022-10-02T15:00:00Z"
+coupon = coupon.create()
+```
+
+```php
+<%= partial "header-php" %>
+$coupon = new \ProcessOut\Coupon();
+$coupon->setId("25percentoff");
+$coupon->setPercentOff(25);
+$coupon->setIterationCount(3);
+$coupon->setExpiresAt("2022-10-02T15:00:00Z");
+$coupon = $coupon->create();
+```
+
+```go
+<%= partial "header-go" %>
+coupon := &processout.Coupon{
+    ID:             "25percentoff",
+    PercentOff:     25,
+    IterationCount: 3,
+    ExpiresAt:      "2022-10-02T15:00:00Z",
+}
+_, err := processout.Coupons.Create(coupon)
+if err != nil {
+    panic(err)
+}
+```
+</div>
+
+#### Apply a coupon to a subscription
+
+Now that we've created a coupon, let's create and apply a subscription for a
+customer of ours (you'll need to replace the ID of the customer with one
+of yours):
+
+<div class="language-selector-wrapper">
+<%= partial "lg-selector" %>
+```sh
+curl https://api.processout.com/subscriptions \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
+    -d customer_id=cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P \
+    -d plan_id="silver-plan"
+
+curl https://api.processout.com/subscriptions/sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3/discounts \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
+    -d coupon_id=25percentoff
+```
+
+```javascript
+<%= partial "header-js" %>
+var subscription = new ProcessOut.Subscription();
+subscription.createFromPlan("cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P",
+    "silver-plan").then(function(subscription) {
+        // The subscription is now successfully created
+        // for the customer.
+        // Let's apply the coupon
+        var discount = new ProcessOut.Discount();
+        discount.applyCoupon(subscription.getId(), "25percentoff").then(
+            function(discount) {
+                // All good!
+
+            }, function(err) {
+                // The discount is now applied to the subscription!
+            });
+
+    }, function(err) {
+        // An error occured
+
+    });
+```
+
+```python
+<%= partial "header-python" %>
+subscription = processout.Subscription()
+subscription = subscription.createFromPlan(
+    "cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P", "silver-plan")
+
+# The subscription is now successfully created
+# for the customer.
+# Let's apply the coupon
+discount = processout.Discount()
+discount = discount.applyCoupon(subscription.id, "25percentoff")
+
+# The discount is now applied to the subscription!
+```
+
+```php
+<%= partial "header-php" %>
+$subscription = new \ProcessOut\Subscription();
+$subscription = $subscription->createFromPlan(
+    "cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P", "silver-plan");
+
+// The subscription is now successfully created
+// for the customer.
+// Let's apply the coupon
+$discount = new \ProcessOut\Discount();
+$discount = $discount->applyCoupon($subscription->getId(), "25percentoff");
+
+// The discount is now applied to the subscription!
+```
+
+```go
+<%= partial "header-go" %>
+sub, err := client.Subscriptions.CreateFromPlan(&processout.Subscription{}, 
+    "cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P", "silver-plan")
+if err != nil {
+    panic(err)
+}
+
+// The subscription is now successfully created
+// for the customer.
+// Let's apply the coupon
+discount, err = client.Discounts.ApplyCoupon(&processout.Discount{}, 
+    sub.ID, "25percentoff")
+if err != nil {
+    panic(err)
+}
+
+// The discount is now applied to the subscription!
+```
+</div>
+
+#### Remove a coupon discount
+
+Sometimes, you might also want to remove a discount from a subscription. This
+can be done by providing the coupon with which the discount was created:
+
+<div class="language-selector-wrapper">
+<%= partial "lg-selector" %>
+```sh
+curl -X DELETE https://api.processout.com/subscriptions/sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3/discounts/25percentoff \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd
+```
+
+```javascript
+<%= partial "header-js" %>
+ProcessOut.Subscription.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3").then(
+    function(subscription) 
+        subscription.removeDiscount("25percentoff").then(function(subscription) {
+            // The coupon discount was successfully removed
+
+        }, function(err) {
+            // The coupon discount could not be found
+
+        });
+    }, function(err) {
+        // The subscription could not be found
+
+    });
+```
+
+```python
+<%= partial "header-python" %>
+subscription = processout.Subscription.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
+subscription.removeDiscount("25percentoff")
+```
+
+```php
+<%= partial "header-php" %>
+$subscription = new \ProcessOut\Subscription::find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3");
+$subscription->removeDiscount("25percentoff");
+```
+
+```go
+<%= partial "header-go" %>
+sub, err := client.Subscriptions.Find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
+if err != nil {
+    panic(err)
+}
+_, err = client.Subscriptions.RemoveDiscount(sub, "25percentoff")
+if err != nil {
+    panic(err)
+}
+```
+</div>
