@@ -4,7 +4,8 @@ title: Events & webhooks
 
 ## Handle status changes and webhooks
 
-When using the [`capture` &nearr;](#) endpoint, a [`Transaction` &nearr;](#) is
+When using the [`capture` &nearr;](/payments/capture-a-payment.html) endpoint, a 
+[`Transaction` &nearr;](/refs/#transactions) is
 is returned if there was no error when processing the payment. However, the
 payment may still be pending, and a few fail-safes should be put in place.
 
@@ -27,6 +28,28 @@ When a payment is done with a credit card, it is also possible that it was
 successfully processed but that the customer choses to chargeback the payment
 later. Handling webhooks will also make you able to handle this case and
 appropriately update your customer's profile on your business.
+
+#### Transaction statuses
+
+During a transaction's life, its status will change several depending depending
+on several factors. For instance, when a payment is placed and confirmed, the
+transaction's status will switch from `pending` to `completed`.
+
+You may find the list of all the available transaction's statuses below:
+
+|||
+--:|:--
+<div style="white-space: nowrap; font-family: Consolas; color: #795da3;">waiting</div> | No payment has been placed yet
+<div style="white-space: nowrap; font-family: Consolas; color: #795da3;">pending</div> | The payment is pending confirmation by the payment gateway
+<div style="white-space: nowrap; font-family: Consolas; color: #795da3;">authorized</div>   | The payment was authorized but not yet captured
+<div style="white-space: nowrap; font-family: Consolas; color: #795da3;">completed</div>   | The payment was sucessfully completed
+<div style="white-space: nowrap; font-family: Consolas; color: #795da3;">failed</div> | The payment has been placed, but failed
+<div style="white-space: nowrap; font-family: Consolas; color: #795da3;">voided</div> | The payment was voided
+<div style="white-space: nowrap; font-family: Consolas; color: #795da3;">disputed</div> | The payment was previously completed but the customer filled a dispute
+<div style="white-space: nowrap; font-family: Consolas; color: #795da3;">solved</div> | The previous dispute has been resolved in your favor
+<div style="white-space: nowrap; font-family: Consolas; color: #795da3;">reversed</div> | The previous dispute has been resolved in your customer’s favor
+<div style="white-space: nowrap; font-family: Consolas; color: #795da3;">refunded</div> | The transaction was partially refunded
+<div style="white-space: nowrap; font-family: Consolas; color: #795da3;">partially-refunded</div> | The transaction was refunded
 
 #### Create a webhook endpoint
 

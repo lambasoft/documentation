@@ -13,13 +13,13 @@ lets you accept subscriptions through alternative payment methods, such as
 #### Native to the payment modal
 
 Before getting into the white-label integration, it is important to note that the
-[ProcessOut modal &nearr;](#) comes with the alternative payment methods right from
+[ProcessOut modal &nearr;](/payments/payment-modal.html) comes with the alternative payment methods right from
 the start, without any additional work needed. The modal is a perfect fit if it
 fits your needs. 
 
 #### Alternative payment methods flow
 
-The alternative payment methods flow for subscriptions is very similar to the one
+The alternative payment methods flow for [`Subscription` &nearr;](/refs/#subscriptions) is very similar to the one
 for one-off payments, that's been covered in its guides 
 [here &nearr;](/payments/alternative-payment-methods.html).
 
@@ -129,7 +129,7 @@ gateways, erri := p.Projects.GatewayConfigurations(sub.Project,
 
 The `gateways` variable fetched in the previous steps now contains all the
 available alternative payment gateways that were configured and activated
-on your project. We also created a new [`Invoice` &nearr;](#) that we'll
+on your project. We also created a new [`Subscription` &nearr;](/refs/#subscriptions) that we'll
 use to redirect the customer to the payment page.
 
 A payment link for an alternative payment gateway is as follows:
@@ -138,8 +138,8 @@ A payment link for an alternative payment gateway is as follows:
 <form action="/your-capture-endpoint" method="POST" id="payment-form">
   <!-- Loop through all your gateway configurations and display the link
        below.
-       ProcessOut-checkout-domain/:invoice_id/redirect/:gateway_configuration_id -->
-  <a href="https://checkout.processout.com/iv_tIWEiBcrXIFHzJeXcZzqyp8EpY0xwmuT/redirect/gway_conf_vMFNzz1GnWYRUJWFgUhn4HajCYmJiMsi"
+       ProcessOut-checkout-domain/:subscription_id/redirect/:gateway_configuration_id -->
+  <a href="https://checkout.processout.com/sub_SSpcwpKNSa2WT2pixBRNyOnCrftmJeqR/redirect/gway_conf_vMFNzz1GnWYRUJWFgUhn4HajCYmJiMsi"
     class="alternative-payment-link">
 
     Activate subscription!
@@ -189,9 +189,9 @@ function processoutRedirectHandler(el, e) {
 
   var action = client.handleAction(el.getAttribute("href"), 
     function(token) {
-      // The payment customer completed the gateway payment flow,
-      // we can send the token back to our backend to finish its
-      // capture
+      // The customer completed the gateway payment flow,
+      // we can send the token back to our backend to activate
+      // the subscription
       var field   = document.createElement("input");
       field.type  = "hidden";
       field.name  = "token";

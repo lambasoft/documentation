@@ -55,21 +55,11 @@ production resources may not be used for test purposes.
 The checkout flow you'll experience when implementing ProcessOut will be the
 exact same as you'd get in production, except no real payment will be made.
 
-In order to properly test edge cases, we provide you with the following test
+In order to properly test edge cases, we provide you with test
 cards that can be used the payment modal or within ProcessOut.js when
 tokenizing a card. 
 
 Each of those cards have a different behaviour so you can
 test different scenarios. Any other card will fail.
 
-|||
---:|:--
-<div style="white-space: nowrap; font-family: Consolas;">4242 4242 4242 4242</div> | VISA successful payment
-<div style="white-space: nowrap; font-family: Consolas;">5555 5555 5555 4444</div> | Mastercard successful payment
-<div style="white-space: nowrap; font-family: Consolas;">3782 82246 310005</div>   | American Express successful payment
-<div style="white-space: nowrap; font-family: Consolas;">3012 3456 7890 19</div>   | Diners Club successful payment
-<div style="white-space: nowrap; font-family: Consolas;">3530 1113 3330 0000</div> | JCB successful payment
-<div style="white-space: nowrap; font-family: Consolas;">6011 1111 1111 1117</div> | Discover successful payment
-<div style="white-space: nowrap; font-family: Consolas;">4000 0000 0000 0002</div> | The credit card will be denied
-<div style="white-space: nowrap; font-family: Consolas;">4000 0000 0000 0010</div> | The authorization on the card will be successful, but any capture will fail
-<div style="white-space: nowrap; font-family: Consolas;">4000 0000 0000 0069</div> | The payment will be successful, but a chargeback will be initiated as soon as the payment makes it through
+The full test cards list can be found [here &nearr;](/testing.html).
