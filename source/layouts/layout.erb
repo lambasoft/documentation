@@ -54,6 +54,19 @@
             .main-content .content h4 {
                 margin-top: 2em;
             }
+            .main-content table {
+                margin-top: 2em;
+                box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 5px 8px 0 rgba(0, 0, 0, 0.1);
+            }
+            .main-content table, .main-content table thead, .main-content table tbody {
+                border: none;
+            }
+            .main-content table th {
+                display: none;
+            }
+            .main-content table tr {
+                background: rgba(236, 240, 241, 0.5);
+            }
             .main-content .shadow-background {
                 background: rgba(236, 240, 241, 0.5);
                 box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 5px 8px 0 rgba(0, 0, 0, 0.1);
@@ -97,7 +110,6 @@
             .main-content .language-selector a.selected, .main-content .language-selector a:hover {
                 font-weight: 600;
             }
-
             .main-content .footer {
                 opacity: 0.75;
                 padding: 0;
@@ -193,6 +205,7 @@
                         <ul class="no-bullet">
                             <li><%= link_to 'Home', '/index.html' %></li> 
                             <li><%= link_to 'Getting started', '/getting-started.html' %></li>
+                            <li><%= link_to 'Testing', '/testing.html' %></li>
                         </ul>
 
                         <h6>Accept payments</h6>
@@ -211,7 +224,6 @@
 
                         <h6>Subscriptions</h6>
                         <ul class="no-bullet">
-                            <li><%= link_to 'Plans and associated billing cycles', '/subscriptions/plans-and-billing-cycles.html' %></li>
                             <li><%= link_to 'Subscribe a customer', '/subscriptions/get-started.html' %></li>
                             <li><%= link_to 'Cancel a subscription', '/subscriptions/cancel-a-subscription.html' %></li>
                         </ul>

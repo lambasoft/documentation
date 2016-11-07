@@ -13,7 +13,7 @@ Subscriptions are objects representing your customers' subscriptions.
 **name**<br />*string*<br />Required | Name of the subscription
 **amount**<br />*string*<br />Required | Amount to be paid at every iteration of the subscription
 **currency**<br />*string*<br />Required | Currency of the subscription, in the ISO 4217 format (ex: `USD`)
-**interval**<br />*string*<br />Required | Number of days for the recurring period
+**interval**<br />*string*<br />Required | Interval between each subscription iteration. "1m" for monthly subscriptions, "1w" for weekly.
 **trial_end_at**<br />*string* | Date at which the trial of the subscription will end. Defaults to no trial
 **metadata**<br />[Metadata](#metadata)<br />*dictionary* | Context related to the recurring invoice, key-value pair (string => string)
 **return_url**<br />*string* | `url` used to redirect the customer once the payment is placed
@@ -28,6 +28,7 @@ Subscriptions are objects representing your customers' subscriptions.
 ```sh
 curl https://api.processout.com/subscriptions \
     -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
+    -d customer_id=cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P \
     -d name="Amazing item" \
     -d amount="4.99" \
     -d currency=USD \
@@ -85,7 +86,7 @@ sub := &processout.Subscription{
 	Interval: "1m",
 }
 
-sub, err := client.Subscriptions.Create(sub, "cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P")
+_, err := client.Subscriptions.Create(sub, "cust_uYW5WVnjHe91qnsUA1sHOxEjdAySvg0P")
 ```
 
 To create a subscription for a specific customer, the field `interval` 
@@ -165,7 +166,7 @@ ProcessOut.Subscription.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3").then(
 
 ```python
 <%= partial "header-python" %>
-subscription = Subscription.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
+subscription = processout.Subscription.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
 ```
 
 ```php
@@ -175,7 +176,7 @@ $subscription = \ProcessOut\Subscription::find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDy
 
 ```go
 <%= partial "header-go" %>
-sub, err := client.Subscriptions.Find("7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
+sub, err := client.Subscriptions.Find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
 ```
 
 Fetch a subscription from its ID. Throws an error if the subscription could
@@ -209,7 +210,7 @@ ProcessOut.Subscription.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3").then(
 
 ```python
 <%= partial "header-python" %>
-subscription = Subscription.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
+subscription = processout.Subscription.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
 subscription.applySource("card_C4hZXQTU0aWoYeenHYC0DektYDqf8ocj")
 ```
 
@@ -221,13 +222,62 @@ $subscription->applySource("card_C4hZXQTU0aWoYeenHYC0DektYDqf8ocj");
 
 ```go
 <%= partial "header-go" %>
-sub, err := client.Subscriptions.Find("7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
+sub, err := client.Subscriptions.Find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
 sub, err = client.Subscriptions.ApplySource("card_C4hZXQTU0aWoYeenHYC0DektYDqf8ocj")
 ```
 
 Activating a subscription is done by applying a source to the subscription. The
 source can be a `card`, a [Token](#tokens) or a [Gateway Request](#). An error
 is thrown if the source could not be used.
+
+### Change plan
+
+```sh
+curl -X PUT https://api.processout.com/subscriptions/sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3 \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
+    -d plan_id="gold-plan" \
+    -d prorate=true
+```
+
+```javascript
+<%= partial "header-js" %>
+ProcessOut.Subscription.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3").then(
+    function(subscription) {
+        subscription.updatePlan("gold-plan", true).then(
+            function(subscription) {
+                // 
+
+            }, function(err) {
+                // An error occured
+            });
+
+    }, function(err) {
+        // An error occured
+
+    });
+```
+
+```python
+<%= partial "header-python" %>
+subscription = processout.Subscription.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
+subscription.updatePlan("gold-plan", true)
+```
+
+```php
+<%= partial "header-php" %>
+$subscription = \ProcessOut\Subscription::find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3");
+$subscription->updatePlan("gold-plan", true);
+```
+
+```go
+<%= partial "header-go" %>
+sub, err := client.Subscriptions.Find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
+sub, err = client.Subscriptions.UpdatePlan("gold-plan", true)
+```
+
+A subscription plan can be changed to upgrade/downgrade the subscription. A
+prorate field is also available to define whether or not you want to enable
+proration. Learn more about proration [here &nearr;](/subscriptions/upgrades-and-downgrades.html).
 
 ### Cancel a subscription
 
@@ -258,7 +308,7 @@ ProcessOut.Subscription.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3").then(
 
 ```python
 <%= partial "header-python" %>
-subscription = Subscription.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
+subscription = processout.Subscription.find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
 subscription.cancel("Cancellation reason")
 # or subscription.cancelAt("2022-10-02T15:00:00Z", "Cancellation reason")
 ```
@@ -272,7 +322,7 @@ $subscription->cancel("Cancellation reason");
 
 ```go
 <%= partial "header-go" %>
-sub, err := client.Subscriptions.Find("7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
+sub, err := client.Subscriptions.Find("sub_7kAxfNML6jIc3bltGIt0uK2nKHDyzzq3")
 sub, err = client.Subscriptions.Cancel(sub, "Cancellation reason")
 // or sub, err = client.Subscriptions.CancelAt("2022-10-02T15:00:00Z", 
 //      "Cancellation reason")

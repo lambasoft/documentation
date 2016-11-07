@@ -1,0 +1,46 @@
+---
+title: Testing your integration
+---
+
+## Testing your ProcessOut integration
+
+Testing your ProcessOut integration is crucial to make sure everything works
+as intended before pushing your code into production. ProcessOut provides you
+with a few tools you can use to quickly check everything.
+
+<hr>
+
+#### Testing environment
+
+A testing environment is available for developers who want to test their
+integration of ProcessOut. We strongly advise you to use our testing environment
+when implementing any of our products.
+
+Most of the ProcessOut objects can be created in the production or test environments.
+Objects created in one environment will not be available in the other. Objects
+created in the testing environment will have the attribtue `sandbox` set to
+`true`.
+
+#### Test cards
+
+When using the test environment, test cards can be used to simulate real-world cards.
+We provide you with a handy set of test cards in different brands, as well as
+special cards which will have a special effect when used during checkout. This
+is meant to help you test special test cases easily.
+
+Please note that any real-world card will not work in the test environment. Also,
+the expiry date and CVC code of the cards will not be checked. 
+
+|||
+--:|:--
+ | *The cards listed below will result in a successful payment:*
+<div style="white-space: nowrap; font-family: Consolas; color: #795da3;">4242 4242 4242 4242</div> | VISA 
+<div style="white-space: nowrap; font-family: Consolas; color: #795da3;">5555 5555 5555 4444</div> | Mastercard 
+<div style="white-space: nowrap; font-family: Consolas; color: #795da3;">3782 82246 310005</div>   | American Express 
+<div style="white-space: nowrap; font-family: Consolas; color: #795da3;">3012 3456 7890 19</div>   | Diners Club 
+<div style="white-space: nowrap; font-family: Consolas; color: #795da3;">3530 1113 3330 0000</div> | JCB 
+<div style="white-space: nowrap; font-family: Consolas; color: #795da3;">6011 1111 1111 1117</div> | Discover 
+ | *The cards listed below will have a special behaviour:*
+<div style="white-space: nowrap; font-family: Consolas; color: #795da3;">4000 0000 0000 0002</div> | The credit card will be denied
+<div style="white-space: nowrap; font-family: Consolas; color: #795da3;">4000 0000 0000 0010</div> | The authorization on the card will be successful, but any capture will fail
+<div style="white-space: nowrap; font-family: Consolas; color: #795da3;">4000 0000 0000 0069</div> | The payment will be successful, but a chargeback will be initiated as soon as the payment makes it through
