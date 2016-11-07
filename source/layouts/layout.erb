@@ -24,6 +24,9 @@
                 color: #34495e;
                 opacity: 0.5;
             }
+            a:hover {
+                text-decoration: underline;
+            }
 
             .main-content .menu-bar {
                 padding-top: 2em;
@@ -42,6 +45,7 @@
             }
             .main-content .menu-bar ul li a:hover {
                 font-weight: 700;
+                text-decoration: none;
             }
 
             .main-content .content {
@@ -71,9 +75,13 @@
                 background: rgba(236, 240, 241, 0.5);
                 box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 5px 8px 0 rgba(0, 0, 0, 0.1);
                 padding: 1em;
+                display: inline-block;
             }
             .main-content .shadow-background:hover {
                 box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.1), 0 10px 28px 0 rgba(0, 0, 0, 0.1);
+            }
+            .main-content a.shadow-background:hover {
+                text-decoration: none;
             }
             .main-content .content pre {
                 margin-bottom: 1rem;
