@@ -26,6 +26,74 @@ a monthly subscription), as well as a trial if you want to offer your customers
 with a way to test your service. A plan is typically composed of a unique ID that
 you will define, a name, and an amount and currency.
 
+It's also possible to create a plan using the API:
+
+<div class="language-selector-wrapper">
+<%= partial "lg-selector" %>
+```sh
+curl https://api.processout.com/plans \
+    -u proj_OvJdvN73Ds1pecfQez2J13pK1YlRqFh4:key-qiOniTQlt8OazoMrnYJKaSnBhRpWN5Rd \
+    -d id="silver-plan" \
+    -d name="Silver plan" \
+    -d amount="10.00" \
+    -d currency=USD \
+    -d interval=1m
+```
+
+```javascript
+<%= partial "header-js" %>
+var plan = new ProcessOut.Plan();
+plan.setId("silver-plan");
+plan.setName("Silver plan");
+plan.setAmount("10.00");
+plan.setCurrency("USD");
+plan.setInterval("1m");
+
+plan.create().then(function(plan) {
+    //
+
+}, function(err) {
+    // An error occured
+
+});
+```
+
+```python
+<%= partial "header-python" %>
+plan = processout.Plan()
+plan.id = "silver-plan"
+plan.name = "Silver plan"
+plan.amount = "10.00"
+plan.currency = "USD"
+plan.interval = "1m"
+
+plan = plan.create()
+```
+
+```php
+<%= partial "header-php" %>
+$plan = new \ProcessOut\Plan();
+$plan->setId("silver-plan");
+$plan->setName("Silver plan");
+$plan->setAmount("10.00");
+$plan->setCurrency("USD");
+$plan->setInterval("1m");
+
+$plan = $plan->create();
+```
+
+```go
+<%= partial "header-go" %>
+plan, err := client.Plans.Create(&processout.Plan{
+    ID:       "silver-plan",
+    Name:     "Silver plan",
+    Amount:   "10.00",
+    Currency: "USD",
+    Interval: "1m",
+})
+```
+</div>
+
 #### Create a subscription for your customer
 
 Once you have created the plans you want, you will need to create a customer
@@ -46,8 +114,8 @@ curl https://api.processout.com/customers \
 ```javascript
 <%= partial "header-js" %>
 var customer = new ProcessOut.Customer();
-customer.setFirstName('John');
-customer.setLastName('Smith');
+customer.setFirstName("John");
+customer.setLastName("Smith");
 
 customer.create().then(function(customer) {
     //
@@ -61,8 +129,8 @@ customer.create().then(function(customer) {
 ```python
 <%= partial "header-python" %>
 customer = processout.Customer()
-customer.firstName = 'John'
-customer.lastName = 'Smith'
+customer.firstName = "John"
+customer.lastName = "Smith"
 
 customer = customer.create()
 ```
@@ -70,8 +138,8 @@ customer = customer.create()
 ```php
 <%= partial "header-php" %>
 $customer = new \ProcessOut\Customer();
-$customer->setFirstName('John');
-$customer->setLastName('Smith');
+$customer->setFirstName("John");
+$customer->setLastName("Smith");
 
 $customer = $customer->create();
 ```

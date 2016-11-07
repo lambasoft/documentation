@@ -172,12 +172,15 @@
     <body>
         <div class="big-wrapper colorful dotify lighten-content padding" style="padding: 1em; color:white">
             <div class="row">
-                <div class="medium-6 text-left column">
+                <div class="medium-3 text-left column">
                     <a href="https://www.processout.com" style="font-size: 1.5em; font-weight: bold;">ProcessOut</a>
                     <span style="font-size: 1.1em;">_docs</span>
                 </div>
-                <div class="medium-6 text-right column" style="margin-top: 0.3em;">
-                    <% link_to '//dashboard.processout.com' do %>Dashboard &rarr;<% end %>
+                <div class="medium-5 text-left column" style="line-height: 36px;">
+                    <%= link_to 'API references &nearr;', '/refs/index.html', class: "api-ref new-window" %>
+                </div>
+                <div class="medium-4 text-right column" style="line-height: 36px;">
+                    <% link_to 'https://dashboard.processout.com' do %>Dashboard &rarr;<% end %>
                 </div>
             </div>
         </div>
@@ -219,13 +222,6 @@
                         </ul>
                         <ul class="no-bullet">
                             <li><%= link_to 'Alternative payment methods', '/subscriptions/alternative-payment-methods.html' %></li>
-                        </ul>
-
-                        <hr style="margin-top: 2em;">
-
-                        <h6>Advanced</h6>
-                        <ul class="no-bullet">
-                            <li><%= link_to 'API references &rarr;', '/refs/index.html', class: "new-window" %></li>
                         </ul>
                     </div>
                     <div class="medium-9 columns content">
